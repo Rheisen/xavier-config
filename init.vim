@@ -39,9 +39,17 @@ set linebreak
 
 " Updated key configuration
 nmap 0 ^
+nmap j gj
+nmap k gk
 
 " Leader key configuration
+" - Space key leader key
+" - space + sc: split plane and open the nvim config file (this)
+" - space + so: source the nvim config file (this)
 let mapleader = "\<Space>"
+
+nmap <leader>sc :sp $MYNVIM<cr>
+nmap <leader>so :source $MYNVIM<cr>
 
 " NerdTree configuration
 let g:NERDTreeShowHidden = 1
@@ -53,7 +61,7 @@ nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 
 " Code Completion configuration
 " - Tab key rotates through completion options
-" - Cmd + space selects completion option
+" - Ctrl + space selects completion option
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :

@@ -1,5 +1,10 @@
+# Environment Variables
+
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/rheisen/.oh-my-zsh"
+
+export MYVIM="~/.xavier-config/.vimrc"
+export MYNVIM="~/.xavier-config/init.vim"
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
@@ -69,7 +74,6 @@ POWERLEVEL9K_STATUS_BACKGROUND="clear"
 POWERLEVEL9K_CARRIAGE_RETURN_ICON="\uf071"
 POWERLEVEL9K_OK_ICON="\uf42e"
 
-
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
 
@@ -87,15 +91,6 @@ POWERLEVEL9K_OK_ICON="\uf42e"
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
@@ -108,8 +103,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
