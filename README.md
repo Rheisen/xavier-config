@@ -1,6 +1,6 @@
 # Xavier Environment
 
-This is an OSX development environment configuration repository. This README documents the complete process of setting up the development environment, and quickly getting up and running on any OSX machine.
+This is an OSX development environment configuration. This README documents the complete process for setting up the development environment, and quickly getting up and running on any OSX machine.
 
 As a general overview, this configuration will replace usage of the default terminal with ITerm2 and ZSH. It will utilize Oh-My-ZSH as the plugin manager for the terminal. This configuration will also configure a minimal, effective NeoVim environment with TMUX.
 
@@ -8,7 +8,7 @@ This entire development environment has theme synchronicity based on the OneDark
 
 ![Color Reference][color_ref]
 
-[color_ref]: (https://raw.githubusercontent.com/Rheisen/xavier-config/master/image/color_reference.png) "Color Reference"
+[color_ref]: (https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png) "Color Reference"
 
 ### Step One: Downloads
 
