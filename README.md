@@ -15,15 +15,20 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 - ITerm2 ([web link](https://iterm2.com/downloads.html))
 - Fira Code w/ NerdFont Patch (Install ttf files, retina or regular recommended) ([web link](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode))
 - Homebrew ([web link](https://brew.sh/))
+
+- Break here and complete Step Two
+
 - Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
 - VimPlug (install for Vim & NeoVim) ([web link](https://github.com/junegunn/vim-plug))
+- PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
 - Done
 
 ### Step Two: Brew Installations
 
-Install or update the following with Homebrew:
+Install or upgrade the following with Homebrew:
 
 - `brew install node`
+- `brew install zsh`
 - `brew install neovim`
 - `brew install git`
 - `brew install tmux`
@@ -39,7 +44,8 @@ Install or update the following with Homebrew:
 ### Step Four: ITerm2 Setup
 
 - Open ITerm2 (if you didn't use it in the previous step)
-- Copy the iterm files somewhere easily findable: `cp ~/.xavier-config/iterm ~/documents/iterm`
+- Ensure Zsh is the default shell: `sudo sh -c "echo $(which zsh) >> /etc/shells" && chsh -s $(which zsh)`
+- Copy the "iterm" folder somewhere easily findable: `cp ~/.xavier-config/iterm ~/documents/iterm`
 - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
 - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
 - Import `colors.itermcolors` from within Documents
@@ -47,12 +53,16 @@ Install or update the following with Homebrew:
 - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
 - Done
 
-### Step Four: Environment Configuration
+### Step Five: Environment Configuration
 
+- Open the zshrc file: `nvim ~/.xavier-config/.zshrc` and change the ZSH export as needed
+- Add any additonal scripts from previous configuration files to this zshrc
 - Symlink the Zsh configuration: `ln -s ~/.xavier-config/.zshrc ~/.zshrc`
-- Symlink the Vim configuration: `ln -s ~/.xavier-config/.vimrc ~/.vimrc`
-- Symlink the NeoVim configuration: `ln -s ~/.xavier-config/init.vim ~/.config/nvim/init.vim`
-- Symlink the Tmux configuration: `ln -s ~/.xavier-config/.tmux.conf ~/.tmux.conf`
-- Open the vimrc `vim ~/.xavier-config/.vimrc` and run `:PlugInstall`
+
 - Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall` 
+- Symlink the NeoVim configuration: `ln -s ~/.xavier-config/init.vim ~/.config/nvim/init.vim`
+
+- Open the vimrc `nvim ~/.xavier-config/.vimrc` and run `:PlugInstall`
+- Symlink the Vim configuration: `ln -s ~/.xavier-config/.vimrc ~/.vimrc`
+- Symlink the Tmux configuration: `ln -s ~/.xavier-config/.tmux.conf ~/.tmux.conf`
 - Done
