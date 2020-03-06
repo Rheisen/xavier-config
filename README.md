@@ -6,9 +6,7 @@ As a general overview, this configuration will replace usage of the default term
 
 This entire development environment has theme synchronicity based on the OneDark theme.
 
-![Color Reference][color_ref]
-
-[color_ref]: (https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png) "Color Reference"
+![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png) "Color Reference"
 
 ### Step One: Downloads
 
