@@ -15,9 +15,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 - ITerm2 ([web link](https://iterm2.com/downloads.html))
 - Fira Code w/ NerdFont Patch (Install ttf files, retina or regular recommended) ([web link](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode))
 - Homebrew ([web link](https://brew.sh/))
-
-- Break here and complete Step Two
-
+- Stop here!! Complete Step Two
 - Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
 - VimPlug (install for Vim & NeoVim) ([web link](https://github.com/junegunn/vim-plug))
 - PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
@@ -27,7 +25,6 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 Install or upgrade the following with Homebrew:
 
-- `brew install node`
 - `brew install zsh`
 - `brew install neovim`
 - `brew install git`
@@ -36,6 +33,7 @@ Install or upgrade the following with Homebrew:
 
 ### Step Three: Clone this Repository
 
+- Configure git if git is not already configured.
 - Git clone this repository inside the root directory.
 - Hide the repository (optional, recommended): `mv xavier-config .xavier-config`
 - Open the repository with finder: `cd ~/.xavier-config; open .`
