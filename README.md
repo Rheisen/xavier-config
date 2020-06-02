@@ -29,6 +29,7 @@ Install or upgrade the following with Homebrew:
 - `brew install neovim`
 - `brew install git`
 - `brew install tmux`
+- `brew install fzf`
 - Done
 
 ### Step Three: Clone this Repository
