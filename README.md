@@ -21,6 +21,11 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 - PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
 - Done
 
+#### Recommended Downloads:
+
+- Node Version Manager (NVM) ([web link](https://github.com/nvm-sh/nvm))
+- Ruby Version Manager (RVM) ([web link](https://rvm.io/))
+
 ### Step Two: Brew Installations
 
 Install or upgrade the following with Homebrew:
@@ -28,8 +33,10 @@ Install or upgrade the following with Homebrew:
 - `brew install zsh`
 - `brew install neovim`
 - `brew install git`
+- `brew install git-flow`
 - `brew install tmux`
 - `brew install fzf`
+- `brew install gnupg gnupg2`
 - Done
 
 ### Step Three: Clone this Repository
@@ -37,7 +44,7 @@ Install or upgrade the following with Homebrew:
 - Configure git if git is not already configured.
 - Git clone this repository inside the root directory.
 - Hide the repository (optional, recommended): `mv xavier-config .xavier-config`
-- Open the repository with finder: `cd ~/.xavier-config; open .`
+- Open the repository with finder: `open ~/.xavier-config`
 - Done
 
 ### Step Four: ITerm2 Setup
@@ -56,12 +63,14 @@ Install or upgrade the following with Homebrew:
 
 - Open the zshrc file: `nvim ~/.xavier-config/.zshrc` and change the ZSH export as needed
 - Add any additonal scripts from previous configuration files to this zshrc
-- Symlink the Zsh configuration: `ln -s ~/.xavier-config/.zshrc ~/.zshrc`
+- Remove the current ZSH configuration: `rm ~/.zshrc`
+- Symlink the xavier-config ZSH configuration: `ln -s ~/.xavier-config/.zshrc ~/.zshrc`
 
+- Remove (`rm .config/nvim/init.vim`) or create nvim directory for configuration (`mkdir .config; mkdir .config/nvim`)
+- Symlink the xavier-config NeoVim configuration: `ln -s ~/.xavier-config/init.vim ~/.config/nvim/init.vim`
 - Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall` 
-- Symlink the NeoVim configuration: `ln -s ~/.xavier-config/init.vim ~/.config/nvim/init.vim`
 
-- Open the vimrc `nvim ~/.xavier-config/.vimrc` and run `:PlugInstall`
 - Symlink the Vim configuration: `ln -s ~/.xavier-config/.vimrc ~/.vimrc`
+- Open the vimrc `nvim ~/.xavier-config/.vimrc` and run `:PlugInstall`
 - Symlink the Tmux configuration: `ln -s ~/.xavier-config/.tmux.conf ~/.tmux.conf`
 - Done
