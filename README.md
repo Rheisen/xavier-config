@@ -56,23 +56,24 @@ Install or upgrade the following with Homebrew:
 - Copy the "iterm" folder somewhere easily findable: `cp ~/.xavier-config/iterm ~/documents/iterm`
 - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
 - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
-- Import `colors.itermcolors` from within Documents
+- Import `xavier-config.itermcolors` from within Documents/iterm
 - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
 - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
 - Done
 
 ### Step Five: Environment Configuration
 
+- Remove (`rm .config/nvim/init.vim`) or create the nvim directory (`mkdir .config; mkdir .config/nvim`)
+- Symlink the xavier-config NeoVim configuration: `ln -s ~/.xavier-config/nvim/init.vim ~/.config/nvim/init.vim`
+- Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall`
+- Follow the comments in the init.vim file for installing CoC language support as desired.
+
+- Copy the .zshrc-example file as the base for your new .zshrc: `cp ~/.xavier-config/zsh/.zshrc-example ~/.xavier-config/zsh/.zshrc`
 - Open the zshrc file: `nvim ~/.xavier-config/.zshrc` and change the ZSH export as needed
 - Add any additonal scripts from previous configuration files to this zshrc
 - Remove the current ZSH configuration: `rm ~/.zshrc`
-- Symlink the xavier-config ZSH configuration: `ln -s ~/.xavier-config/.zshrc ~/.zshrc`
+- Symlink the xavier-config ZSH configuration: `ln -s ~/.xavier-config/zsh/.zshrc ~/.zshrc`
 
-- Remove (`rm .config/nvim/init.vim`) or create nvim directory for configuration (`mkdir .config; mkdir .config/nvim`)
-- Symlink the xavier-config NeoVim configuration: `ln -s ~/.xavier-config/init.vim ~/.config/nvim/init.vim`
-- Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall` 
-
-- Symlink the Vim configuration: `ln -s ~/.xavier-config/.vimrc ~/.vimrc`
-- Open the vimrc `nvim ~/.xavier-config/.vimrc` and run `:PlugInstall`
 - Symlink the Tmux configuration: `ln -s ~/.xavier-config/.tmux.conf ~/.tmux.conf`
+
 - Done
