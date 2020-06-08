@@ -64,13 +64,13 @@ Install or upgrade the following with Homebrew:
 ### Step Five: Environment Configuration
 
 #### Neovim
-- Remove (`rm .config/nvim/init.vim`) or create the nvim directory (`mkdir .config; mkdir .config/nvim`)
+- Remove (`rm ~/.config/nvim/init.vim`) or create the nvim directory (`mkdir ~/.config; mkdir ~/.config/nvim`)
 - Symlink the xavier-config NeoVim configuration: `ln -s ~/.xavier-config/nvim/init.vim ~/.config/nvim/init.vim`
 - Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall`
 - Follow the comments in the init.vim file for installing CoC language support as desired.
 #### ZSH
 - Copy the .zshrc-example file as the base for your new .zshrc: `cp ~/.xavier-config/zsh/.zshrc-example ~/.xavier-config/zsh/.zshrc`
-- Open the zshrc file: `nvim ~/.xavier-config/.zshrc` and change the ZSH export as needed
+- Open the zshrc file: `nvim ~/.xavier-config/zsh/.zshrc` and change the ZSH export as needed
 - Add any additonal scripts from previous configuration files to this zshrc
 - Remove the current ZSH configuration: `rm ~/.zshrc`
 - Symlink the xavier-config ZSH configuration: `ln -s ~/.xavier-config/zsh/.zshrc ~/.zshrc`
