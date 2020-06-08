@@ -36,6 +36,8 @@ Install or upgrade the following with Homebrew:
 - `brew install git-flow`
 - `brew install tmux`
 - `brew install fzf`
+- `brew install ripgrep`
+- `brew install bat`
 - `brew install gnupg gnupg2`
 - Done
 
