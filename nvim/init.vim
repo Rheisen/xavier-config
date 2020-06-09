@@ -2,6 +2,8 @@
 " - Plug Onedark, provides the neovim color scheme.
 " - Plug FZF, provides fuzzy finding capabilities.
 " - Plug RG, provides fast text searching.
+" - Plug Airline, provides an improved status bar.
+" - Plug Signify, provides git signs in the gutter.
 " - Plug NERDTree, provides a file explorer menu within neovim.
 " - Plug Devicons, provides devicons for NERDTree.
 " - Plug Syntastic, provides syntax checking and displays errors.
@@ -13,6 +15,9 @@ call plug#begin("~/.vim/plugged")
     Plug '/usr/local/opt/fzf'
     Plug 'junegunn/fzf.vim'
     Plug 'jremmen/vim-ripgrep'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'mhinz/vim-signify'
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-syntastic/syntastic'
@@ -35,6 +40,7 @@ colorscheme onedark
 " Behavioral configuration
 set autoread
 set rtp+=/usr/local/opt/fzf
+set updatetime=100
 
 " Window configuration
 set number
@@ -89,6 +95,9 @@ nnoremap <silent> <leader>b :Buffers<cr>
 " Copy / Paste
 nnoremap <leader>y "+y
 nnoremap <leader>p "+p
+
+" Airline configuration
+let g:airline_theme='onedark'
 
 " NerdTree configuration
 let g:NERDTreeShowHidden = 1
