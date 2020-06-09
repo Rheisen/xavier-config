@@ -18,6 +18,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'mhinz/vim-signify'
+    Plug 'tpope/vim-fugitive'
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-syntastic/syntastic'
@@ -87,7 +88,16 @@ if filereadable('config/routes.rb')
 endif
 
 "Text searching
-nnoremap <silent> <leader>ft :Rg! <cr>
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+nnoremap <leader>ft :RG<cr> 
 
 "Buffers
 nnoremap <silent> <leader>b :Buffers<cr>

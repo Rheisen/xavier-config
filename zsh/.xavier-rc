@@ -1,6 +1,9 @@
 # Neovim Location ENV variables
 export MYNVIM="~/.xavier-config/nvim/init.vim"
 
+# FZF and RipGrep Customization
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+
 # POWERLEVEL9K Theme
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
