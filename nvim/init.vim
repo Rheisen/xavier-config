@@ -28,6 +28,7 @@ call plug#begin("~/.vim/plugged")
     " :CocInstall coc-tsserver
     " gem install solargraph
     " :CocInstall coc-solargraph
+    " :CocInstall coc-java
     Plug 'rust-lang/rust.vim'
 call plug#end()"Config Section
 
@@ -42,6 +43,7 @@ colorscheme onedark
 set autoread
 set rtp+=/usr/local/opt/fzf
 set updatetime=100
+set timeout timeoutlen=3000 ttimeoutlen=100
 
 " Window configuration
 set number
@@ -114,7 +116,7 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
 let g:NERDTreeStatusline = ''
-let NERDTreeWinSize = 80
+let NERDTreeWinSize = 60
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 nnoremap <silent> <leader>t :NERDTreeToggle<CR>
 
