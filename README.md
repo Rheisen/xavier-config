@@ -33,13 +33,16 @@ Install or upgrade the following with Homebrew:
 - `brew install zsh`
 - `brew install neovim`
 - `brew install git`
-- `brew install git-flow`
 - `brew install tmux`
 - `brew install fzf`
 - `brew install ripgrep`
 - `brew install bat`
-- `brew install gnupg gnupg2`
 - Done
+
+#### Recommended Brews
+- `brew install gradle`
+- `brew install gnupg gnupg2`
+- `brew install git-flow`
 
 ### Step Three: Clone this Repository
 
