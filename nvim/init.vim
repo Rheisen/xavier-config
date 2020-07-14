@@ -4,6 +4,8 @@
 " - Plug RG, provides fast text searching.
 " - Plug Airline, provides an improved status bar.
 " - Plug Signify, provides git signs in the gutter.
+" - Plug Fugitive, provides git interactions within neovim.
+" - Plug Endwise, provides auto completion to end certain structures.
 " - Plug NERDTree, provides a file explorer menu within neovim.
 " - Plug Devicons, provides devicons for NERDTree.
 " - Plug Syntastic, provides syntax checking and displays errors.
@@ -19,6 +21,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'vim-airline/vim-airline-themes'
     Plug 'mhinz/vim-signify'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-endwise'
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-syntastic/syntastic'
@@ -52,12 +55,13 @@ set signcolumn=yes
 set colorcolumn=120
 
 " Spacing configuration
-autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smarttab
+autocmd FileType ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType typescript setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 set backspace=indent,eol,start
 set linebreak
@@ -110,6 +114,9 @@ nnoremap <leader>p "+p
 
 " Airline configuration
 let g:airline_theme='onedark'
+
+"Syntastic configuration
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 
 " NerdTree configuration
 let g:NERDTreeShowHidden = 1
