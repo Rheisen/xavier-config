@@ -41,6 +41,8 @@ Install or upgrade the following with Homebrew:
 
 #### Recommended Brews
 - `brew install gradle`
+- `brew tap pivotal/tap`
+- `brew install springboot`
 - `brew install gnupg gnupg2`
 - `brew install git-flow`
 

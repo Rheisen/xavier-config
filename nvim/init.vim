@@ -22,6 +22,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'mhinz/vim-signify'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-endwise'
+    Plug 'tpope/vim-commentary'
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-syntastic/syntastic'
