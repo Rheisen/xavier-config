@@ -55,13 +55,16 @@ set signcolumn=yes
 set colorcolumn=120
 
 " Spacing configuration
+autocmd FileType ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType javascriptreact setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType typescript setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType typescriptreact setlocal tabstop=2 softtabstop=2 shiftwidth=2
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smarttab
-autocmd FileType ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
-autocmd FileType typescript setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 set backspace=indent,eol,start
 set linebreak
