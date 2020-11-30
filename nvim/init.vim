@@ -23,6 +23,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-endwise'
     Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-surround'
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-syntastic/syntastic'
@@ -30,6 +31,8 @@ call plug#begin("~/.vim/plugged")
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " :CocInstall coc-rls
     " :CocInstall coc-tsserver
+    " :CocInstall coc-eslint
+    " :CocInstall coc-prettier
     " gem install solargraph
     " :CocInstall coc-solargraph
     " :CocInstall coc-java
@@ -80,7 +83,14 @@ nmap k gk
 " - Space key leader key
 " - space + sc: split plane and open the nvim config file (this)
 " - space + so: source the nvim config file (this)
-" - space + f: fuzzy find
+" - space + ff: fuzzy find
+" - space + fg: fuzzy find git files
+" - space + . : fuzzy find files in current directory
+" - space + ft: fuzzy find text
+" - space + n : turn off highlighting
+" - space + y : yank into clipboard
+" - space + p : paste from clipboard
+" - space + t : NerdTree Toggle
 let mapleader = "\<Space>"
 
 nnoremap <leader>sc :tabedit $MYNVIM<cr>
@@ -108,6 +118,7 @@ endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 nnoremap <leader>ft :RG<cr> 
+nnoremap <silent> <leader>n :noh<cr>
 
 "Buffers
 nnoremap <silent> <leader>b :Buffers<cr>
@@ -115,6 +126,7 @@ nnoremap <silent> <leader>b :Buffers<cr>
 " Copy / Paste
 nnoremap <leader>y "+y
 nnoremap <leader>p "+p
+nnoremap <leader>P "+P
 
 " Airline configuration
 let g:airline_theme='onedark'
