@@ -27,12 +27,14 @@ call plug#begin("~/.vim/plugged")
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-syntastic/syntastic'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'sheerun/vim-polyglot'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " :CocInstall coc-rls
     " :CocInstall coc-tsserver
     " :CocInstall coc-eslint
     " :CocInstall coc-prettier
+    " :CocInstall coc-go
     " gem install solargraph
     " :CocInstall coc-solargraph
     " :CocInstall coc-java
@@ -91,6 +93,12 @@ nmap k gk
 " - space + y : yank into clipboard
 " - space + p : paste from clipboard
 " - space + t : NerdTree Toggle
+" - space + gd: goto definition
+" - space + gy: goto type definition
+" - space + gi: goto implementation
+" - space + gr: goto references
+" - space + K : show documentation
+" - space + rn: rename symbol
 let mapleader = "\<Space>"
 
 nnoremap <leader>sc :tabedit $MYNVIM<cr>
@@ -123,7 +131,7 @@ nnoremap <silent> <leader>n :noh<cr>
 "Buffers
 nnoremap <silent> <leader>b :Buffers<cr>
 
-" Copy / Paste
+" System Copy / Paste
 nnoremap <leader>y "+y
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
@@ -160,7 +168,42 @@ endfunction
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
+let g:go_def_mapping_enabled = 0
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <leader>r <Plug>(coc-format-selected)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Rename symbol
+nmap <leader>rn <Plug>(coc-rename)
+
+let g:coc_global_extensions = []
+
+if filereadable('.eslintrc.json')
+    let g:coc_global_extensions += ['coc-eslint']
+endif
+
+if filereadable('.prettierrc')
+    let g:coc_global_extensions += ['coc-prettier']
+endif
+
+" Vim-go configuration
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
