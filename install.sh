@@ -22,7 +22,7 @@ printf "\n${green}----- Xavier Config Installer -----\n\n${normal}"
 
 if ! CommandExists brew; then
     printf "${yellow}1: Homebrew not detected, installing Homebrew...\n${normal}"
-    source <(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
+    source <(curl -s https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
 else
     printf "${blue}1: Homebrew detected, skipping install.\n${normal}"
 fi
@@ -74,7 +74,7 @@ if [ -d "$ohmyzshDir" ]; then
     printf "\n${blue}4: Oh-My-Zsh detected, skipping install.\n${normal}"
 else
     printf "\n${yellow}4: Oh-My-Zsh not detected, installing Oh-My-Zsh...\n${normal}"
-    source <(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)
+    source <(curl -s https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)
 fi
 
 # POWERLEVEL9K INSTALL
