@@ -10,10 +10,25 @@ This entire development environment has theme synchronicity based on the OneDark
 
 Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6C2`, `#ABB2BF`
 
+## Quick Install
+
+
+1. Download and run ITerm2 ([web link](https://iterm2.com/downloads.html))
+2. Run the install script: `curl -fsSL https://raw.githubusercontent.com/.../install.sh`
+3. Setup ITerm2 colors and fonts:
+    - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
+    - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
+    - Import `xavier-config.itermcolors` from within documents/xavier-config/iterm
+    - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
+    - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
+    - Done (you can remove documents/xavier-config/iterm if you'd like)
+
+## Manual Install
+
 ### Step One: Downloads
 
 - ITerm2 ([web link](https://iterm2.com/downloads.html))
-- Fira Code w/ NerdFont Patch (Install ttf files, retina or regular recommended) ([web link](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode))
+> - Fira Code w/ NerdFont Patch (Install ttf files, retina or regular recommended) ([web link](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode))
 - Homebrew ([web link](https://brew.sh/))
 - Stop here!! Complete Step Two
 - Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
