@@ -6,9 +6,12 @@
 " - Plug Signify, provides git signs in the gutter.
 " - Plug Fugitive, provides git interactions within neovim.
 " - Plug Endwise, provides auto completion to end certain structures.
+" - Plug Commentary, provides quick comment and uncomment commands.
+" - Plug Surround, provides motions for surrounding selections.
 " - Plug NERDTree, provides a file explorer menu within neovim.
 " - Plug Devicons, provides devicons for NERDTree.
 " - Plug Syntastic, provides syntax checking and displays errors.
+" - Plug VimGo, provides Go utilities within neovim.
 " - Plug Polyglot, provides syntax styling for numerous languages.
 " - Plug Conquer of Completion (coc), provides code completion.
 " - Plug Rust, provides Rust syntax highlighting, works with Syntastic.
@@ -83,7 +86,7 @@ nmap k gk
 
 " Leader key configuration
 " - Space key leader key
-" - space + sc: split plane and open the nvim config file (this)
+" - space + sc: create new tab and open the nvim config file (this)
 " - space + so: source the nvim config file (this)
 " - space + ff: fuzzy find
 " - space + fg: fuzzy find git files
