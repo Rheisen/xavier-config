@@ -14,9 +14,11 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 
 1. Download and run ITerm2 ([web link](https://iterm2.com/downloads.html))
-2. Run the install script: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
-3. Install the Fira Code font in the xavier-config iterm assets directory (should open at the end of the install)
-3. Setup ITerm2 colors and fonts:
+2. Install Homebrew if not installed: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+3. Install Oh-My-Zsh if not installed: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
+4. Run the xavier-config install script: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
+5. Install the Fira Code font in the xavier-config iterm assets directory (should open at the end of the install)
+6. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
     - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
     - Import `xavier-config.itermcolors` from within documents/xavier-config/iterm
