@@ -22,7 +22,7 @@ printf "\n${green}----- Xavier Config Installer -----\n\n${normal}"
 
 if ! CommandExists brew; then
     printf "${yellow}1: Homebrew not detected, installing Homebrew...\n${normal}"
-    sh -c 'curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'
+    sh -c 'curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh'
 else
     printf "${blue}1: Homebrew detected, skipping install.\n${normal}"
 fi
