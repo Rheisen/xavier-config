@@ -14,7 +14,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 
 1. Download and run ITerm2 ([web link](https://iterm2.com/downloads.html))
-2. Run the install script: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)`
+2. Run the install script: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
 3. Install the Fira Code font in the xavier-config iterm assets directory (should open at the end of the install)
 3. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
