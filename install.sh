@@ -37,7 +37,8 @@ fi
 # REQUIRED BREWS
 
 printf "\n${blue}2: Checking for required brews...\n${normal}"
-for i in 1,Zsh,zsh 2,Neovim,neovim 3,Git,git 4,Tmux,tmux 5,Fzf,fzf 6,Ripgrep,ripgrep 7,Bat,bat; do IFS=",";
+for i in 1,Zsh,zsh 2,Neovim,neovim 3,Git,git 4,Tmux,tmux 5,Fzf,fzf 6,Ripgrep,ripgrep 7,Bat,bat 8,Coreutils,coreutils;
+do IFS=",";
     set -- $i;
     if brew ls --versions $3 > /dev/null; then
         printf "2.$1: $2 brew detected, skipping install.\n"

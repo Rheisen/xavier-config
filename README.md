@@ -12,37 +12,39 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 ## Quick Install
 
-
 1. Download and run ITerm2 ([web link](https://iterm2.com/downloads.html))
 2. Install Homebrew if not installed: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 3. Install Oh-My-Zsh if not installed: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
-4. Run the xavier-config install script: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
+4. Install Xavier-Config: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
 5. Install the Fira Code font in the xavier-config iterm assets directory (should open at the end of the install)
 6. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
+    - Select Appearance, Select Theme, change to "Minimal"
     - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
-    - Import `xavier-config.itermcolors` from within documents/xavier-config/iterm
+    - Import `xavier-config.itermcolors` from within documents/xavier-config/iterm and select from dropdown
     - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
     - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
     - Done (you can remove documents/xavier-config/iterm if you'd like)
+7. Install the plugs for Neovim (`nvim ~/.xavier-config/nvim/init.vim` and run `:PlugInstall`)
+8. Replace YOURUSERNAME in the .zshrc: `nvim ~/.xavier-config/zsh/.zshrc`
+9. Source the zshrc config: `source ~/.zshrc`
+
+#### Recommended Downloads:
+
+- Node Version Manager (NVM) ([web link](https://github.com/nvm-sh/nvm))
+- Ruby Version Manager (RVM) ([web link](https://rvm.io/))
 
 ## Manual Install
 
 ### Step One: Downloads
 
 - ITerm2 ([web link](https://iterm2.com/downloads.html))
-> - Fira Code w/ NerdFont Patch (Install ttf files, retina or regular recommended) ([web link](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode))
 - Homebrew ([web link](https://brew.sh/))
 - Stop here!! Complete Step Two
 - Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
 - VimPlug (install for Vim & NeoVim) ([web link](https://github.com/junegunn/vim-plug))
 - PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
 - Done
-
-#### Recommended Downloads:
-
-- Node Version Manager (NVM) ([web link](https://github.com/nvm-sh/nvm))
-- Ruby Version Manager (RVM) ([web link](https://rvm.io/))
 
 ### Step Two: Brew Installations
 
