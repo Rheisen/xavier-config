@@ -22,6 +22,11 @@ fmt_error() {
     echo "${red}Error: $@${normal}" >&2
 }
 
+abort() {
+    printf "%s\n" "$1"
+    exit 1
+}
+
 wait_for_user() {
     echo
     read -s -n 1 -p "${yellow}Press RETURN to continue or any other key to abort${normal}" c
@@ -32,6 +37,13 @@ wait_for_user() {
 }
 
 # INSTALL SCRIPT START
+
+OS="$(uname)"
+if [[ "$OS" == "Linux" ]]; then
+    abort "Unfortunately Xavier Config only supports macOS currently - please put in a PR if you can add Linux support!"
+elif [[ "$OS" != "Darwin" ]]; then
+    abort "Xavier Config is only supported on macOS."
+fi
 
 echo
 echo "${green}Xavier Config Installer${normal}" 
