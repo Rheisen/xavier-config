@@ -31,7 +31,9 @@ wait_for_user() {
     echo
     read -s -n 1 -p "${yellow}Press RETURN to continue or any other key to abort${normal}" c
     if ! [[ "$c" == "" ]]; then
-        echo "Install aborted."
+        echo
+        echo
+        echo "Aborted."
         exit 1
     fi
 }
