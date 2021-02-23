@@ -1,4 +1,5 @@
 " Plugins ( :PlugInstall )
+" (after a first time install, press `<space> so` to re-source the config)
 " - Plug Onedark, provides the neovim color scheme.
 " - Plug FZF, provides fuzzy finding capabilities.
 " - Plug RG, provides fast text searching.
@@ -29,10 +30,12 @@ call plug#begin("~/.vim/plugged")
     Plug 'tpope/vim-surround'
     Plug 'scrooloose/nerdtree'
     Plug 'ryanoasis/vim-devicons'
-    Plug 'vim-syntastic/syntastic'
+    Plug 'dense-analysis/ale', { 'on': 'ALEToggle' }
+    Plug 'vim-syntastic/syntastic', { 'on': 'SyntasticToggleMode' }
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'sheerun/vim-polyglot'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    " Install CocExtensions as needed (manage with :CocList extensions)
     " :CocInstall coc-rls
     " :CocInstall coc-tsserver
     " :CocInstall coc-eslint
@@ -49,7 +52,11 @@ if (has("termguicolors"))
     set termguicolors
 endif
 syntax enable
-colorscheme onedark
+try
+    colorscheme onedark
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme default
+endtry
 
 " Behavioral configuration
 set autoread
@@ -84,6 +91,12 @@ nnoremap ^ 0
 nmap j gj
 nmap k gk
 
+" Linting
+let g:ale_linters = {
+            \ 'ruby': ['standardrb', 'rubocop'],
+            \ 'javascript': ['eslint', 'prettier'],
+            \ }
+
 " Leader key configuration
 " - Space key leader key
 " - space + sc: create new tab and open the nvim config file (this)
@@ -106,6 +119,11 @@ let mapleader = "\<Space>"
 
 nnoremap <leader>sc :tabedit $MYNVIM<cr>
 nnoremap <leader>so :source $MYNVIM<cr>
+
+" Linting
+nnoremap <leader>l :ALEToggle<CR>
+
+au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
 
 " File searching
 nnoremap <silent> <leader>ff :Files<cr>
