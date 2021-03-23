@@ -9,6 +9,7 @@ fi
 plugins=(
     git
     tmux
+    vi-mode
 )
 
 # Path to your oh-my-zsh installation.
