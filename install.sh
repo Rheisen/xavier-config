@@ -51,7 +51,7 @@ echo
 echo "${green}Xavier Config Installer${normal}" 
 echo
 echo "This install script will check for and install Homebrew, in addition to the required brews for Xavier Config:"
-echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat [9] iTerm2"
+echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat"
 echo "After the required brews are installed, optional brews will be installed with (y/n) user prompts."
 echo
 echo "The install script will then check for and install Oh-My-Zsh, PowerLevel9K, VimPlug, and finally Xavier Config"
@@ -85,18 +85,14 @@ fi
 ((step++))
 echo
 echo "${blue}$step: Checking for required brews...${normal}"
-for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat 9,iTerm2,iterm2;
+for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat;
 do IFS=",";
     set -- $i;
     if brew ls --versions $3 > /dev/null; then
         echo "$step.$1: $2 brew detected, skipping install."
     else
         echo "${yellow}$step.$1: $2 brew not detected, installing $3...${normal}"
-        if "$3" != "iterm2"; then
-            brew install $3
-        else
-            brew install --cask $3
-        fi
+        brew install $3
     fi
 done
 
@@ -173,6 +169,33 @@ else
     echo "${yellow}$step: VimPlug for Neovim not detected, installing VimPlug...${normal}"
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+fi
+
+# ITERM2 & FIRA CODE FONT INSTALL
+
+((step++))
+echo
+echo "${blue}$step: Checking for iTerm2 and Fira-Code-Font...${normal}"
+
+if test -d "/Applications/iTerm.app" ; then
+    echo "$step.1: iTerm2 app detected, skipping install."
+elif brew ls --cask --versions iterm2 > /dev/null; then
+    echo "$step.1: iTerm2 brew detected, skipping install."
+else
+    echo "${yellow}$step.1: iTerm2 not detected, installing iterm2...${normal}"
+    brew install --cask iterm2
+fi
+
+# todo: checking for installation of font (non-brew) doesn't work
+font_path="~/Library/Fonts/Fira Code Retina Nerd Font Complete.ttf"
+if test -f "$font_path"; then 
+    echo "$step.2: Fira Code font detected, skipping install."
+elif brew ls --cask --versions font-fira-code > /dev/null; then
+    echo "$step.2: Fira Code font brew detected, skipping install."
+else
+    echo "${yellow}$step.2: Fira Code font not detected, installing font-fira-code...${normal}"
+    brew tap homebrew/cask-fonts
+    brew install --cask font-fira-code
 fi
 
 # XAVIER CONFIG SETUP
