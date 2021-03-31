@@ -51,7 +51,7 @@ echo
 echo "${green}Xavier Config Installer${normal}" 
 echo
 echo "This install script will check for and install Homebrew, in addition to the required brews for Xavier Config:"
-echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat"
+echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat [9] iTerm2"
 echo "After the required brews are installed, optional brews will be installed with (y/n) user prompts."
 echo
 echo "The install script will then check for and install Oh-My-Zsh, PowerLevel9K, VimPlug, and finally Xavier Config"
@@ -85,14 +85,18 @@ fi
 ((step++))
 echo
 echo "${blue}$step: Checking for required brews...${normal}"
-for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat;
+for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat 9,iTerm2,iterm2;
 do IFS=",";
     set -- $i;
     if brew ls --versions $3 > /dev/null; then
         echo "$step.$1: $2 brew detected, skipping install."
     else
         echo "${yellow}$step.$1: $2 brew not detected, installing $3...${normal}"
-        brew install $3
+        if "$3" != "iterm2"; then
+            brew install $3
+        else
+            brew install --cask $3
+        fi
     fi
 done
 
