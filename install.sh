@@ -101,7 +101,8 @@ done
 ((step++))
 echo
 echo "${blue}$step: Checking for optional brews...${normal}"
-for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow;
+for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow \
+    6,Shellcheck,shellcheck;
 do IFS=",";
     set -- $i;
     if brew ls --versions $3 > /dev/null; then
@@ -287,7 +288,7 @@ dir_exists $xiterm_assets_dir || {
 echo
 echo "${green}Xavier Config Installer Finished! Refer to the manual setup section to finish the setup.${normal}"
 echo "Opening the xavier-config directory ($xconfig_dir)"
-echo "Opening the xavier-config iterm assets directory($xiterm_assets_dir)"
+echo "Opening the xavier-config iterm assets directory ($xiterm_assets_dir)"
 open $xconfig_dir
 open $xiterm_assets_dir
 
