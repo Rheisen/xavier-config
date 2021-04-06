@@ -122,8 +122,10 @@ nnoremap <leader>so :source $MYNVIM<cr>
 
 " Linting
 nnoremap <leader>l :ALEToggle<CR>
+au FileType rust nnoremap <buffer> <leader>l :SyntasticToggleMode<CR>
 
-au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
+" Tabs
+nnoremap <silent> <leader>fn :tabedit<cr>
 
 " File searching
 nnoremap <silent> <leader>ff :Files<cr>
@@ -148,6 +150,8 @@ endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 nnoremap <leader>ft :RG<cr> 
+
+" Highlighting
 nnoremap <silent> <leader>n :noh<cr>
 
 "Buffers
@@ -160,6 +164,12 @@ nnoremap <leader>P "+P
 
 " Airline configuration
 let g:airline_theme='onedark'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#tab_nr_type = 2
+let g:airline#extensions#tabline#tabs_label = 't'
+let g:airline#extensions#tabline#buffers_label = 'b'
 
 "Syntastic configuration
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']

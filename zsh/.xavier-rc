@@ -2,7 +2,7 @@
 export MYNVIM="~/.xavier-config/nvim/init.vim"
 
 # FZF and RipGrep Customization
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!*.class"'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!*.class" -g "!vendor/*"'
 
 # POWERLEVEL9K Theme
 ZSH_THEME="powerlevel9k/powerlevel9k"
@@ -73,3 +73,4 @@ POWERLEVEL9K_STATUS_BACKGROUND="clear"
 POWERLEVEL9K_CARRIAGE_RETURN_ICON="\uf071"
 POWERLEVEL9K_OK_ICON="\uf42e"
 
+alias tmux='tmux -2'
