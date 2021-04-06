@@ -96,6 +96,9 @@ let g:ale_linters = {
             \ 'ruby': ['standardrb', 'rubocop'],
             \ 'javascript': ['eslint', 'prettier'],
             \ }
+let g:ale_fixers = {
+            \ 'ruby': ['rubocop'],
+            \ }
 
 " Leader key configuration
 " - Space key leader key
@@ -122,8 +125,10 @@ nnoremap <leader>so :source $MYNVIM<cr>
 
 " Linting
 nnoremap <leader>l :ALEToggle<CR>
-
 au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
+
+" Fixing
+nnoremap <leader>L :ALEFix<CR>
 
 " File searching
 nnoremap <silent> <leader>ff :Files<cr>
