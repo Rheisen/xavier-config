@@ -171,7 +171,7 @@ else
            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
-# ITERM2 & FIRA CODE FONT INSTALL
+# ITERM2 INSTALL
 
 ((step++))
 echo
@@ -186,14 +186,6 @@ else
     brew install --cask iterm2
 fi
 
-echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
-if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
-    echo "$step.2: Fira Code font detected, skipping install."
-    rm ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
-else
-    echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
-    mv ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
-fi
 
 # XAVIER CONFIG SETUP
 
@@ -300,6 +292,17 @@ elif [ -f "$tmux_conf_file" ]; then
 else
     ln -s $xconfig_tmux_conf_file $tmux_conf_file
     echo "${yellow}$step.4: Tmux symlink to xavier-config tmux.conf file created.${normal}"
+fi
+
+# Fira Code font installation
+
+echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
+if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
+    echo "$step.5: Fira Code font detected, skipping install."
+    rm ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
+else
+    echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
+    mv ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
 fi
 
 xiterm_assets_dir=~/documents/xavier-config/iterm
