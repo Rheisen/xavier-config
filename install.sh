@@ -175,7 +175,7 @@ fi
 
 ((step++))
 echo
-echo "${blue}$step: Checking for iTerm2 and Fira-Code-Font...${normal}"
+echo "${blue}$step: Checking for iTerm2...${normal}"
 
 if test -d "/Applications/iTerm.app" ; then
     echo "$step.1: iTerm2 app detected, skipping install."
@@ -186,16 +186,12 @@ else
     brew install --cask iterm2
 fi
 
-# todo: checking for installation of font (non-brew) doesn't work
-font_path="~/Library/Fonts/Fira Code Retina Nerd Font Complete.ttf"
-if test -f "$font_path"; then 
+echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
+if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
     echo "$step.2: Fira Code font detected, skipping install."
-elif brew ls --cask --versions font-fira-code > /dev/null; then
-    echo "$step.2: Fira Code font brew detected, skipping install."
 else
-    echo "${yellow}$step.2: Fira Code font not detected, installing font-fira-code...${normal}"
-    brew tap homebrew/cask-fonts
-    brew install --cask font-fira-code
+    echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
+    mv ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
 fi
 
 # XAVIER CONFIG SETUP
