@@ -189,6 +189,7 @@ fi
 echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
 if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
     echo "$step.2: Fira Code font detected, skipping install."
+    rm ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
 else
     echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
     mv ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
