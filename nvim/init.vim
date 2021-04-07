@@ -128,7 +128,7 @@ nnoremap <leader>l :ALEToggle<CR>
 au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
 
 " Tabs
-nnoremap <silent> <leader>fn :tabedit<cr>
+nnoremap <silent> <leader>te :tabedit<cr>
 
 " Fixing
 nnoremap <leader>L :ALEFix<CR>
