@@ -19,6 +19,7 @@
 call plug#begin("~/.vim/plugged")
     Plug 'https://github.com/joshdick/onedark.vim.git'
     Plug '/usr/local/opt/fzf'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'jremmen/vim-ripgrep'
     Plug 'vim-airline/vim-airline'
@@ -69,6 +70,8 @@ set number
 set showcmd
 set signcolumn=yes
 set colorcolumn=120
+
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 " Spacing configuration
 autocmd FileType ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
@@ -128,7 +131,7 @@ nnoremap <leader>l :ALEToggle<CR>
 au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
 
 " Tabs
-nnoremap <silent> <leader>te :tabedit<cr>
+nnoremap <silent> <leader>fn :tabedit<cr>
 
 " Fixing
 nnoremap <leader>L :ALEFix<CR>
@@ -155,7 +158,8 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-nnoremap <leader>ft :RG<cr> 
+
+nnoremap <leader>ft :Rg<cr> 
 
 " Highlighting
 nnoremap <silent> <leader>n :noh<cr>
