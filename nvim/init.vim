@@ -64,6 +64,7 @@ set autoread
 set rtp+=/usr/local/opt/fzf
 set updatetime=100
 set timeout timeoutlen=3000 ttimeoutlen=100
+autocmd VimEnter * :source $MYNVIM
 
 " Window configuration
 set number
@@ -150,19 +151,19 @@ endif
 " Text searching
 " Excludes vendor/*, .node_modules/*, and *.class files
 function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -g "!vendor/*" -g "!.node_modules/*" -g "!*.class" -- %s || true'
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  let reload_command = printf(command_fmt, shellescape('{q}'))
+  let spec = {'options': ['--query', a:query, '--bind', 'change:reload:'.reload_command]}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 nnoremap <leader>ft :Rg<cr> 
 
