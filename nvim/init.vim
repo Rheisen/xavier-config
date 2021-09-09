@@ -18,7 +18,6 @@
 " - Plug Rust, provides Rust syntax highlighting, works with Syntastic.
 call plug#begin("~/.vim/plugged")
     Plug 'https://github.com/joshdick/onedark.vim.git'
-    Plug '/usr/local/opt/fzf'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'jremmen/vim-ripgrep'
@@ -64,7 +63,6 @@ set autoread
 set rtp+=/usr/local/opt/fzf
 set updatetime=100
 set timeout timeoutlen=3000 ttimeoutlen=100
-autocmd VimEnter * :source $MYNVIM
 
 " Window configuration
 set number
@@ -124,22 +122,22 @@ let g:ale_fixers = {
 " - space + rn: rename symbol
 let mapleader = "\<Space>"
 
-nnoremap <leader>sc :tabedit $MYNVIM<cr>
-nnoremap <leader>so :source $MYNVIM<cr>
+nnoremap <leader>sc :tabedit $MYNVIM<CR>
+nnoremap <leader>so :source $MYNVIM<CR>
 
 " Linting
 nnoremap <leader>l :ALEToggle<CR>
 au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
 
 " Tabs
-nnoremap <silent> <leader>fn :tabedit<cr>
+nnoremap <silent> <leader>fn :tabedit<CR>
 
 " Fixing
 nnoremap <leader>L :ALEFix<CR>
 
 " File searching
-nnoremap <silent> <leader>ff :Files<cr>
-nnoremap <silent> <leader>fg :GFiles<cr>
+nnoremap <silent> <leader>ff :Files<CR>
+nnoremap <silent> <leader>fg :GFiles<CR>
 nnoremap <silent> <leader>. :Files <C-r>=expand("%:h")<CR>/<CR>
 if filereadable('config/routes.rb')
     nnoremap <silent> <leader>fc :Files app/controllers<cr>
@@ -150,22 +148,23 @@ endif
 
 " Text searching
 " Excludes vendor/*, .node_modules/*, and *.class files
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, shellescape('{q}'))
-  let spec = {'options': ['--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
+" function! RipgrepFzf(query, fullscreen)
+"   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+"   let initial_command = printf(command_fmt, shellescape(a:query))
+"   let reload_command = printf(command_fmt, shellescape('{q}'))
+"   let spec = {'options': ['--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+" endfunction
+" command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+"
+let $FZF_PREVIEW_COMMAND="COLORTERM=truecolor bat --style=numbers --color=always {}"
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-command! -bang -nargs=* Rg
+command! -bang -nargs=* RG
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
 
-nnoremap <leader>ft :Rg<cr> 
+nnoremap <silent> <leader>ft :RG<CR> 
 
 " Highlighting
 nnoremap <silent> <leader>n :noh<cr>
