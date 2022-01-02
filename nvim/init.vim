@@ -122,6 +122,10 @@ let g:ale_fixers = {
 " - space + rn: rename symbol
 let mapleader = "\<Space>"
 
+" Utility
+nnoremap <leader>i m0o<ESC>`0
+nnoremap <leader>I m0O<ESC>`0
+
 nnoremap <leader>sc :tabedit $MYNVIM<CR>
 nnoremap <leader>so :source $MYNVIM<CR>
 
