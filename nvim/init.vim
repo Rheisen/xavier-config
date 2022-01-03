@@ -161,7 +161,7 @@ let $FZF_PREVIEW_COMMAND="COLORTERM=truecolor bat --style=numbers --color=always
 
 command! -bang -nargs=* RG
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   'rg --column --hidden --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
 
 nnoremap <silent> <leader>ft :RG<CR> 

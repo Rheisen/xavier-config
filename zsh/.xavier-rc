@@ -3,7 +3,7 @@ export MYNVIM="~/.xavier-config/nvim/init.vim"
 export COLORTERM=truecolor
 
 # FZF and RipGrep Customization
-# export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!*.class" -g "!vendor/*" -g "!.git/*"'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!*.class" -g "!vendor/*" -g "!.git/*"'
 
 # POWERLEVEL9K Theme
 ZSH_THEME="powerlevel9k/powerlevel9k"
