@@ -18,7 +18,7 @@
 " - Plug Rust, provides Rust syntax highlighting, works with Syntastic.
 call plug#begin("~/.vim/plugged")
     Plug 'https://github.com/joshdick/onedark.vim.git'
-    Plug '/usr/local/opt/fzf'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'jremmen/vim-ripgrep'
     Plug 'vim-airline/vim-airline'
@@ -70,6 +70,8 @@ set showcmd
 set signcolumn=yes
 set colorcolumn=120
 
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+
 " Spacing configuration
 autocmd FileType ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
@@ -96,6 +98,9 @@ let g:ale_linters = {
             \ 'ruby': ['standardrb', 'rubocop'],
             \ 'javascript': ['eslint', 'prettier'],
             \ }
+let g:ale_fixers = {
+            \ 'ruby': ['rubocop'],
+            \ }
 
 " Leader key configuration
 " - Space key leader key
@@ -117,17 +122,22 @@ let g:ale_linters = {
 " - space + rn: rename symbol
 let mapleader = "\<Space>"
 
-nnoremap <leader>sc :tabedit $MYNVIM<cr>
-nnoremap <leader>so :source $MYNVIM<cr>
+nnoremap <leader>sc :tabedit $MYNVIM<CR>
+nnoremap <leader>so :source $MYNVIM<CR>
 
 " Linting
 nnoremap <leader>l :ALEToggle<CR>
-
 au FileType rust noremap <buffer> <leader>l :SyntasticToggleMode<CR>
 
+" Tabs
+nnoremap <silent> <leader>fn :tabedit<CR>
+
+" Fixing
+nnoremap <leader>L :ALEFix<CR>
+
 " File searching
-nnoremap <silent> <leader>ff :Files<cr>
-nnoremap <silent> <leader>fg :GFiles<cr>
+nnoremap <silent> <leader>ff :Files<CR>
+nnoremap <silent> <leader>fg :GFiles<CR>
 nnoremap <silent> <leader>. :Files <C-r>=expand("%:h")<CR>/<CR>
 if filereadable('config/routes.rb')
     nnoremap <silent> <leader>fc :Files app/controllers<cr>
@@ -138,16 +148,25 @@ endif
 
 " Text searching
 " Excludes vendor/*, .node_modules/*, and *.class files
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -g "!vendor/*" -g "!.node_modules/*" -g "!*.class" -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
+" function! RipgrepFzf(query, fullscreen)
+"   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+"   let initial_command = printf(command_fmt, shellescape(a:query))
+"   let reload_command = printf(command_fmt, shellescape('{q}'))
+"   let spec = {'options': ['--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+" endfunction
+" command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+"
+let $FZF_PREVIEW_COMMAND="COLORTERM=truecolor bat --style=numbers --color=always {}"
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-nnoremap <leader>ft :RG<cr> 
+command! -bang -nargs=* RG
+  \ call fzf#vim#grep(
+  \   'rg --column --hidden --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+nnoremap <silent> <leader>ft :RG<CR> 
+
+" Highlighting
 nnoremap <silent> <leader>n :noh<cr>
 
 "Buffers
@@ -160,6 +179,12 @@ nnoremap <leader>P "+P
 
 " Airline configuration
 let g:airline_theme='onedark'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#tab_nr_type = 2
+let g:airline#extensions#tabline#tabs_label = 't'
+let g:airline#extensions#tabline#buffers_label = 'b'
 
 "Syntastic configuration
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']

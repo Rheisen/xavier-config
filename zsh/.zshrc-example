@@ -9,6 +9,7 @@ fi
 plugins=(
     git
     tmux
+    history-substring-search
 )
 
 # Path to your oh-my-zsh installation.

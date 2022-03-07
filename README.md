@@ -42,6 +42,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 - Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
 - VimPlug (install for Vim & NeoVim) ([web link](https://github.com/junegunn/vim-plug))
 - PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
+- zsh-history-substring-search (follow oh-my-zsh install) ([web link](https://github.com/zsh-users/zsh-history-substring-search))
 - Done
 
 ### Step Two: Brew Installations

@@ -54,7 +54,7 @@ echo "This install script will check for and install Homebrew, in addition to th
 echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat"
 echo "After the required brews are installed, optional brews will be installed with (y/n) user prompts."
 echo
-echo "The install script will then check for and install Oh-My-Zsh, PowerLevel9K, VimPlug, and finally Xavier Config"
+echo "The install script will then check for and install Oh-My-Zsh, PowerLevel9K, zsh-history-substring-search, VimPlug, and finally Xavier Config"
 echo "After the install is complete, the Xavier Config directory will exist at ~/.xavier-config."
 echo
 echo "Any prior .zshrc .tmux.conf or init.vim files are backed up during the install process to a timestamped backup"
@@ -101,7 +101,8 @@ done
 ((step++))
 echo
 echo "${blue}$step: Checking for optional brews...${normal}"
-for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow;
+for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow \
+    6,Shellcheck,shellcheck;
 do IFS=",";
     set -- $i;
     if brew ls --versions $3 > /dev/null; then
@@ -156,6 +157,17 @@ if dir_exists $powerlevel9k_dir; then
 else
     echo "${yellow}$step: PowerLevel9K not detected, cloning PowerLevel9K...${normal}"
     git clone https://github.com/bhilburn/powerlevel9k.git $powerlevel9k_dir
+fi
+
+# HISTORY-SUBSTRING-SEARCH INSTALL
+
+((step++))
+history_substring_search_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search}"
+if ! dir_exists $history_substring_search_dir; then
+    echo "${yellow}$step: history-substring-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
+    git clone https://github.com/zsh-users/zsh-history-substring-search $history_substring_search_dir
+else
+    echo "${blue}$step: history-substring-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
 fi
 
 # VIM PLUG INSTALL
@@ -326,7 +338,7 @@ dir_exists $xiterm_assets_dir || {
 echo
 echo "${green}Xavier Config Installer Finished! Refer to the manual setup section to finish the setup.${normal}"
 echo "Opening the xavier-config directory ($xconfig_dir)"
-echo "Opening the xavier-config iterm assets directory($xiterm_assets_dir)"
+echo "Opening the xavier-config iterm assets directory ($xiterm_assets_dir)"
 open $xconfig_dir
 open $xiterm_assets_dir
 
