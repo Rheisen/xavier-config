@@ -317,18 +317,6 @@ else
     mv $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
 fi
 
-## Set up iTerm profile
-
-# check if the dynamic profile folder exists, create it if not
-dir_exists ~/Library/Application\ Support/iTerm2/DynamicProfiles || {
-    mkdir ~/Library/Application\ Support/iTerm2/DynamicProfiles
-}
-
-if test -f ~/Library/Application\ Support/iTerm2/DynamicProfiles/xavier-profile.json; then
-    mv $
-fi
-
-
 xiterm_assets_dir=~/documents/xavier-config/iterm
 dir_exists $xiterm_assets_dir || {
     mkdir -p ~/documents/xavier-config
