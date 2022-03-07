@@ -299,11 +299,23 @@ fi
 echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
 if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
     echo "$step.5: Fira Code font detected, skipping install."
-    rm ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
+    rm $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
 else
     echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
-    mv ~/.xavier-config/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
+    mv $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
 fi
+
+## Set up iTerm profile
+
+# check if the dynamic profile folder exists, create it if not
+dir_exists ~/Library/Application\ Support/iTerm2/DynamicProfiles || {
+    mkdir ~/Library/Application\ Support/iTerm2/DynamicProfiles
+}
+
+if test -f ~/Library/Application\ Support/iTerm2/DynamicProfiles/xavier-profile.json; then
+    mv $
+fi
+
 
 xiterm_assets_dir=~/documents/xavier-config/iterm
 dir_exists $xiterm_assets_dir || {
