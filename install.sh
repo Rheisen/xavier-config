@@ -308,9 +308,10 @@ fi
 
 # Fira Code font installation
 
+((step++))
 echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
 if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
-    echo "$step.5: Fira Code font detected, skipping install."
+    echo "$step.1: Fira Code font detected, skipping install."
     rm $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
 else
     echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
