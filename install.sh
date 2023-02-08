@@ -159,6 +159,17 @@ else
     git clone https://github.com/bhilburn/powerlevel9k.git $powerlevel9k_dir
 fi
 
+# HISTORY-SEARCH INSTALL
+
+((step++))
+history_search_plugin_dir="${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-fzf-history-search"
+if ! dir_exists "$history_search_plugin_dir"; then
+    echo "${yellow}$step: history-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
+    git clone https://github.com/joshskidmore/zsh-fzf-history-search "$history_search_plugin_dir"
+else
+    echo "${blue}$step: history-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
+fi
+
 # HISTORY-SUBSTRING-SEARCH INSTALL
 
 ((step++))

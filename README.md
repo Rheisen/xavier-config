@@ -12,7 +12,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 ## Quick Install
 
-1. Run the installer script: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
+1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
     - This will install ITerm2 ([web link](https://iterm2.com/downloads.html)) and Fira Code Retina font
 2. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
