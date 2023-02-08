@@ -70,7 +70,7 @@ echo
 echo
 if ! command_exists brew; then
     echo "${yellow}$step: Homebrew not detected. Running the Homebrew install script...${normal}"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 if ! command_exists brew; then
     fmt_error "Homebrew not detected. Please check that Homebrew installed correctly."
