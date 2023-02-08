@@ -15,11 +15,11 @@ command_exists() {
 }
 
 dir_exists() {
-    [ -d "$@" ] 2>&1
+    [ -d "$*" ] 2>&1
 }
 
 fmt_error() {
-    echo "${red}Error: $@${normal}" >&2
+    echo "${red}Error: $*${normal}" >&2
 }
 
 abort() {
@@ -29,7 +29,7 @@ abort() {
 
 wait_for_user() {
     echo
-    read -s -n 1 -p "${yellow}Press RETURN to continue or any other key to abort${normal}" c
+    read -r -s -n 1 -p "${yellow}Press RETURN to continue or any other key to abort${normal}" c
     if ! [[ "$c" == "" ]]; then
         echo
         echo
@@ -88,11 +88,11 @@ echo "${blue}$step: Checking for required brews...${normal}"
 for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat;
 do IFS=",";
     set -- $i;
-    if brew ls --versions $3 > /dev/null; then
+    if brew ls --versions "$3" > /dev/null; then
         echo "$step.$1: $2 brew detected, skipping install."
     else
         echo "${yellow}$step.$1: $2 brew not detected, installing $3...${normal}"
-        brew install $3
+        brew install "$3"
     fi
 done
 
@@ -104,15 +104,15 @@ echo "${blue}$step: Checking for optional brews...${normal}"
 for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow \
     6,Shellcheck,shellcheck;
 do IFS=",";
-    set -- $i;
-    if brew ls --versions $3 > /dev/null; then
+    set -- "$i";
+    if brew ls --versions "$3" > /dev/null; then
         echo "$step.$1: $2 brew detected, skipping install."
     else
         while true; do
-            read -p "${yellow}$step.$1: $2 brew not detected, would you like to install $3?${normal} (y/n): " opt
+            read -r -p "${yellow}$step.$1: $2 brew not detected, would you like to install $3?${normal} (y/n): " opt
 
             if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
-                brew install $3
+                brew install "$3"
                 break
             elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
                 echo "$step.$1: Skipping $2."
@@ -163,9 +163,9 @@ fi
 
 ((step++))
 history_substring_search_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search}"
-if ! dir_exists $history_substring_search_dir; then
+if ! dir_exists "$history_substring_search_dir"; then
     echo "${yellow}$step: history-substring-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone https://github.com/zsh-users/zsh-history-substring-search $history_substring_search_dir
+    git clone https://github.com/zsh-users/zsh-history-substring-search "$history_substring_search_dir"
 else
     echo "${blue}$step: history-substring-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
 fi
