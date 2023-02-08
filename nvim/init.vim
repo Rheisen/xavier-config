@@ -35,6 +35,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'sheerun/vim-polyglot'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'hashivim/vim-terraform'
     " Install CocExtensions as needed (manage with :CocList extensions)
     " :CocInstall coc-rls
     " :CocInstall coc-tsserver
@@ -70,6 +71,16 @@ set showcmd
 set signcolumn=yes
 set colorcolumn=120
 
+" Fold configuration
+" fold commands:
+" - zR [open all folds]
+" - zM [close all folds]
+" - zc [close fold]
+" - zo [open fold]
+set foldmethod=syntax " other options: manual, indent, expr, marker
+set foldlevelstart=99
+autocmd BufWinEnter * silent! :%foldopen!
+
 let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 " Spacing configuration
@@ -92,6 +103,7 @@ nnoremap 0 ^
 nnoremap ^ 0
 nmap j gj
 nmap k gk
+nmap zo zO
 
 " Linting
 let g:ale_linters = {
@@ -101,6 +113,9 @@ let g:ale_linters = {
 let g:ale_fixers = {
             \ 'ruby': ['rubocop'],
             \ }
+
+let g:terraform_align = 1
+let g:terraform_fmt_on_save = 1
 
 " Leader key configuration
 " - Space key leader key
@@ -206,13 +221,19 @@ nnoremap <silent> <leader>t :NERDTreeToggle<CR>
 " - Tab: rotates through completion options
 " - Ctrl + space: selects completion option
 " - g + d/y/i/r: Goto definition/type-definition/implementation/reference
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
@@ -258,3 +279,18 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
+
+" disable mouse interactions and arrow keys
+set mouse=
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+vnoremap <up> <nop>
+vnoremap <down> <nop>
+vnoremap <left> <nop>
+vnoremap <right> <nop>
