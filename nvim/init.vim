@@ -45,6 +45,7 @@ call plug#begin("~/.vim/plugged")
     " gem install solargraph
     " :CocInstall coc-solargraph
     " :CocInstall coc-java
+    " :CocInstall coc-metals
     Plug 'rust-lang/rust.vim'
 call plug#end()"Config Section
 
