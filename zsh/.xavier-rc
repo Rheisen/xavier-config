@@ -79,3 +79,4 @@ export BAT_CONFIG_PATH="~/.xavier-config/zsh/.config/bat"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 alias tmux='tmux -2'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
