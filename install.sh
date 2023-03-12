@@ -162,10 +162,10 @@ fi
 # HISTORY-SEARCH INSTALL
 
 ((step++))
-history_search_plugin_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-fzf-history-search"
+history_search_plugin_dir="$ohmyzsh_dir/custom/plugins/zsh-fzf-history-search"
 if ! dir_exists "$history_search_plugin_dir"; then
     echo "${yellow}$step: history-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone https://github.com/joshskidmore/zsh-fzf-history-search "$history_search_plugin_dir"
+    git clone "https://github.com/joshskidmore/zsh-fzf-history-search" "$history_search_plugin_dir"
 else
     echo "${blue}$step: history-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
 fi
@@ -173,12 +173,23 @@ fi
 # HISTORY-SUBSTRING-SEARCH INSTALL
 
 ((step++))
-history_substring_search_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search}"
+history_substring_search_dir="$ohmyzsh_dir/custom/plugins/zsh-history-substring-search"
 if ! dir_exists "$history_substring_search_dir"; then
     echo "${yellow}$step: history-substring-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone https://github.com/zsh-users/zsh-history-substring-search "$history_substring_search_dir"
+    git clone "https://github.com/zsh-users/zsh-history-substring-search" "$history_substring_search_dir"
 else
     echo "${blue}$step: history-substring-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
+fi
+
+# TMUX PLUGIN MANAGER INSTALL
+
+((step++))
+tpm_dir="~/.tmux/plugins/tpm"
+if ! dir_exists "$tpm_dir"; then
+    echo "${yellow}$step: tmux plugin manager repo not detected, cloning...${normal}"
+    git clone "https://github.com/tmux-plugins/tpm" "$tpm_dir"
+else
+    echo "${blue}$step: tmux plugin manager repo found, skipping install.${normal}"
 fi
 
 # VIM PLUG INSTALL
@@ -265,7 +276,7 @@ xconfig_ex_zshrc_file="$xconfig_dir/zsh/.zshrc-example"
 xconfig_zshrc_file="$xconfig_dir/zsh/.zshrc"
 if ! [ -f "$xconfig_zshrc_file" ]; then
     echo "$step.3: Creating xavier-config .zshrc base file from .zshrc-example file."
-    cp $xconfig_ex_zshrc_file $xconfig_zshrc_file
+    sed "s/YOURUSERNAME/$USER/" $xconfig_ex_zshrc_file > $xconfig_zshrc_file
 fi
 
 if [ -L "$zshrc_file" ]; then
@@ -323,7 +334,6 @@ fi
 echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
 if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
     echo "$step.1: Fira Code font detected, skipping install."
-    rm $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
 else
     echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
     mv $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
