@@ -14,6 +14,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
     - This will install ITerm2 ([web link](https://iterm2.com/downloads.html)) and Fira Code Retina font
+    - This will install Homebrew + Oh-My-ZSH, and a number of brews and Oh-My-ZSH plugins (some optional with prompts)
 2. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
     - Select Appearance, Select Theme, change to "Minimal"

@@ -63,6 +63,7 @@ echo
 echo "The files ~/.zshrc ~/.tmux.conf and ~/.config/nvim/init.vim will be symlinked to files within ~/.xavier-config"
 echo
 echo "After the install process, please follow the manual steps listed on the Xavier Config Github Page."
+echo "https://github.com/rheisen/xavier-config"
 wait_for_user
 
 step=1
@@ -85,14 +86,39 @@ fi
 ((step++))
 echo
 echo "${blue}$step: Checking for required brews...${normal}"
-for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat;
-do IFS=",";
-    set -- $i;
-    if brew ls --versions "$3" > /dev/null; then
-        echo "$step.$1: $2 brew detected, skipping install."
+
+requiredBrews=(zsh coreutils neovim git tmux fzf ripgrep bat)
+
+declare -a requiredBrewName=(
+    "ZSH"
+    "Coreutils"
+    "Neovim"
+    "Git"
+    "TMUX"
+    "FZF"
+    "Ripgrep"
+    "Bat"
+)
+
+declare -a requiredBrewFormula=(
+    "zsh"
+    "coreutils"
+    "neovim"
+    "git"
+    "tmux"
+    "fzf"
+    "ripgrep"
+    "bat"
+)
+
+for i in "${!requiredBrews[@]}"; do
+    index=$((i+1))
+
+    if brew ls --versions "${requiredBrewFormula[$i]}" > /dev/null; then
+        echo "$step.$index: ${requiredBrewName[$i]} brew detected, skipping install."
     else
-        echo "${yellow}$step.$1: $2 brew not detected, installing $3...${normal}"
-        brew install "$3"
+        echo "${yellow}$step.$index: ${requiredBrewName[$i]} brew not detected, installing ${requiredBrewFormula[$i]}...${normal}"
+        brew install "${requiredBrewFormula[$i]}"
     fi
 done
 
@@ -101,29 +127,94 @@ done
 ((step++))
 echo
 echo "${blue}$step: Checking for optional brews...${normal}"
-for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow \
-    6,Shellcheck,shellcheck;
-do IFS=",";
-    set -- "$i";
-    if brew ls --versions "$3" > /dev/null; then
-        echo "$step.$1: $2 brew detected, skipping install."
+
+optionalBrews=(shellcheck jq gitflow kubectl helm doctl gradle gnupg gnupg2)
+
+declare -a brewName=(
+    "ShellCheck"
+    "JQ"
+    "Git Flow"
+    "Kubernetes CLI (kubectl)"
+    "Helm"
+    "DigitalOcean CLI (doctl)"
+    "Gradle"
+    "Gnupg"
+    "Gnupg 2"
+)
+
+declare -a brewFormula=(
+    "shellcheck"
+    "jq"
+    "git-flow"
+    "kubectl"
+    "helm"
+    "doctl"
+    "gradle"
+    "gnupg"
+    "gnupg2"
+)
+
+for i in "${!optionalBrews[@]}"; do
+    index=$((i+1))
+
+    if brew ls --versions "${brewFormula[$i]}" > /dev/null; then
+        echo "$step.$index: ${brewFormula[$i]} brew detected, skipping install."
     else
         while true; do
-            read -r -p "${yellow}$step.$1: $2 brew not detected, would you like to install $3?${normal} (y/n): " opt
+            read -r -p "${yellow}$step.$index: ${brewName[$i]} brew not detected, would you like to install ${brewFormula[$i]}?${normal} (y/n): " opt
 
             if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
-                brew install "$3"
+                brew install "${brewFormula[$i]}"
                 break
             elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
-                echo "$step.$1: Skipping $2."
+                echo "$step.$index: Skipping ${brewName[$i]}."
                 break
             else
-                echo "$step.$1: Invalid response: $opt"
+                echo "$step.$index: Invalid response: $opt"
             fi
         done
     fi
 done
 
+# OPTIONAL TAPS
+
+((step++))
+echo
+echo "${blue}$step: Checking for optional taps...${normal}"
+optionalTaps=(op springboot)
+declare -a tapName=(
+    "1Password CLI (op)"
+    "Spring Boot"
+)
+
+declare -a tapFormula=(
+    "1password/tap/1password-cli"
+    "spring-io/tap/spring-boot"
+)
+
+for i in "${!optionalTaps[@]}"; do
+    index=$((i+1))
+
+    if [ $i -eq 0 ] && [ -x "$(command -v op)" ]; then
+        echo "$step.$index: ${tapName[$i]} detected, skipping install."
+    elif [ $i -eq 1 ] && [ -x "$(command -v spring)" ]; then
+        echo "$step.$index: ${tapName[$i]} detected, skipping install."
+    else
+        while true; do
+            read -r -p "${yellow}$step.$index: ${tapName[$i]} not detected, would you like to install ${tapFormula[$i]}?${normal} (y/n): " opt
+
+            if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
+                brew install "${tapFormula[$i]}"
+                break
+            elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
+                echo "$step.$index: Skipping ${tapName[$i]}."
+                break
+            else
+                echo "$step.$index: Invalid response: $opt"
+            fi
+        done
+    fi
+done
 
 # OH-MY-ZSH INSTALL
 
