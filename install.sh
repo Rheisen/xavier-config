@@ -15,11 +15,11 @@ command_exists() {
 }
 
 dir_exists() {
-    [ -d "$@" ] 2>&1
+    [ -d "$*" ] 2>&1
 }
 
 fmt_error() {
-    echo "${red}Error: $@${normal}" >&2
+    echo "${red}Error: $*${normal}" >&2
 }
 
 abort() {
@@ -29,7 +29,7 @@ abort() {
 
 wait_for_user() {
     echo
-    read -s -n 1 -p "${yellow}Press RETURN to continue or any other key to abort${normal}" c
+    read -r -s -n 1 -p "${yellow}Press RETURN to continue or any other key to abort${normal}" c
     if ! [[ "$c" == "" ]]; then
         echo
         echo
@@ -63,6 +63,7 @@ echo
 echo "The files ~/.zshrc ~/.tmux.conf and ~/.config/nvim/init.vim will be symlinked to files within ~/.xavier-config"
 echo
 echo "After the install process, please follow the manual steps listed on the Xavier Config Github Page."
+echo "https://github.com/rheisen/xavier-config"
 wait_for_user
 
 step=1
@@ -70,7 +71,7 @@ echo
 echo
 if ! command_exists brew; then
     echo "${yellow}$step: Homebrew not detected. Running the Homebrew install script...${normal}"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 if ! command_exists brew; then
     fmt_error "Homebrew not detected. Please check that Homebrew installed correctly."
@@ -85,14 +86,39 @@ fi
 ((step++))
 echo
 echo "${blue}$step: Checking for required brews...${normal}"
-for i in 1,Zsh,zsh 2,Coreutils,coreutils 3,Neovim,neovim 4,Git,git 5,Tmux,tmux 6,Fzf,fzf 7,Ripgrep,ripgrep 8,Bat,bat;
-do IFS=",";
-    set -- $i;
-    if brew ls --versions $3 > /dev/null; then
-        echo "$step.$1: $2 brew detected, skipping install."
+
+requiredBrews=(zsh coreutils neovim git tmux fzf ripgrep bat)
+
+declare -a requiredBrewName=(
+    "ZSH"
+    "Coreutils"
+    "Neovim"
+    "Git"
+    "TMUX"
+    "FZF"
+    "Ripgrep"
+    "Bat"
+)
+
+declare -a requiredBrewFormula=(
+    "zsh"
+    "coreutils"
+    "neovim"
+    "git"
+    "tmux"
+    "fzf"
+    "ripgrep"
+    "bat"
+)
+
+for i in "${!requiredBrews[@]}"; do
+    index=$((i+1))
+
+    if brew ls --versions "${requiredBrewFormula[$i]}" > /dev/null; then
+        echo "$step.$index: ${requiredBrewName[$i]} brew detected, skipping install."
     else
-        echo "${yellow}$step.$1: $2 brew not detected, installing $3...${normal}"
-        brew install $3
+        echo "${yellow}$step.$index: ${requiredBrewName[$i]} brew not detected, installing ${requiredBrewFormula[$i]}...${normal}"
+        brew install "${requiredBrewFormula[$i]}"
     fi
 done
 
@@ -101,29 +127,94 @@ done
 ((step++))
 echo
 echo "${blue}$step: Checking for optional brews...${normal}"
-for i in 1,Gradle,gradle 2,"Spring Boot",pivotal/tap/springboot 3,Gnupg,gnupg 4,Gnupg2,gnupg2 5,"Git Flow",git-flow \
-    6,Shellcheck,shellcheck;
-do IFS=",";
-    set -- $i;
-    if brew ls --versions $3 > /dev/null; then
-        echo "$step.$1: $2 brew detected, skipping install."
+
+optionalBrews=(shellcheck jq gitflow kubectl helm doctl gradle gnupg gnupg2)
+
+declare -a brewName=(
+    "ShellCheck"
+    "JQ"
+    "Git Flow"
+    "Kubernetes CLI (kubectl)"
+    "Helm"
+    "DigitalOcean CLI (doctl)"
+    "Gradle"
+    "Gnupg"
+    "Gnupg 2"
+)
+
+declare -a brewFormula=(
+    "shellcheck"
+    "jq"
+    "git-flow"
+    "kubectl"
+    "helm"
+    "doctl"
+    "gradle"
+    "gnupg"
+    "gnupg2"
+)
+
+for i in "${!optionalBrews[@]}"; do
+    index=$((i+1))
+
+    if brew ls --versions "${brewFormula[$i]}" > /dev/null; then
+        echo "$step.$index: ${brewFormula[$i]} brew detected, skipping install."
     else
         while true; do
-            read -p "${yellow}$step.$1: $2 brew not detected, would you like to install $3?${normal} (y/n): " opt
+            read -r -p "${yellow}$step.$index: ${brewName[$i]} brew not detected, would you like to install ${brewFormula[$i]}?${normal} (y/n): " opt
 
             if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
-                brew install $3
+                brew install "${brewFormula[$i]}"
                 break
             elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
-                echo "$step.$1: Skipping $2."
+                echo "$step.$index: Skipping ${brewName[$i]}."
                 break
             else
-                echo "$step.$1: Invalid response: $opt"
+                echo "$step.$index: Invalid response: $opt"
             fi
         done
     fi
 done
 
+# OPTIONAL TAPS
+
+((step++))
+echo
+echo "${blue}$step: Checking for optional taps...${normal}"
+optionalTaps=(op springboot)
+declare -a tapName=(
+    "1Password CLI (op)"
+    "Spring Boot"
+)
+
+declare -a tapFormula=(
+    "1password/tap/1password-cli"
+    "spring-io/tap/spring-boot"
+)
+
+for i in "${!optionalTaps[@]}"; do
+    index=$((i+1))
+
+    if [ $i -eq 0 ] && [ -x "$(command -v op)" ]; then
+        echo "$step.$index: ${tapName[$i]} detected, skipping install."
+    elif [ $i -eq 1 ] && [ -x "$(command -v spring)" ]; then
+        echo "$step.$index: ${tapName[$i]} detected, skipping install."
+    else
+        while true; do
+            read -r -p "${yellow}$step.$index: ${tapName[$i]} not detected, would you like to install ${tapFormula[$i]}?${normal} (y/n): " opt
+
+            if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
+                brew install "${tapFormula[$i]}"
+                break
+            elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
+                echo "$step.$index: Skipping ${tapName[$i]}."
+                break
+            else
+                echo "$step.$index: Invalid response: $opt"
+            fi
+        done
+    fi
+done
 
 # OH-MY-ZSH INSTALL
 
@@ -159,15 +250,37 @@ else
     git clone https://github.com/bhilburn/powerlevel9k.git $powerlevel9k_dir
 fi
 
+# HISTORY-SEARCH INSTALL
+
+((step++))
+history_search_plugin_dir="$ohmyzsh_dir/custom/plugins/zsh-fzf-history-search"
+if ! dir_exists "$history_search_plugin_dir"; then
+    echo "${yellow}$step: history-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
+    git clone "https://github.com/joshskidmore/zsh-fzf-history-search" "$history_search_plugin_dir"
+else
+    echo "${blue}$step: history-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
+fi
+
 # HISTORY-SUBSTRING-SEARCH INSTALL
 
 ((step++))
-history_substring_search_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search}"
-if ! dir_exists $history_substring_search_dir; then
+history_substring_search_dir="$ohmyzsh_dir/custom/plugins/zsh-history-substring-search"
+if ! dir_exists "$history_substring_search_dir"; then
     echo "${yellow}$step: history-substring-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone https://github.com/zsh-users/zsh-history-substring-search $history_substring_search_dir
+    git clone "https://github.com/zsh-users/zsh-history-substring-search" "$history_substring_search_dir"
 else
     echo "${blue}$step: history-substring-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
+fi
+
+# TMUX PLUGIN MANAGER INSTALL
+
+((step++))
+tpm_dir="~/.tmux/plugins/tpm"
+if ! dir_exists "$tpm_dir"; then
+    echo "${yellow}$step: tmux plugin manager repo not detected, cloning...${normal}"
+    git clone "https://github.com/tmux-plugins/tpm" "$tpm_dir"
+else
+    echo "${blue}$step: tmux plugin manager repo found, skipping install.${normal}"
 fi
 
 # VIM PLUG INSTALL
@@ -254,7 +367,7 @@ xconfig_ex_zshrc_file="$xconfig_dir/zsh/.zshrc-example"
 xconfig_zshrc_file="$xconfig_dir/zsh/.zshrc"
 if ! [ -f "$xconfig_zshrc_file" ]; then
     echo "$step.3: Creating xavier-config .zshrc base file from .zshrc-example file."
-    cp $xconfig_ex_zshrc_file $xconfig_zshrc_file
+    sed "s/YOURUSERNAME/$USER/" $xconfig_ex_zshrc_file > $xconfig_zshrc_file
 fi
 
 if [ -L "$zshrc_file" ]; then
@@ -312,7 +425,6 @@ fi
 echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
 if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
     echo "$step.1: Fira Code font detected, skipping install."
-    rm $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf
 else
     echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
     mv $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/

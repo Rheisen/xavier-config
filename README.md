@@ -12,8 +12,9 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 
 ## Quick Install
 
-1. Run the installer script: `sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
+1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
     - This will install ITerm2 ([web link](https://iterm2.com/downloads.html)) and Fira Code Retina font
+    - This will install Homebrew + Oh-My-ZSH, and a number of brews and Oh-My-ZSH plugins (some optional with prompts)
 2. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
     - Select Appearance, Select Theme, change to "Minimal"
@@ -22,9 +23,9 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
     - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
     - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
     - Done (you can remove ~/documents/xavier-config/iterm if you'd like)
-3. Install the plugs for Neovim (`nvim ~/.xavier-config/nvim/init.vim` and run `:PlugInstall`)
-4. Replace YOURUSERNAME in the .zshrc: `nvim ~/.xavier-config/zsh/.zshrc`
-5. Source the zshrc config: `source ~/.zshrc`
+3. Switch to ITerm2
+4. Install the plugs for Neovim (`nvim ~/.xavier-config/nvim/init.vim` and run `:PlugInstall`)
+5. DONE
 
 #### Recommended Downloads:
 
