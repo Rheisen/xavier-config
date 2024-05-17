@@ -36,6 +36,8 @@ call plug#begin("~/.vim/plugged")
     Plug 'sheerun/vim-polyglot'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'hashivim/vim-terraform'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'scalameta/nvim-metals'
     " Install CocExtensions as needed (manage with :CocList extensions)
     " :CocInstall coc-rls
     " :CocInstall coc-tsserver
@@ -45,7 +47,6 @@ call plug#begin("~/.vim/plugged")
     " gem install solargraph
     " :CocInstall coc-solargraph
     " :CocInstall coc-java
-    " :CocInstall coc-metals
     Plug 'rust-lang/rust.vim'
 call plug#end()"Config Section
 
@@ -252,13 +253,28 @@ nnoremap <leader>r <Plug>(coc-format-selected)
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   elseif (coc#rpc#ready())
+"     call CocActionAsync('doHover')
+"   else
+"     execute '!' . &keywordprg . " " . expand('<cword>')
+"   endif
+" endfunction
+
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
+  elseif CocAction('hasProvider', 'hover')
+    if coc#float#has_float()
+      call coc#float#jump()
+      nnoremap <buffer> q <Cmd>close<CR>
+    else
+      call CocActionAsync('doHover')
+    endif
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
