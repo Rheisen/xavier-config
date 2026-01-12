@@ -38,8 +38,9 @@ call plug#begin("~/.vim/plugged")
     Plug 'hashivim/vim-terraform'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'scalameta/nvim-metals'
-    " Install CocExtensions as needed (manage with :CocList extensions)
-    " :CocInstall coc-rls
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+   " Install CocExtensions as needed (manage with :CocList extensions)
+    " :CocInstall coc-rust-analyzer
     " :CocInstall coc-tsserver
     " :CocInstall coc-eslint
     " :CocInstall coc-prettier
@@ -127,6 +128,7 @@ let g:terraform_fmt_on_save = 1
 " - space + fg: fuzzy find git files
 " - space + . : fuzzy find files in current directory
 " - space + ft: fuzzy find text
+" - space + fn: new file tab
 " - space + n : turn off highlighting
 " - space + y : yank into clipboard
 " - space + p : paste from clipboard
@@ -137,6 +139,8 @@ let g:terraform_fmt_on_save = 1
 " - space + gr: goto references
 " - space + K : show documentation
 " - space + rn: rename symbol
+" - space + i: insert line below
+" - space + I: insert line above
 let mapleader = "\<Space>"
 
 " Utility
@@ -165,6 +169,10 @@ if filereadable('config/routes.rb')
     nnoremap <silent> <leader>fm :Files app/models<cr>
     nnoremap <silent> <leader>fv :Files app/views<cr>
     nnoremap <silent> <leader>fs :Files spec<cr>
+endif
+
+if filereadable('go.mod')
+    nnoremap <silent> <leader>v :GoModReload<cr>:CocRestart<cr>
 endif
 
 " Text searching
