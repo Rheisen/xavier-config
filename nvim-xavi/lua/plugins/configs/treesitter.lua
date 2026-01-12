@@ -3,10 +3,6 @@ local M = {
 	branch = "main",
 	build = ":TSUpdate",
 	lazy = false,
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		"RRethy/nvim-treesitter-endwise",
-	},
 	opts = {
 		install_dir = vim.fn.stdpath("data") .. "/site",
 		indent = { enable = true },
@@ -16,7 +12,11 @@ local M = {
 }
 
 function M.config()
-	require("nvim-treesitter")
+	local treesitter = require("nvim-treesitter")
+
+	treesitter.setup()
+
+	treesitter
 		.install({
 			"bash",
 			"c",
@@ -61,9 +61,9 @@ function M.config()
 				return
 			end
 
-			-- Folding; currently managed by `ufo.nvim` plugin
-			-- vim.wo.foldmethod = "expr"
-			-- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+			-- Folding
+			vim.wo.foldmethod = "expr"
+			vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 			-- Highlighting
 			vim.treesitter.start(buf, language)
