@@ -363,6 +363,20 @@ local M = {
 			desc = "[V]ersion [d]iff (hunks)",
 		},
 		{
+			"<leader>j",
+			function()
+				Snacks.scratch()
+			end,
+			desc = "[J]ot buffer",
+		},
+		{
+			"<leader>J",
+			function()
+				Snacks.scratch.select()
+			end,
+			desc = "[J]ot buffer select",
+		},
+		{
 			"<leader>z",
 			function()
 				Snacks.zen()

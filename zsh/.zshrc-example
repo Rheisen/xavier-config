@@ -1,21 +1,9 @@
-# Include xavier-rc Configuration
-if [ -f ~/.xavier-config/zsh/.xavier-rc ]; then
-    source ~/.xavier-config/zsh/.xavier-rc
+# Include xavi-rc configuration
+if [ -f ~/.xavier-config/zsh/.xavi-rc ]; then
+    source ~/.xavier-config/zsh/.xavi-rc
 else
-    print "xavier-rc not found!"
+    print "xavi-rc not found!"
 fi
-
-# ZSH Plugins
-plugins=(
-    git
-    tmux
-    history-substring-search
-    zsh-fzf-history-search
-)
-
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/YOURUSERNAME/.oh-my-zsh"
-source $ZSH/oh-my-zsh.sh
 # ======================================== ADD ZSH CONFIGURATION OPTIONS BELOW ========================================
 
 # Uncomment the following line to disable colors in ls.
