@@ -14,7 +14,12 @@ local dashboard = {
 		-- Set your custom keymaps here.
 		-- When using a function, the `items` argument are the default keymaps.
 		keys = {
-			{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+			{
+				icon = " ",
+				key = "f",
+				desc = "Find File",
+				action = ":lua Snacks.dashboard.pick('files', {hidden = true, ignored = true})",
+			},
 			{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
 			{
 				icon = " ",
@@ -282,7 +287,7 @@ local M = {
 		{
 			"<leader>ff",
 			function()
-				Snacks.picker.files({ hidden = true })
+				Snacks.picker.files({ hidden = true, ignored = true })
 			end,
 			desc = "[F]ind [F]iles",
 		},

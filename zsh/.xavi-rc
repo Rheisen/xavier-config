@@ -11,16 +11,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 load=light # use 'load' for reporting / investigating
 
-# Starship Modified Pure Theme
-# line 1: `starship` binary as command, from github release
-# line 2: starship setup at clone(create init.zsh, completion)
-# line 3: pull behavior same as clone, source init.zsh
-zinit ice as"command" from"gh-r" \
-          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-          atpull"%atclone" src"init.zsh"
-zinit $load starship/starship
-
-export STARSHIP_CONFIG="${HOME}/.xavier-config/zsh/starship.toml"
+# Load the pure theme, with zsh-async library that's bundled with it.
+zi ice pick"async.zsh" src"pure.zsh"
+zi $load sindresorhus/pure
 
 # Completions + Autosuggestions
 
@@ -53,10 +46,6 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
-# NVIM configuration directory
-
-export NVIMXAVI="~/.xavier-config/nvim-xavi"
-
 # Aliases
 
 alias tmux='tmux -2'
@@ -72,6 +61,10 @@ eval "$(zoxide init --cmd cd zsh)"
 bindkey -e # Use emacs keymappings
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
+
+# NVIM configuration directory
+export NVIMXAVI="~/.xavier-config/nvim-xavi"
+
 
 # Load completions
 autoload -U compinit && compinit
