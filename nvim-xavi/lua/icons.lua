@@ -41,7 +41,8 @@ M.rhombus = ""
 M.circle = ""
 M.double_circle = ""
 M.empty_circle = ""
-M.small_circle = ""
+-- M.small_circle = ""
+M.small_circle = "●"
 M.circled_info = ""
 M.circled_error = ""
 M.plus = "󰐕"
@@ -182,7 +183,7 @@ M.diagnostics = {
 	error = "",
 	warning = "",
 	info = "",
-	hint = "",
+	hint = "",
 	bug = "",
 }
 
@@ -196,7 +197,7 @@ M.git = {
 	added_and_modified = "⊕",
 	removed = "",
 	changed = "",
-	modified = M.small_circle,
+	modified = M.empty_circle,
 	-- branch = "",
 	branch = "",
 	unstaged = M.empty_square,

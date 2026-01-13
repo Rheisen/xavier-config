@@ -26,16 +26,30 @@ function M.setup()
 
 	-- Behavioral
 	opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (millis)
+	opt.updatetime = 200 -- decrease update time
 	opt.mouse = "a" -- allow the mouse to be used in neovim
 	opt.mousemoveevent = true -- allows mouse hovers to be detected
 
+	opt.showmode = false
+
+	-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+	opt.ignorecase = true
+	opt.smartcase = true
+
 	-- Window
-	opt.signcolumn = "yes"
-	opt.colorcolumn = "120"
+	opt.signcolumn = "yes" -- Keep signcolumn on by default
+	opt.colorcolumn = "120" -- Color column for visibility
+	opt.winborder = "rounded"
 	opt.number = true
 
-	-- Folds
+	-- Show which line your cursor is on
+	opt.cursorline = true
+	-- Minimal number of screen lines to keep above and below the cursor.
+	opt.scrolloff = 25
 
+	opt.confirm = true
+
+	-- Folds
 	opt.foldlevelstart = 99
 	cmd("autocmd BufWinEnter * silent! :%foldopen!")
 
@@ -44,8 +58,13 @@ function M.setup()
 	vim.g.mapleader = " "
 	vim.g.maplocalleader = " "
 
+	-- Updated key configuration
 	keymap.set("n", "0", "^")
 	keymap.set("n", "^", "0")
+	keymap.set("n", "j", "gj")
+	keymap.set("n", "k", "gk")
+	keymap.set("n", "zo", "zO")
+
 	keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 	keymap.set("n", "<leader>y", '"+y')
@@ -56,9 +75,53 @@ function M.setup()
 	keymap.set("n", "<leader>xso", ":tabedit $NVIMXAVI/lua/settings.lua<CR>")
 	keymap.set("n", "<leader>xsr", ":source $NVIMXAVI/lua/settings.lua<CR>")
 
-	-- keymap.set("n", "<leader>t", ":Neotree toggle reveal<CR>", { desc = "[T]oggle [T]ree" })
+	vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+	vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+	vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+	vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
-	keymap.set("n", "<leader>ff", ":FzfLua files<CR>", { desc = "[F]ind [F]ile" })
+	keymap.set("n", "<leader>t", ":Neotree toggle reveal<CR>", { desc = "[T]ree", silent = true })
+
+	-- keymap.set("n", "<leader>ff", ":FzfLua files<CR>", { desc = "[F]ind [F]ile" })
+	keymap.set("n", "K", function()
+		vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 120 })
+	end, { desc = "Hover documentation" })
+
+	-- preview window
+	keymap.set(
+		"n",
+		"gpd",
+		"<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+		{ desc = "[G]oto [P]review: definition", silent = true }
+	)
+
+	keymap.set(
+		"n",
+		"gpD",
+		"<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
+		{ desc = "[G]oto [P]review: declaration", silent = true }
+	)
+
+	keymap.set(
+		"n",
+		"gpt",
+		"<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+		{ desc = "[G]oto [P]review: type definition", silent = true }
+	)
+
+	keymap.set(
+		"n",
+		"gpi",
+		"<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+		{ desc = "[G]oto [P]review: implementation", silent = true }
+	)
+
+	keymap.set(
+		"n",
+		"gP",
+		"<cmd>lua require('goto-preview').close_all_win()<CR>",
+		{ desc = "[G]oto [P]review: close all windows", silent = true }
+	)
 
 	vim.api.nvim_create_autocmd("TextYankPost", {
 		desc = "Highlight when yanking (copying) text",
@@ -74,14 +137,14 @@ function M.setup()
 		severity_sort = true,
 		float = { border = "rounded", source = "if_many" },
 		underline = { severity = vim.diagnostic.severity.ERROR },
-		signs = vim.g.have_nerd_font and {
+		signs = {
 			text = {
 				[vim.diagnostic.severity.ERROR] = icons.diagnostics.error,
 				[vim.diagnostic.severity.WARN] = icons.diagnostics.warning,
 				[vim.diagnostic.severity.INFO] = icons.diagnostics.info,
 				[vim.diagnostic.severity.HINT] = icons.diagnostics.hint,
 			},
-		} or {},
+		},
 		virtual_text = {
 			source = "if_many",
 			spacing = 2,
