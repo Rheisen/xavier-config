@@ -90,12 +90,12 @@ echo "${blue}$step: Checking for required brews...${normal}"
 requiredBrews=(zsh coreutils neovim git tmux fzf ripgrep bat)
 
 declare -a requiredBrewName=(
-    "ZSH"
+    "Zsh"
     "Coreutils"
     "Neovim"
     "Git"
-    "TMUX"
-    "FZF"
+    "Tmux"
+    "Fzf"
     "Ripgrep"
     "Zoxide"
 )

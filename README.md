@@ -12,6 +12,13 @@ approach with powerful, well-integrated features.
 
 With the usage of the install script, it can be fully configured in less than 5 minutes!
 
+NOTE: need treesitter and zoxide, then just symlink the nvim config directory to nvim-xavi
+
+```
+cargo install --locked tree-sitter-cli
+brew install zoxide
+```
+
 ![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png)
 
 Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6C2`, `#ABB2BF`
