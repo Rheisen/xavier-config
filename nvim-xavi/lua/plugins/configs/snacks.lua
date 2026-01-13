@@ -263,99 +263,106 @@ local M = {
 			function()
 				Snacks.picker.buffers()
 			end,
-			desc = "Buffers",
+			desc = "[F]ind [B]uffers",
 		},
 		{
 			"<leader>fc",
 			function()
-				Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+				Snacks.picker.files({ cwd = vim.fn.stdpath("config"), hidden = true })
 			end,
-			desc = "Find Config File",
+			desc = "[F]ind [C]onfig File",
+		},
+		{
+			"<leader>.",
+			function()
+				Snacks.picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
+			end,
+			desc = "[F]ind files in current file dir",
 		},
 		{
 			"<leader>ff",
 			function()
-				Snacks.picker.files()
+				Snacks.picker.files({ hidden = true })
 			end,
-			desc = "Find Files",
+			desc = "[F]ind [F]iles",
 		},
 		{
 			"<leader>fg",
 			function()
 				Snacks.picker.git_files()
 			end,
-			desc = "Find Git Files",
+			desc = "[F]ind [G]it Files",
 		},
 		{
 			"<leader>fp",
 			function()
 				Snacks.picker.projects()
 			end,
-			desc = "Projects",
+			desc = "[F]ind [P]rojects",
 		},
 		{
 			"<leader>fr",
 			function()
 				Snacks.picker.recent()
 			end,
-			desc = "Recent",
+			desc = "[F]ind [R]ecent",
 		},
 		-- git
 		{
-			"<leader>gb",
+			"<leader>vcb",
 			function()
 				Snacks.picker.git_branches()
 			end,
-			desc = "Git Branches",
+			desc = "[V]ersion [C]ontrol: branches",
 		},
 		{
-			"<leader>gl",
+			"<leader>vlr",
 			function()
 				Snacks.picker.git_log()
 			end,
-			desc = "Git Log",
+			desc = "[V]ersion [L]og: repo",
 		},
 		{
-			"<leader>gL",
+			"<leader>vll",
 			function()
 				Snacks.picker.git_log_line()
 			end,
-			desc = "Git Log Line",
+			desc = "[V]ersion [L]og: line",
 		},
 		{
-			"<leader>gs",
-			function()
-				Snacks.picker.git_status()
-			end,
-			desc = "Git Status",
-		},
-		{
-			"<leader>gS",
-			function()
-				Snacks.picker.git_stash()
-			end,
-			desc = "Git Stash",
-		},
-		{
-			"<leader>gd",
-			function()
-				Snacks.picker.git_diff()
-			end,
-			desc = "Git Diff (Hunks)",
-		},
-		{
-			"<leader>gf",
+			"<leader>vlf",
 			function()
 				Snacks.picker.git_log_file()
 			end,
-			desc = "Git Log File",
+			desc = "[V]ersion [L]og: file",
+		},
+		{
+			"<leader>vs",
+			function()
+				Snacks.picker.git_status()
+			end,
+			desc = "[V]ersion [s]tatus",
+		},
+		{
+			"<leader>vS",
+			function()
+				Snacks.picker.git_stash()
+			end,
+			desc = "[V]ersion [S]tash",
+		},
+		{
+			"<leader>vd",
+			function()
+				Snacks.picker.git_diff()
+			end,
+			desc = "[V]ersion [d]iff (hunks)",
 		},
 		{
 			"<leader>z",
 			function()
 				Snacks.zen()
 			end,
-			desc = "Toggle Zen Mode",
+			desc = "[Z]en mode toggle",
 		},
 	},
 }

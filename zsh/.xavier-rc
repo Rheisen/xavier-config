@@ -1,6 +1,5 @@
 # Neovim Location ENV variables
 export MYNVIM="~/.xavier-config/nvim/init.vim"
-export NVIMXC="~/.xavier-config/nvim-beta/init.lua"
 export NVIMXAVI="~/.xavier-config/nvim-xavi"
 export COLORTERM=truecolor
 

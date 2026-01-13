@@ -8,8 +8,11 @@ local M = {
 		delay = 1000,
 		-- Document key chains
 		spec = {
-			{ "<leader>s", group = "[S]earch" },
-			{ "<leader>t", group = "[T]oggle" },
+			{ "<leader>f", group = "[F]ind" },
+			{ "<leader>v", group = "[V]ersion (Git)" },
+			{ "<leader>vc", group = "[V]ersion [C]ontrol (Git)" },
+			{ "<leader>vl", group = "[V]ersion [L]og (Git)" },
+			{ "gp", group = "[G]oto [P]review" },
 			{ "<leader>x", group = "[X]avi Config" },
 			-- { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 		},

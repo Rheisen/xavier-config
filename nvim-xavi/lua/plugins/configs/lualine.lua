@@ -42,7 +42,7 @@ local M = {
 		sections = {
 			-- lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
 			lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-			lualine_b = { { "filename", path = 3 }, "branch" },
+			lualine_b = { { "filename" }, "branch" }, -- path = 3
 			lualine_c = {
 				"%=", --[[ add your center components here in place of this comment ]]
 			},
