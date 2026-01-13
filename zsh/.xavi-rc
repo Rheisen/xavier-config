@@ -1,0 +1,79 @@
+# ZINIT Package Manager Install
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+# Setup Plugins & Snippets
+
+load=light # use 'load' for reporting / investigating
+
+# Starship Modified Pure Theme
+# line 1: `starship` binary as command, from github release
+# line 2: starship setup at clone(create init.zsh, completion)
+# line 3: pull behavior same as clone, source init.zsh
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit $load starship/starship
+
+export STARSHIP_CONFIG="${HOME}/.xavier-config/zsh/starship.toml"
+
+# Completions + Autosuggestions
+
+zinit $load zsh-users/zsh-syntax-highlighting
+zinit $load zsh-users/zsh-completions
+zinit $load zsh-users/zsh-autosuggestions
+zinit $load Aloxaf/fzf-tab
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # completion lower case matching
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+zinit snippet OMZP::git
+zinit snippet OMZP::tmux
+
+# History configuration
+
+HISTSIZE=20000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space # adding a space ' ' before a command prevents saving to history file
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# NVIM configuration directory
+
+export NVIMXAVI="~/.xavier-config/nvim-xavi"
+
+# Aliases
+
+alias tmux='tmux -2'
+alias nvimx='NVIM_APPNAME="nvim-xavi" nvim'
+alias ls='ls --color'
+
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
+# Keybindings
+
+bindkey -e # Use emacs keymappings
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
+# Load completions
+autoload -U compinit && compinit
+
+zinit cdreplay -q

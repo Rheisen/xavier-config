@@ -97,7 +97,7 @@ declare -a requiredBrewName=(
     "TMUX"
     "FZF"
     "Ripgrep"
-    "Bat"
+    "Zoxide"
 )
 
 declare -a requiredBrewFormula=(
@@ -108,7 +108,7 @@ declare -a requiredBrewFormula=(
     "tmux"
     "fzf"
     "ripgrep"
-    "bat"
+    "zoxide"
 )
 
 for i in "${!requiredBrews[@]}"; do
@@ -216,62 +216,6 @@ for i in "${!optionalTaps[@]}"; do
     fi
 done
 
-# OH-MY-ZSH INSTALL
-
-((step++))
-ohmyzsh_dir=~/.oh-my-zsh
-echo
-if ! dir_exists $ohmyzsh_dir; then
-    echo "${yellow}$step: Oh-My-Zsh not detected. Running the Oh-My-Zsh install script...${normal}"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
-if ! dir_exists $ohmyzsh_dir; then
-    fmt_error "Oh-My-Zsh not detected. Please check that Oh-My-Zsh installed correctly."
-    exit 1
-else
-    echo "${blue}$step: Oh-My-Zsh detected.${normal}"
-fi
-
-# POWERLEVEL9K INSTALL
-
-command_exists git || {
-    fmt_error "Git not detected. Please check that Git installed correctly."
-    exit 1
-}
-
-((step++))
-powerlevel9k_dir="$ohmyzsh_dir/custom/themes/powerlevel9k"
-echo
-if dir_exists $powerlevel9k_dir; then
-    echo "${blue}$step: PowerLevel9K detected, skipping install.${normal}"
-else
-    echo "${yellow}$step: PowerLevel9K not detected, cloning PowerLevel9K...${normal}"
-    git clone https://github.com/bhilburn/powerlevel9k.git $powerlevel9k_dir
-fi
-
-# HISTORY-SEARCH INSTALL
-
-((step++))
-history_search_plugin_dir="$ohmyzsh_dir/custom/plugins/zsh-fzf-history-search"
-if ! dir_exists "$history_search_plugin_dir"; then
-    echo "${yellow}$step: history-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone "https://github.com/joshskidmore/zsh-fzf-history-search" "$history_search_plugin_dir"
-else
-    echo "${blue}$step: history-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
-fi
-
-# HISTORY-SUBSTRING-SEARCH INSTALL
-
-((step++))
-history_substring_search_dir="$ohmyzsh_dir/custom/plugins/zsh-history-substring-search"
-if ! dir_exists "$history_substring_search_dir"; then
-    echo "${yellow}$step: history-substring-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone "https://github.com/zsh-users/zsh-history-substring-search" "$history_substring_search_dir"
-else
-    echo "${blue}$step: history-substring-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
-fi
-
 # TMUX PLUGIN MANAGER INSTALL
 
 ((step++))
@@ -281,19 +225,6 @@ if ! dir_exists "$tpm_dir"; then
     git clone "https://github.com/tmux-plugins/tpm" "$tpm_dir"
 else
     echo "${blue}$step: tmux plugin manager repo found, skipping install.${normal}"
-fi
-
-# VIM PLUG INSTALL
-
-((step++))
-vimplug_file=~/.local/share/nvim/site/autoload/plug.vim
-echo
-if [ -f "$vimplug_file" ]; then
-    echo "${blue}$step: VimPlug for Neovim detected, skipping install.${normal}"
-else
-    echo "${yellow}$step: VimPlug for Neovim not detected, installing VimPlug...${normal}"
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 # ITERM2 INSTALL

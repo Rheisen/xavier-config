@@ -1,10 +1,23 @@
-# Xavier Environment
 
-This is an OSX development environment configuration. This README documents the complete process for setting up the development environment, and quickly getting up and running on any OSX machine.
+# Xavi Config
 
-As a general overview, this configuration will replace usage of the default terminal with ITerm2 and Zsh. It will utilize Oh-My-Zsh as the plugin manager for the terminal. This configuration will also configure a minimal, effective NeoVim environment with Tmux.
+This is an OSX development environment configuration. This README documents the complete process for setting up the
+development environment, and quickly getting up and running on any OSX machine.
 
-This entire development environment has theme synchronicity based on the OneDark theme. The Style guide will walk through adjusting the ITerm2 profile settings and using the PowerLevel9K Terminal theme. The font of choice for this configuration is Fira Code.
+As a general overview, this configuration will replace usage of the default terminal with ITerm2 and Zsh.
+It uses Zinit as the plugin manager for the terminal. This configuration also provides a robust Neovim and Tmux setup.
+
+This development environment has theme synchronicity based on the Tiede theme, and takes a minimalist stylistic
+approach with powerful, well-integrated features.
+
+With the usage of the install script, it can be fully configured in less than 5 minutes!
+
+
+## NOTES
+
+New brews / definitely needed brews:
+* `brew install zoxide`: cd replacement
+
 
 ![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png)
 
