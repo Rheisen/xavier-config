@@ -32,6 +32,11 @@ function M.setup()
 
 	opt.showmode = false
 
+	opt.expandtab = true -- convert tabs to spaces
+	opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
+	opt.softtabstop = 4 -- how many columns when you hit Tab in insert mode
+	opt.tabstop = 4 -- how many columns a tab counts for
+
 	-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 	opt.ignorecase = true
 	opt.smartcase = true
@@ -41,6 +46,9 @@ function M.setup()
 	opt.colorcolumn = "120" -- Color column for visibility
 	opt.winborder = "rounded"
 	opt.number = true
+
+	opt.termguicolors = true
+	opt.cmdheight = 2
 
 	-- Show which line your cursor is on
 	-- opt.cursorline = true
@@ -68,10 +76,10 @@ function M.setup()
 
 	keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
-	keymap.set("n", "<leader>y", '"+y')
-	keymap.set("n", "<leader>p", '"+p')
-	keymap.set("n", "<leader>P", '"+P')
-	keymap.set("n", "<leader>n", ":noh<CR>")
+	keymap.set("n", "<leader>y", '"+y', { desc = "[y]ank to clipboard" })
+	keymap.set("n", "<leader>p", '"+p', { desc = "[p]aste from clipboard" })
+	keymap.set("n", "<leader>P", '"+P', { desc = "[P]aste from clipboard" })
+	keymap.set("n", "<leader>n", ":noh<CR>", { desc = "[N]o highlight", silent = true })
 
 	keymap.set("n", "<leader>xso", ":tabedit $NVIMXAVI/lua/settings.lua<CR>")
 	keymap.set("n", "<leader>xsr", ":source $NVIMXAVI/lua/settings.lua<CR>")
@@ -84,6 +92,8 @@ function M.setup()
 	keymap.set("n", "<leader>t", ":Neotree toggle reveal<CR>", { desc = "[T]ree", silent = true })
 
 	-- keymap.set("n", "<leader>ff", ":FzfLua files<CR>", { desc = "[F]ind [F]ile" })
+	-- vim.keymap.set('n', '<leader>ac', '<cmd>ClaudeCode<CR>', { desc = 'Toggle Claude Code' })
+
 	keymap.set("n", "K", function()
 		vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 120 })
 	end, { desc = "Hover documentation" })
@@ -124,11 +134,64 @@ function M.setup()
 		{ desc = "[G]oto [P]review: close all windows", silent = true }
 	)
 
+	keymap.set("n", "<leader>vbl", ":Gitsigns toggle_current_line_blame<CR>", { desc = "", silent = true })
+	keymap.set("n", "<leader>vph", ":Gitsigns preview_hunk<CR>", { desc = "", silent = true })
+
+	-- Automatically fold imports
+	vim.api.nvim_create_autocmd("LspNotify", {
+		callback = function(args)
+			if args.data.method == "textDocument/didOpen" then
+				vim.lsp.foldclose("imports", vim.fn.bufwinid(args.buf))
+			end
+		end,
+	})
+
 	vim.api.nvim_create_autocmd("TextYankPost", {
 		desc = "Highlight when yanking (copying) text",
 		group = vim.api.nvim_create_augroup("xavi-config", { clear = true }),
 		callback = function()
 			vim.hl.on_yank()
+		end,
+	})
+
+	vim.api.nvim_create_autocmd("TermOpen", {
+		callback = function()
+			if vim.bo.buflisted then
+				vim.opt_local.number = true
+			end
+		end,
+	})
+
+	-- Disable auto-insert and show numbers for Claude terminal
+	vim.api.nvim_create_autocmd("TermOpen", {
+		pattern = "*",
+		callback = function()
+			local buf_name = vim.api.nvim_buf_get_name(0)
+			if buf_name:match("claude") then
+				vim.opt_local.number = true
+				vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
+			end
+		end,
+	})
+
+	-- Claude terminal: stay in normal mode and exit to normal after Enter
+	vim.api.nvim_create_autocmd("BufEnter", {
+		callback = function()
+			if vim.bo.buftype == "terminal" and vim.api.nvim_buf_get_name(0):match("claude") then
+				-- vim.opt_local.number = true
+				vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
+			end
+		end,
+	})
+
+	vim.api.nvim_create_autocmd("WinEnter", {
+		callback = function()
+			if vim.bo.buftype == "terminal" and vim.api.nvim_buf_get_name(0):match("claude") then
+				-- vim.opt_local.number = true
+				vim.defer_fn(function()
+					vim.cmd("stopinsert")
+				end, 10)
+			end
 		end,
 	})
 

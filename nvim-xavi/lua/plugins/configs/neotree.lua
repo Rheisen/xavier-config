@@ -105,6 +105,9 @@ local M = {
 			padding = 2, -- extra padding on left hand side
 		},
 		window = {
+			mappings = {
+				["<space>"] = "none", -- Unbind space so leader key works
+			},
 			position = "left",
 			width = 50,
 		},
