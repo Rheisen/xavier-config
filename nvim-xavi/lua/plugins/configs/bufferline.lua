@@ -15,6 +15,8 @@ local M = {
 				if not icon then
 					if element.type == "terminal" then
 						return icons.terminal, "BufferLineIconCustom"
+					elseif element.filetype == "NeogitStatus" then
+						return icons.git.logo, "BufferLineIconCustom"
 					elseif element.filetype == "neo-tree" then
 						return icons.folder.default, "BufferLineIconCustom"
 					elseif element.filetype == "snacks_picker_input" or element.filetype == "snacks_picker_list" then
@@ -25,7 +27,7 @@ local M = {
 						return icons.sparkle, "BufferLineIconCustom"
 					end
 
-					vim.print("bufferline icon miss:", vim.inspect(element))
+					-- vim.print("bufferline icon miss:", vim.inspect(element))
 					icon = devicons.get_icon_by_filetype(element.filetype, { default = true })
 				end
 				return icon, "BufferLineIconCustom"
