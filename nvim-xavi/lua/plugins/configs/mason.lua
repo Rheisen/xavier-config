@@ -23,6 +23,7 @@ M.config = function()
 
 	-- Formatters, linters, etc.
 	local addons = {
+		stylua = {},
 		goimports = {},
 		gofumpt = {},
 	}

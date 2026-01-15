@@ -11,6 +11,7 @@ end
 function M.setup()
 	-- Leader
 	vim.g.mapleader = " "
+	vim.g.maplocalleader = " "
 
 	-- Disable native keybindings
 	vim.keymap.set("n", "q", "<Nop>")
