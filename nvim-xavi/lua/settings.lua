@@ -79,6 +79,9 @@ function M.setup()
 	keymap.set("n", "<leader>y", '"+y', { desc = "[y]ank to clipboard" })
 	keymap.set("n", "<leader>p", '"+p', { desc = "[p]aste from clipboard" })
 	keymap.set("n", "<leader>P", '"+P', { desc = "[P]aste from clipboard" })
+	keymap.set("v", "<leader>y", '"+y', { desc = "[y]ank to clipboard" })
+	keymap.set("v", "<leader>p", '"+p', { desc = "[p]aste from clipboard" })
+
 	keymap.set("n", "<leader>n", ":noh<CR>", { desc = "[N]o highlight", silent = true })
 
 	keymap.set("n", "<leader>xso", ":tabedit $NVIMXAVI/lua/settings.lua<CR>")
