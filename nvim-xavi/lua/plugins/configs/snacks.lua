@@ -93,22 +93,29 @@ local dashboard = {
 
 local picker = {
 	enabled = true,
-	-- layout = {
-	-- 	box = "vertical",
-	-- 	backdrop = false,
-	-- 	row = -1,
-	-- 	width = 0,
-	-- 	height = 0.4,
-	-- 	border = "top",
-	-- 	title = " {title} {live} {flags}",
-	-- 	title_pos = "left",
-	-- 	{ win = "input", height = 1, border = "bottom" },
-	-- 	{
-	-- 		box = "horizontal",
-	-- 		{ win = "list", border = "none" },
-	-- 		{ win = "preview", title = "{preview}", width = 0.6, border = "left" },
-	-- 	},
-	-- },
+	jump = {
+		reuse_win = function(win)
+			local buf = vim.api.nvim_win_get_buf(win)
+			local bt = vim.bo[buf].buftype
+			local ft = vim.bo[buf].filetype
+			-- Don't reuse terminal or claude buffers
+			return bt ~= "terminal" and ft ~= "claude"
+		end,
+	},
+	win = {
+		input = {
+			keys = {
+				["<C-j>"] = { "preview_scroll_down", mode = { "i", "n" } },
+				["<C-k>"] = { "preview_scroll_up", mode = { "i", "n" } },
+			},
+		},
+		list = {
+			keys = {
+				["<C-j>"] = "preview_scroll_down",
+				["<C-k>"] = "preview_scroll_up",
+			},
+		},
+	},
 	icons = {
 		files = {
 			enabled = true, -- show file icons
@@ -212,6 +219,15 @@ local M = {
 		dashboard = dashboard,
 		explorer = { enabled = false, replace_netrw = false },
 		picker = picker,
+		terminal = {
+			win = {
+				wo = {
+					winbar = "",
+					number = true,
+					linebreak = true,
+				},
+			},
+		},
 		indent = { enabled = true },
 		input = { enabled = true },
 		notifier = {
@@ -220,7 +236,13 @@ local M = {
 		},
 		quickfile = { enabled = true },
 		scope = { enabled = true },
-		scroll = { enabled = true },
+		scroll = {
+			enabled = true,
+			-- filter = function(buf)
+			-- 	-- Disable scroll animation during search
+			-- 	return vim.bo[buf].buftype ~= "" or vim.fn.mode() == "/"
+			-- end,
+		},
 		statuscolumn = { enabled = true },
 		words = {
 			enabled = true,

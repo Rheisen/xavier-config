@@ -12,11 +12,13 @@ local M = {
 			{ "<leader>v", group = "[V]ersion (Git)" },
 			{ "<leader>vc", group = "[V]ersion [C]ontrol (Git)" },
 			{ "<leader>vl", group = "[V]ersion [L]og (Git)" },
+			{ "<leader>a", group = "[A]I (Artificial Intelligence)" },
 			{ "gp", group = "[G]oto [P]review" },
 			{ "<leader>x", group = "[X]avi Config" },
 			-- { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 		},
 	},
+	sort = "alphanum",
 	keys = {
 		{
 			"<leader>?",

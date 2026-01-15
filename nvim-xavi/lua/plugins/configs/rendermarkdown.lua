@@ -36,6 +36,15 @@ function M.config()
 	local icons = require("icons")
 	local block = icons.bar.vertical_block
 
+	local base = "#B1A2FF"
+
+	vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { fg = base, bg = "#1D2228", bold = true })
+	vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { fg = base, bg = "#1D2228", bold = true })
+	vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { fg = base, bg = "#1D2228", bold = true })
+	vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { fg = base, bg = "#1D2228", bold = true })
+	vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { fg = base, bg = "#1D2228", bold = true })
+	vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { fg = base, bg = "#1D2228", bold = true })
+
 	require("render-markdown").setup({
 		render_modes = { "n", "no", "i", "v", "V", "^V", "r", "x", "c" },
 		file_types = { "markdown", "quarto", "rmd", "Avante", "noice" },
@@ -68,7 +77,7 @@ function M.config()
 			-- Width of the heading background:
 			--  block: width of the heading text
 			--  full: full width of the window
-			width = "block",
+			width = "full",
 			-- Amount of padding to add to the left of headings
 			-- If a floating point value < 1 is provided it is treated as a percentage of the available window space
 			left_pad = 0,
@@ -90,12 +99,12 @@ function M.config()
 			-- The 'level' is used to index into the array using a cycle
 			-- The result is left padded with spaces to hide any additional '#'
 			icons = {
-				block .. " " .. icons.numbers.header[1] .. " ",
-				block .. block .. " " .. icons.numbers.header[2] .. " ",
-				block .. block .. block .. " " .. icons.numbers.header[3] .. " ",
-				block .. block .. block .. block .. " " .. icons.numbers.header[4] .. " ",
-				block .. block .. block .. block .. block .. " " .. icons.numbers.header[5] .. " ",
-				block .. block .. block .. block .. block .. block .. " " .. icons.numbers.header[6] .. " ",
+				block .. block .. block .. block .. block .. block .. " " .. icons.numbers.header[1] .. " ",
+				block .. block .. block .. block .. block .. " " .. icons.numbers.header[2] .. " ",
+				block .. block .. block .. block .. " " .. icons.numbers.header[3] .. " ",
+				block .. block .. block .. " " .. icons.numbers.header[4] .. " ",
+				block .. block .. " " .. icons.numbers.header[5] .. " ",
+				block .. " " .. icons.numbers.header[6] .. " ",
 			},
 			-- icons = { "", "", "", "", "", "" },
 			-- Highlight for the heading icon and extends through the entire line
