@@ -290,106 +290,99 @@ local M = {
 			function()
 				Snacks.picker.buffers()
 			end,
-			desc = "[F]ind [B]uffers",
+			desc = "[f]ind [b]uffers",
 		},
 		{
 			"<leader>fc",
 			function()
 				Snacks.picker.files({ cwd = vim.fn.stdpath("config"), hidden = true })
 			end,
-			desc = "[F]ind [C]onfig File",
+			desc = "[f]ind [c]onfig File",
 		},
 		{
 			"<leader>.",
 			function()
 				Snacks.picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
 			end,
-			desc = "[F]ind files in current file dir",
+			desc = "[f]ind files in current([.]) dir",
 		},
 		{
 			"<leader>ff",
 			function()
 				Snacks.picker.files({ hidden = true, ignored = true })
 			end,
-			desc = "[F]ind [F]iles",
+			desc = "[f]ind [f]iles",
 		},
 		{
 			"<leader>fg",
 			function()
 				Snacks.picker.git_files()
 			end,
-			desc = "[F]ind [G]it Files",
+			desc = "[f]ind [g]it Files",
 		},
 		{
 			"<leader>fp",
 			function()
 				Snacks.picker.projects()
 			end,
-			desc = "[F]ind [P]rojects",
+			desc = "[f]ind [p]rojects",
 		},
 		{
 			"<leader>fr",
 			function()
 				Snacks.picker.recent()
 			end,
-			desc = "[F]ind [R]ecent",
+			desc = "[f]ind [r]ecent",
 		},
 		-- git
 		{
-			"<leader>vcb",
+			"<leader>vb",
 			function()
 				Snacks.picker.git_branches()
 			end,
-			desc = "[V]ersion [C]ontrol: branches",
+			desc = "[v]ersion [b]ranches",
 		},
 		{
 			"<leader>vlr",
 			function()
 				Snacks.picker.git_log()
 			end,
-			desc = "[V]ersion [L]og: repo",
+			desc = "[v]ersion [l]og: [r]epo",
 		},
 		{
 			"<leader>vll",
 			function()
 				Snacks.picker.git_log_line()
 			end,
-			desc = "[V]ersion [L]og: line",
+			desc = "[v]ersion [l]og: [l]ine",
 		},
 		{
 			"<leader>vlf",
 			function()
 				Snacks.picker.git_log_file()
 			end,
-			desc = "[V]ersion [L]og: file",
-		},
-		{
-			"<leader>vs",
-			function()
-				Snacks.picker.git_status()
-			end,
-			desc = "[V]ersion [s]tatus",
+			desc = "[v]ersion [l]og: [f]ile",
 		},
 		{
 			"<leader>vS",
 			function()
 				Snacks.picker.git_stash()
 			end,
-			desc = "[V]ersion [S]tash",
+			desc = "[v]ersion [S]tash",
 		},
 		{
 			"<leader>vd",
 			function()
 				Snacks.picker.git_diff()
 			end,
-			desc = "[V]ersion [d]iff (hunks)",
+			desc = "[v]ersion [d]iff (hunks)",
 		},
 		{
 			"<leader>j",
 			function()
 				Snacks.scratch()
 			end,
-			desc = "[J]ot buffer",
+			desc = "[j]ot buffer",
 		},
 		{
 			"<leader>J",
@@ -403,7 +396,7 @@ local M = {
 			function()
 				Snacks.zen()
 			end,
-			desc = "[Z]en mode toggle",
+			desc = "[z]en mode toggle",
 		},
 	},
 }

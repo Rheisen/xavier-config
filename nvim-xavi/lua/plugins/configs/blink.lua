@@ -27,6 +27,8 @@ local M = {
 		-- See :h blink-cmp-config-keymap for defining your own keymap
 		keymap = {
 			preset = "default",
+			["<C-Space>"] = {}, -- disable Control+Space
+			["<C-K>"] = { "show", "show_documentation", "hide_documentation" },
 			["<C-e>"] = { "accept", "fallback" },
 			["<C-y>"] = { "hide", "fallback" },
 		},
