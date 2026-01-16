@@ -44,10 +44,10 @@ function M.setup()
 	keymap.set("n", "<leader>n", ":noh<CR>", { desc = "[n]o highlight", silent = true })
 
 	-- Window navigation
-	vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-	vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-	vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-	vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+	keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+	keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+	keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+	keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 	-- Neotree
 
@@ -60,6 +60,10 @@ function M.setup()
 	end, { desc = "Hover documentation" })
 
 	-- Version Control (Git)
+	-- <leader>v -> version control (status, commit, push, pull, blame, preview)
+	-- <leader>s -> staging
+	-- <leader>u -> unstaging
+	-- <leader>r -> resetting
 
 	keymap.set("n", "<leader>vbl", ":Gitsigns toggle_current_line_blame<CR>", { desc = "", silent = true })
 	keymap.set("n", "<leader>vph", ":Gitsigns preview_hunk<CR>", { desc = "", silent = true })
@@ -69,6 +73,7 @@ function M.setup()
 	keymap.set("n", "<leader>vp", ":Neogit pull<CR>", { desc = "[v]ersion [p]ull" })
 	keymap.set("n", "<leader>vP", ":Neogit push<CR>", { desc = "[v]ersion [P]ush" })
 
+	-- Staging / Unstaging / Resetting
 	-- NOTE: :Gitsigns stage_hunk toggles staging and unstaging hunks
 	keymap.set({ "n", "v" }, "<leader>sh", ":Gitsigns stage_hunk<CR>", { desc = "[s]tage [h]unk" })
 	keymap.set({ "n", "v" }, "<leader>uh", ":Gitsigns stage_hunk<CR>", { desc = "[u]nstage [h]unk" })
@@ -79,6 +84,26 @@ function M.setup()
 	end, { desc = "[u]nstage [b]uffer" })
 	keymap.set("n", "<leader>rb", ":Gitsigns reset_buffer<CR>", { desc = "[r]eset [b]uffer" })
 
+	-- Motion
+	keymap.set("n", "<leader>gh", function()
+		if vim.wo.diff then
+			return "]c"
+		end
+		vim.schedule(function()
+			require("gitsigns").next_hunk()
+		end)
+		return "<Ignore>"
+	end, { desc = "[g]oto [h]unk (next)", expr = true })
+
+	keymap.set("n", "<leader>gH", function()
+		if vim.wo.diff then
+			return "[c"
+		end
+		vim.schedule(function()
+			require("gitsigns").prev_hunk()
+		end)
+		return "<Ignore>"
+	end, { desc = "[g]oto [h]unk (previous)", expr = true })
 	-- Preview windows
 
 	keymap.set(
