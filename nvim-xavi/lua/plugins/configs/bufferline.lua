@@ -17,18 +17,29 @@ local M = {
 						return icons.terminal, "BufferLineIconCustom"
 					elseif element.filetype == "NeogitStatus" then
 						return icons.git.logo, "BufferLineIconCustom"
+					elseif element.path and element.path:match("NeogitCommitPopup") then
+						return icons.git.commit, "BufferLineIconCustom"
+					elseif element.path and element.path:match("NeogitHelpPopup") then
+						return icons.diagnostics.hint, "BufferLineIconCustom"
+					elseif element.path and element.path:match("Neogit(%w+)Popup") then
+						return icons.git.logo, "BufferLineIconCustom"
 					elseif element.filetype == "neo-tree" then
 						return icons.folder.default, "BufferLineIconCustom"
 					elseif element.filetype == "snacks_picker_input" or element.filetype == "snacks_picker_list" then
 						return icons.lupa, "BufferLineIconCustom"
 					elseif element.filetype == "snacks_picker_preview" then
 						return icons.lupa, "BufferLineIconCustom"
+					elseif element.filetype == "neo-tree-popup" then
+						return icons.diagnostics.hint, "BufferLineIconCustom"
 					elseif element.path == "[No Name]" then
+						-- vim.print("bufferline icon miss:", vim.inspect(element))
 						return icons.sparkle, "BufferLineIconCustom"
 					end
 
 					-- vim.print("bufferline icon miss:", vim.inspect(element))
 					icon = devicons.get_icon_by_filetype(element.filetype, { default = true })
+				elseif element.filetype == "gitcommit" or (element.path and element.path:match("COMMIT_EDITMSG$")) then
+					return icons.git.commit, "BufferLineIconCustom" -- override the commit message icon
 				end
 				return icon, "BufferLineIconCustom"
 			end,
@@ -54,6 +65,17 @@ local M = {
 					return "preview"
 				elseif name:match("^term.*claude") then
 					return "claude"
+				elseif buf.path and buf.path:match("Neogit(%w+)Popup") then
+					local popup_type = buf.path:match("Neogit(%w+)Popup")
+					return "neogit " .. popup_type:lower()
+				elseif ft and ft:match("^Neogit(%w+)") then
+					local neogit_type = ft:match("^Neogit(%w+)")
+					local spaced = neogit_type:gsub("(%l)(%u)", "%1 %2"):lower()
+					return "neogit " .. spaced
+				elseif ft == "gitcommit" or (name and name:match("COMMIT_EDITMSG$")) then
+					return "commit message"
+				elseif ft == "neo-tree-popup" and buf.path == "[No Name]" then
+					return "neotree help"
 				elseif buf.path == "[No Name]" then
 					return "new"
 				end
