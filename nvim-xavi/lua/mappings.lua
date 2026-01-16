@@ -69,9 +69,14 @@ function M.setup()
 	keymap.set("n", "<leader>vp", ":Neogit pull<CR>", { desc = "[v]ersion [p]ull" })
 	keymap.set("n", "<leader>vP", ":Neogit push<CR>", { desc = "[v]ersion [P]ush" })
 
+	-- NOTE: :Gitsigns stage_hunk toggles staging and unstaging hunks
 	keymap.set({ "n", "v" }, "<leader>sh", ":Gitsigns stage_hunk<CR>", { desc = "[s]tage [h]unk" })
+	keymap.set({ "n", "v" }, "<leader>uh", ":Gitsigns stage_hunk<CR>", { desc = "[u]nstage [h]unk" })
 	keymap.set({ "n", "v" }, "<leader>rh", ":Gitsigns reset_hunk<CR>", { desc = "[r]eset [h]unk" })
 	keymap.set("n", "<leader>sb", ":Gitsigns stage_buffer<CR>", { desc = "[s]tage [b]uffer" })
+	keymap.set("n", "<leader>ub", function()
+		require("gitsigns").reset_buffer_index()
+	end, { desc = "[u]nstage [b]uffer" })
 	keymap.set("n", "<leader>rb", ":Gitsigns reset_buffer<CR>", { desc = "[r]eset [b]uffer" })
 
 	-- Preview windows
