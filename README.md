@@ -8,26 +8,25 @@ As a general overview, this configuration will replace usage of the default term
 It uses Zinit as the plugin manager for the terminal. This configuration also provides a robust Neovim and Tmux setup.
 
 This development environment has theme synchronicity based on the Tiede theme, and takes a minimalist stylistic
-approach with powerful, well-integrated features.
+approach with powerful, well-integrated features. ([Teide Theme](https://github.com/serhez/teide.nvim))
 
 With the usage of the install script, it can be fully configured in less than 5 minutes!
-
-NOTE: need treesitter and zoxide, then just symlink the nvim config directory to nvim-xavi
 
 ```
 cargo install --locked tree-sitter-cli
 brew install zoxide
 ```
 
-![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png)
+![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/teide_dark_color_reference.png)
 
-Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6C2`, `#ABB2BF`
+Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (yellow), `#5CCEFF` (blue),
+`#A592FF` (purple), `#0AE7FF` (cyan), `#E7EAEE` (foreground)
 
 ## Quick Install
 
 1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
     - This will install ITerm2 ([web link](https://iterm2.com/downloads.html)) and Fira Code Retina font
-    - This will install Homebrew + Oh-My-ZSH, and a number of brews and Oh-My-ZSH plugins (some optional with prompts)
+    - This will install Homebrew + Zinit, and a number of brews and Zinit plugins (some optional with prompts)
 2. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
     - Select Appearance, Select Theme, change to "Minimal"
@@ -37,7 +36,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
     - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
     - Done (you can remove ~/documents/xavier-config/iterm if you'd like)
 3. Switch to ITerm2
-4. Install the plugs for Neovim (`nvim ~/.xavier-config/nvim/init.vim` and run `:PlugInstall`)
+4. Plugins and Langauge Servers for Neovim will auto-install with Lazy when opening Neovim (`nvim`)
 5. DONE
 
 #### Recommended Downloads:
@@ -52,10 +51,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 - ITerm2 ([web link](https://iterm2.com/downloads.html))
 - Homebrew ([web link](https://brew.sh/))
 - Stop here!! Complete Step Two
-- Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
-- VimPlug (install for Vim & NeoVim) ([web link](https://github.com/junegunn/vim-plug))
-- PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
-- zsh-history-substring-search (follow oh-my-zsh install) ([web link](https://github.com/zsh-users/zsh-history-substring-search))
+- Zinit ([web link](https://github.com/zdharma-continuum/zinit))
 - Done
 
 ### Step Two: Brew Installations
@@ -68,7 +64,7 @@ Install or upgrade the following with Homebrew:
 - `brew install tmux`
 - `brew install fzf`
 - `brew install ripgrep`
-- `brew install bat`
+- `brew install zoxide`
 - Done
 
 #### Recommended Brews
