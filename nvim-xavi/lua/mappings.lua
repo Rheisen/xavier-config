@@ -12,6 +12,41 @@ function M.setup()
 	local keymap = vim.keymap
 	local cmd = vim.cmd
 
+	-- local function map(modes, key, action, opts)
+	--     keymap.set(modes, key, action, opts)
+	-- end
+
+	local mapping
+
+	local function map(...)
+		mapping = { ... }
+
+		-- for _, item in ipairs(mapping) do
+		-- 	local mode = item.mode or "n"
+		-- 	local opts = { desc = item.desc, silent = item.silent }
+		--
+		-- 	require("snacks").keymap.set(mode, item[1], item[2], opts)
+		-- end
+	end
+
+	-- Defer snacks-dependent mappings until VimEnter
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "VeryLazy", -- or use "VimEnter" if not using lazy.nvim
+		once = true,
+		callback = function()
+			for _, item in ipairs(mapping) do
+				local mode = item.mode or "n"
+				local opts = {
+					desc = item.desc,
+					silent = item.silent,
+					has = item.has,
+					nowait = item.nowait,
+				}
+
+				require("snacks").keymap.set(mode, item[1], item[2], opts)
+			end
+		end,
+	})
 	-- Leader
 
 	vim.g.mapleader = " "
@@ -135,6 +170,192 @@ function M.setup()
 		"gP",
 		"<cmd>lua require('goto-preview').close_all_win()<CR>",
 		{ desc = "[g]oto [P]review: close all windows", silent = true }
+	)
+
+	-- Top Pickers
+	keymap.set("n", "<leader><space>", function()
+		require("snacks").picker.smart()
+	end, { desc = "smart find files" })
+
+	keymap.set("n", "<leader>,", function()
+		require("snacks").picker.buffers()
+	end, { desc = "buffers" })
+
+	keymap.set("n", "<leader>/", function()
+		require("snacks").picker.grep()
+	end, { desc = "grep" })
+
+	keymap.set("n", "<leader>N", function()
+		require("snacks").picker.notifications()
+	end, { desc = "[N]otification history" })
+
+	-- Find
+
+	keymap.set("n", "<leader>fb", function()
+		require("snacks").picker.buffers()
+	end, { desc = "[f]ind [b]uffers" })
+
+	keymap.set("n", "<leader>fc", function()
+		require("snacks").picker.files({ cwd = vim.fn.stdpath("config"), hidden = true })
+	end, {
+		desc = "[f]ind [c]onfig File",
+	})
+
+	keymap.set("n", "<leader>.", function()
+		require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
+	end, {
+		desc = "[f]ind files in current([.]) dir",
+	})
+
+	keymap.set("n", "<leader>.", function()
+		require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
+	end, {
+		desc = "[f]ind files in current([.]) dir",
+	})
+
+	keymap.set("n", "<leader>.", function()
+		require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
+	end, {
+		desc = "[f]ind files in current([.]) dir",
+	})
+
+	map(
+		{
+			"<leader>ff",
+			function()
+				require("snacks").picker.files({ hidden = true, ignored = true })
+			end,
+			desc = "[f]ind [f]iles",
+		},
+		{
+			"<leader>ff",
+			function()
+				require("snacks").picker.files({ hidden = true, ignored = true })
+			end,
+			desc = "[f]ind [f]iles",
+		},
+		{
+			"<leader>fg",
+			function()
+				require("snacks").picker.git_files()
+			end,
+			desc = "[f]ind [g]it Files",
+		},
+		{
+			"<leader>fp",
+			function()
+				require("snacks").picker.projects()
+			end,
+			desc = "[f]ind [p]rojects",
+		},
+		{
+			"<leader>fr",
+			function()
+				require("snacks").picker.recent()
+			end,
+			desc = "[f]ind [r]ecent",
+		},
+		-- git
+		{
+			"<leader>vb",
+			function()
+				require("snacks").picker.git_branches()
+			end,
+			desc = "[v]ersion [b]ranches",
+		},
+		{
+			"<leader>vlr",
+			function()
+				require("snacks").picker.git_log()
+			end,
+			desc = "[v]ersion [l]og: [r]epo",
+		},
+		{
+			"<leader>vll",
+			function()
+				require("snacks").picker.git_log_line()
+			end,
+			desc = "[v]ersion [l]og: [l]ine",
+		},
+		{
+			"<leader>vlf",
+			function()
+				require("snacks").picker.git_log_file()
+			end,
+			desc = "[v]ersion [l]og: [f]ile",
+		},
+		{
+			"<leader>vS",
+			function()
+				require("snacks").picker.git_stash()
+			end,
+			desc = "[v]ersion [S]tash",
+		},
+		{
+			"<leader>vd",
+			function()
+				require("snacks").picker.git_diff()
+			end,
+			desc = "[v]ersion [d]iff (hunks)",
+		},
+		{
+			"<leader>j",
+			function()
+				require("snacks").scratch()
+			end,
+			desc = "[j]ot buffer",
+		},
+		{
+			"<leader>J",
+			function()
+				require("snacks").scratch.select()
+			end,
+			desc = "[J]ot buffer select",
+		},
+		{
+			"<leader>z",
+			function()
+				require("snacks").zen()
+			end,
+			desc = "[z]en mode toggle",
+		},
+		{
+			"gd",
+			function()
+				vim.lsp.buf.definition()
+			end,
+			desc = "Goto Definition",
+			has = "definition",
+		},
+		{
+			"gr",
+			function()
+				vim.lsp.buf.references()
+			end,
+			desc = "References",
+			nowait = true,
+		},
+		{
+			"gI",
+			function()
+				vim.lsp.buf.implementation()
+			end,
+			desc = "Goto Implementation",
+		},
+		{
+			"gy",
+			function()
+				vim.lsp.buf.type_definition()
+			end,
+			desc = "Goto T[y]pe Definition",
+		},
+		{
+			"gD",
+			function()
+				vim.lsp.buf.declaration()
+			end,
+			desc = "Goto Declaration",
+		}
 	)
 end
 
