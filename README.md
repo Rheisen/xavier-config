@@ -17,7 +17,7 @@ cargo install --locked tree-sitter-cli
 brew install zoxide
 ```
 
-![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/teide_dark_color_reference.png)
+![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/refs/heads/feature/nvim-xavi/images/teide_dark_color_reference.png)
 
 Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (yellow), `#5CCEFF` (blue),
 `#A592FF` (purple), `#0AE7FF` (cyan), `#E7EAEE` (foreground)
