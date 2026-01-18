@@ -1,5 +1,14 @@
 local icons = require("icons")
 
+-- bufferline icon miss:
+-- {
+--   directory = false,
+--   extension = "",
+--   filetype = "trouble",
+--   path = "[No Name]",
+--   type = "nofile"
+-- }
+
 local M = {
 	"akinsho/bufferline.nvim",
 	version = "*",
@@ -30,10 +39,14 @@ local M = {
 					elseif element.filetype == "snacks_picker_preview" then
 						return icons.lupa, "BufferLineIconCustom"
 					elseif element.filetype == "neo-tree-popup" then
-						return icons.diagnostics.hint, "BufferLineIconCustom"
+						return icons.folder.default, "BufferLineIconCustom"
+					elseif element.filetype == "snacks_input" then
+						return icons.filled_lightning, "BufferLineIconCustom"
+					elseif element.filetype == "markdown.snacks_picker_preview" then
+						return icons.file.page, "BufferLineIconCustom"
 					elseif element.path == "[No Name]" then
-						-- vim.print("bufferline icon miss:", vim.inspect(element))
-						return icons.sparkle, "BufferLineIconCustom"
+						vim.print("bufferline icon miss:", vim.inspect(element))
+						return icons.file.page, "BufferLineIconCustom"
 					end
 
 					-- vim.print("bufferline icon miss:", vim.inspect(element))
@@ -74,10 +87,14 @@ local M = {
 					return "neogit " .. spaced
 				elseif ft == "gitcommit" or (name and name:match("COMMIT_EDITMSG$")) then
 					return "commit message"
+				elseif ft == "snacks_input" then
+					return "input"
+				elseif ft == "markdown.snacks_picker_preview" then
+					return "preview"
 				elseif ft == "neo-tree-popup" and buf.path == "[No Name]" then
-					return "neotree help"
+					return "neotree"
 				elseif buf.path == "[No Name]" then
-					return "new"
+					return icons.file.page
 				end
 
 				return buf.name
