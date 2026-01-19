@@ -12,7 +12,7 @@ approach with powerful, well-integrated features. ([Teide Theme](https://github.
 
 With the usage of the install script, it can be fully configured in less than 5 minutes!
 
-![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/refs/heads/feature/nvim-xavi/images/teide_dark_color_reference.png)
+![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/images/teide_dark_color_reference.png)
 
 Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (yellow), `#5CCEFF` (blue),
 `#A592FF` (purple), `#0AE7FF` (cyan), `#E7EAEE` (foreground)
@@ -27,19 +27,16 @@ Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (y
     - This will install Rust and some dependencies via cargo
     - This will install Node Version Manager and the latest LTS Node version via nvm
     - This will make backups of any existing zshrc / tmux / neovim configuration and setup symlinks to Xavier Config
-2. Setup ITerm2 colors and fonts:
-    - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
-    - Select Appearance, Select Theme, change to "Minimal"
-    - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
-    - Import `xavier-config.itermcolors` from within documents/xavier-config/iterm and select from dropdown
-    - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
-    - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
-    - Done (you can remove ~/documents/xavier-config/iterm if you'd like)
-3. Switch to ITerm2 (Zinit and zsh plugins will install on first open)
-4. Plugins and Langauge Servers for Neovim will auto-install with Lazy when opening Neovim (`nvim`)
-5. DONE
+    - This will create a dynamic ITerm2 profile with the teide dark theme as the default profile
+2. Switch to ITerm2 or quit and reopen ITerm2 if you used it for the install (Zinit and zsh plugins will auto-install)
+3. Plugins and Language Servers for Neovim will auto-install with Lazy when opening Neovim (`nvim`)
+4. All done! Check out the next section for usage tips
 
-#### Recommended Downloads:
+## Usage
+
+TBD
+
+#### Additional Recommended Downloads:
 
 - Ruby Version Manager (RVM) ([web link](https://rvm.io/))
 

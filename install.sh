@@ -424,7 +424,7 @@ fi
 
 iterm_dynamic_profiles_dir=~/Library/Application\ Support/iTerm2/DynamicProfiles
 xconfig_iterm_profile="$xconfig_dir/iterm/xavi-config-teide-dark.json"
-xavi_profile_guid="AC1B5929-3782-4BE7-866F-2E4D857BACF3"
+xavi_profile_guid="AC1B5929-3782-4BE7-866F-2E4D857BACF4"
 
 ((step++))
 mkdir -p "$iterm_dynamic_profiles_dir"
