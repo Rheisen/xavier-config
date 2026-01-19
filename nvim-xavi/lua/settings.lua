@@ -59,7 +59,7 @@ function M.setup()
 	-- opt.cursorline = true
 
 	-- Minimal number of screen lines to keep above and below the cursor.
-	opt.scrolloff = 25
+	opt.scrolloff = 15
 
 	opt.confirm = true
 
@@ -96,23 +96,12 @@ function M.setup()
 		end,
 	})
 
+	-- Terminal settings - disable line numbers and sign column to prevent rendering issues
 	vim.api.nvim_create_autocmd("TermOpen", {
 		callback = function()
-			if vim.bo.buflisted then
-				vim.opt_local.number = true
-			end
-		end,
-	})
-
-	-- Disable auto-insert and show numbers for Claude terminal
-	vim.api.nvim_create_autocmd("TermOpen", {
-		pattern = "*",
-		callback = function()
-			local buf_name = vim.api.nvim_buf_get_name(0)
-			if buf_name:match("claude") then
-				vim.opt_local.number = true
-				-- vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
-			end
+			vim.opt_local.number = false
+			vim.opt_local.relativenumber = false
+			vim.opt_local.signcolumn = "no"
 		end,
 	})
 
@@ -157,6 +146,7 @@ function M.setup()
 		signs = {
 			text = {
 				[vim.diagnostic.severity.ERROR] = icons.diagnostics.error,
+				-- [vim.diagnostic.severity.ERROR] = icons.bar.vertical_left_thick,
 				[vim.diagnostic.severity.WARN] = icons.diagnostics.warning,
 				[vim.diagnostic.severity.INFO] = icons.diagnostics.info,
 				[vim.diagnostic.severity.HINT] = icons.diagnostics.hint,

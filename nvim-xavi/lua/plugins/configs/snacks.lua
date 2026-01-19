@@ -229,8 +229,9 @@ local M = {
 			win = {
 				wo = {
 					winbar = "",
-					number = true,
-					linebreak = true,
+					number = false,
+					relativenumber = false,
+					signcolumn = "no",
 				},
 			},
 		},
@@ -244,15 +245,17 @@ local M = {
 		scope = { enabled = true },
 		scroll = {
 			enabled = true,
-			-- filter = function(buf)
-			-- 	-- Disable scroll animation during search
-			-- 	return vim.bo[buf].buftype ~= "" or vim.fn.mode() == "/"
-			-- end,
+			filter = function(buf)
+				-- Disable scroll animation for terminal buffers
+				-- Disable scroll animation during search
+				return vim.bo[buf].buftype ~= "terminal" -- or vim.bo[buf].buftype ~= "" or vim.fn.mode() == "/"
+			end,
 		},
 		statuscolumn = { enabled = true },
 		words = {
 			enabled = true,
 			modes = { "n", "i", "c" }, -- modes to show references
+			-- modes = { "n", "i" }, -- modes to show references
 		},
 		styles = {
 			zen = {

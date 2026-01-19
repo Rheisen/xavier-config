@@ -16,6 +16,7 @@ M.config = function()
 		rust_analyzer = {},
 		gopls = {},
 		ts_ls = {},
+		bashls = {},
 	}
 
 	local ensure_servers_installed = vim.tbl_keys(servers or {})

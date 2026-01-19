@@ -1,9 +1,11 @@
 local M = {
 	"folke/flash.nvim",
 	event = "VeryLazy",
-	---@type Flash.Config
 	opts = {
 		modes = {
+			-- search = {
+			-- 	enabled = false, -- disable flash integration with / and ? search
+			-- },
 			char = {
 				highlight = { backdrop = false },
 				jump_labels = false,

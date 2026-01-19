@@ -45,7 +45,7 @@ local M = {
 					elseif element.filetype == "markdown.snacks_picker_preview" then
 						return icons.file.page, "BufferLineIconCustom"
 					elseif element.path == "[No Name]" then
-						vim.print("bufferline icon miss:", vim.inspect(element))
+						-- vim.print("bufferline icon miss:", vim.inspect(element))
 						return icons.file.page, "BufferLineIconCustom"
 					end
 
