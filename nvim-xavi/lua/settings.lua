@@ -3,7 +3,6 @@ local M = {}
 function M.setup()
 	local cmd = vim.cmd
 	local opt = vim.opt
-	local keymap = vim.keymap
 	local icons = require("icons")
 	local TERMINAL = vim.fn.expand("$TERMINAL")
 	-- local CACHE_PATH = vim.fn.stdpath("cache")
@@ -112,17 +111,28 @@ function M.setup()
 			local buf_name = vim.api.nvim_buf_get_name(0)
 			if buf_name:match("claude") then
 				vim.opt_local.number = true
-				vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
+				-- vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
 			end
 		end,
 	})
 
 	-- Claude terminal: stay in normal mode and exit to normal after Enter
+	-- vim.api.nvim_create_autocmd("BufEnter", {
+	-- 	callback = function()
+	-- 		if vim.bo.buftype == "terminal" and vim.api.nvim_buf_get_name(0):match("claude") then
+	-- 			-- vim.opt_local.number = true
+	-- 			-- vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
+	-- 		end
+	-- 	end,
+	-- })
+
 	vim.api.nvim_create_autocmd("BufEnter", {
 		callback = function()
 			if vim.bo.buftype == "terminal" and vim.api.nvim_buf_get_name(0):match("claude") then
 				-- vim.opt_local.number = true
-				vim.keymap.set("t", "<CR>", "<CR><C-\\><C-n>", { buffer = true })
+				-- vim.defer_fn(function()
+				vim.cmd("stopinsert")
+				-- end, 10)
 			end
 		end,
 	})

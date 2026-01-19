@@ -219,6 +219,12 @@ local M = {
 		dashboard = dashboard,
 		explorer = { enabled = false, replace_netrw = false },
 		picker = picker,
+		scratch = {
+			name = "notes",
+			ft = function()
+				return "markdown"
+			end,
+		},
 		terminal = {
 			win = {
 				wo = {
