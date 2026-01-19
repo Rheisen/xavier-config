@@ -397,16 +397,47 @@ else
     echo "${yellow}$step.4: Tmux symlink to xavier-config tmux.conf file created.${normal}"
 fi
 
-# Fira Code font installation
+# Fira Code Nerd Font installation
 
 ((step++))
-echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
-if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
-    echo "$step.1: Fira Code font detected, skipping install."
+echo "${blue}$step: Checking for Fira Code Nerd Font...${normal}"
+if ls ~/Library/Fonts/FiraCodeNF*.ttf 1> /dev/null 2>&1; then
+    echo "$step.1: Fira Code Nerd Font detected, skipping install."
 else
-    echo "${yellow}$step.1: Fira Code font not detected, installing...${normal}"
-    mv $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
+    echo "${yellow}$step.1: Fira Code Nerd Font not detected, downloading and installing...${normal}"
+    fira_code_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip"
+    fira_code_tmp="/tmp/FiraCode.zip"
+    fira_code_extract="/tmp/FiraCode"
+
+    curl -L -o "$fira_code_tmp" "$fira_code_url"
+    mkdir -p "$fira_code_extract"
+    unzip -o "$fira_code_tmp" -d "$fira_code_extract"
+    cp "$fira_code_extract"/*.ttf ~/Library/Fonts/
+
+    # Cleanup
+    rm -f "$fira_code_tmp"
+    rm -rf "$fira_code_extract"
+    echo "${yellow}$step.1: Fira Code Nerd Font installed.${normal}"
 fi
+
+# iTerm2 Dynamic Profile setup
+
+iterm_dynamic_profiles_dir=~/Library/Application\ Support/iTerm2/DynamicProfiles
+xconfig_iterm_profile="$xconfig_dir/iterm/xavi-config-teide-dark.json"
+xavi_profile_guid="AC1B5929-3782-4BE7-866F-2E4D857BACF3"
+
+((step++))
+mkdir -p "$iterm_dynamic_profiles_dir"
+if [ -L "$iterm_dynamic_profiles_dir/xavi-config-teide-dark.json" ]; then
+    echo "$step: iTerm2 Xavi profile symlink already in place, skipping."
+else
+    ln -sf "$xconfig_iterm_profile" "$iterm_dynamic_profiles_dir/xavi-config-teide-dark.json"
+    echo "${yellow}$step: iTerm2 Xavi profile symlink created.${normal}"
+fi
+
+# Set Xavi profile as default
+defaults write com.googlecode.iterm2 "Default Bookmark Guid" "$xavi_profile_guid"
+echo "${yellow}$step: iTerm2 Xavi profile set as default.${normal}"
 
 xiterm_assets_dir=~/documents/xavier-config/iterm
 dir_exists $xiterm_assets_dir || {
