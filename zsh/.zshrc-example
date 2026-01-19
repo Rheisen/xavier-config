@@ -1,8 +1,8 @@
 # Include xavi-rc configuration
-if [ -f ~/.xavier-config/zsh/.xavi-rc ]; then
-    source ~/.xavier-config/zsh/.xavi-rc
+if [ -f ~/.xavier-config/zsh/.xavier-rc ]; then
+    source ~/.xavier-config/zsh/.xavier-rc
 else
-    print "xavi-rc not found!"
+    print "xavier-rc not found!"
 fi
 # ======================================== ADD ZSH CONFIGURATION OPTIONS BELOW ========================================
 

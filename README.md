@@ -19,14 +19,14 @@ Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (y
 
 ## Quick Install
 
-```
-cargo install --locked tree-sitter-cli
-```
-
 1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
     - This will install ITerm2 ([web link](https://iterm2.com/downloads.html))
     and Fira Code Nerd Font ([web link](https://www.nerdfonts.com/font-downloads))
-    - This will install Homebrew + Zinit, and a number of brews and plugins (some optional with prompts)
+    - This will install Xcode Command Line Tools
+    - This will install Homebrew and some dependencies via brew
+    - This will install Rust and some dependencies via cargo
+    - This will install Node Version Manager and the latest LTS Node version via nvm
+    - This will make backups of any existing zshrc / tmux / neovim configuration and setup symlinks to Xavier Config
 2. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
     - Select Appearance, Select Theme, change to "Minimal"
@@ -35,13 +35,12 @@ cargo install --locked tree-sitter-cli
     - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
     - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
     - Done (you can remove ~/documents/xavier-config/iterm if you'd like)
-3. Switch to ITerm2
+3. Switch to ITerm2 (Zinit and zsh plugins will install on first open)
 4. Plugins and Langauge Servers for Neovim will auto-install with Lazy when opening Neovim (`nvim`)
 5. DONE
 
 #### Recommended Downloads:
 
-- Node Version Manager (NVM) ([web link](https://github.com/nvm-sh/nvm))
 - Ruby Version Manager (RVM) ([web link](https://rvm.io/))
 
 ## Manual Install
@@ -64,6 +63,7 @@ Install or upgrade the following with Homebrew:
 - `brew install tmux`
 - `brew install fzf`
 - `brew install ripgrep`
+- `brew install fd`
 - `brew install zoxide`
 - Done
 
@@ -96,7 +96,7 @@ Install or upgrade the following with Homebrew:
 
 ### Step Five: Environment Configuration
 
-#### Neovim
+#### Neovim (outdated instructions)
 - Remove (`rm ~/.config/nvim/init.vim`) or create the nvim directory (`mkdir ~/.config; mkdir ~/.config/nvim`)
 - Symlink the xavier-config NeoVim configuration: `ln -s ~/.xavier-config/nvim/init.vim ~/.config/nvim/init.vim`
 - Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall`
