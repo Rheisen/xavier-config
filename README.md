@@ -1,35 +1,43 @@
-# Xavier Environment
 
-This is an OSX development environment configuration. This README documents the complete process for setting up the development environment, and quickly getting up and running on any OSX machine.
+# Xavier Config
 
-As a general overview, this configuration will replace usage of the default terminal with ITerm2 and Zsh. It will utilize Oh-My-Zsh as the plugin manager for the terminal. This configuration will also configure a minimal, effective NeoVim environment with Tmux.
+This is an OSX development environment configuration. This README documents the complete process for setting up the
+development environment, and quickly getting up and running on any OSX machine.
 
-This entire development environment has theme synchronicity based on the OneDark theme. The Style guide will walk through adjusting the ITerm2 profile settings and using the PowerLevel9K Terminal theme. The font of choice for this configuration is Fira Code.
+As a general overview, this configuration will replace usage of the default terminal with ITerm2 and Zsh.
+It uses Zinit as the plugin manager for the terminal. This configuration also provides a robust Neovim and Tmux setup.
 
-![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/master/images/color_reference.png)
+This development environment has theme synchronicity based on the Tiede theme, and takes a minimalist stylistic
+approach with powerful, well-integrated features. ([Teide Theme](https://github.com/serhez/teide.nvim))
 
-Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6C2`, `#ABB2BF`
+With the usage of the install script, it can be fully configured in less than 5 minutes!
+
+![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/images/teide_dark_color_reference.png)
+
+Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (yellow), `#5CCEFF` (blue),
+`#A592FF` (purple), `#0AE7FF` (cyan), `#E7EAEE` (foreground)
 
 ## Quick Install
 
 1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
-    - This will install ITerm2 ([web link](https://iterm2.com/downloads.html)) and Fira Code Retina font
-    - This will install Homebrew + Oh-My-ZSH, and a number of brews and Oh-My-ZSH plugins (some optional with prompts)
-2. Setup ITerm2 colors and fonts:
-    - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
-    - Select Appearance, Select Theme, change to "Minimal"
-    - Select Profiles, Select Colors, Select "Import" from Color Presets in bottom right corner
-    - Import `xavier-config.itermcolors` from within documents/xavier-config/iterm and select from dropdown
-    - Recommended: No cursor guide, 0 Minimal Contrast, 0 Cursor Boost
-    - Select Text (still under Profiles), and change Font to FiraCode Nerd Font (Retina or Regular recommended)
-    - Done (you can remove ~/documents/xavier-config/iterm if you'd like)
-3. Switch to ITerm2
-4. Install the plugs for Neovim (`nvim ~/.xavier-config/nvim/init.vim` and run `:PlugInstall`)
-5. DONE
+    - This will install ITerm2 ([web link](https://iterm2.com/downloads.html))
+    and Fira Code Nerd Font ([web link](https://www.nerdfonts.com/font-downloads))
+    - This will install Xcode Command Line Tools
+    - This will install Homebrew and some dependencies via brew
+    - This will install Rust and some dependencies via cargo
+    - This will install Node Version Manager and the latest LTS Node version via nvm
+    - This will make backups of any existing zshrc / tmux / neovim configuration and setup symlinks to Xavier Config
+    - This will create a dynamic ITerm2 profile with the teide dark theme as the default profile
+2. Switch to ITerm2 or quit and reopen ITerm2 if you used it for the install (Zinit and zsh plugins will auto-install)
+3. Plugins and Language Servers for Neovim will auto-install with Lazy when opening Neovim (`nvim`)
+4. All done! Check out the next section for usage tips
 
-#### Recommended Downloads:
+## Usage
 
-- Node Version Manager (NVM) ([web link](https://github.com/nvm-sh/nvm))
+TBD
+
+#### Additional Recommended Downloads:
+
 - Ruby Version Manager (RVM) ([web link](https://rvm.io/))
 
 ## Manual Install
@@ -39,10 +47,7 @@ Colors: `#282C34`, `#E06C75`, `#98C379`, `#E5C07B`, `#61AFEF`, `#C678DD`, `#56B6
 - ITerm2 ([web link](https://iterm2.com/downloads.html))
 - Homebrew ([web link](https://brew.sh/))
 - Stop here!! Complete Step Two
-- Oh-My-Zsh ([web link](https://github.com/ohmyzsh/ohmyzsh))
-- VimPlug (install for Vim & NeoVim) ([web link](https://github.com/junegunn/vim-plug))
-- PowerLevel9K (follow oh-my-zsh install) ([web link](https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#option-2-install-for-oh-my-zsh))
-- zsh-history-substring-search (follow oh-my-zsh install) ([web link](https://github.com/zsh-users/zsh-history-substring-search))
+- Zinit ([web link](https://github.com/zdharma-continuum/zinit))
 - Done
 
 ### Step Two: Brew Installations
@@ -55,7 +60,8 @@ Install or upgrade the following with Homebrew:
 - `brew install tmux`
 - `brew install fzf`
 - `brew install ripgrep`
-- `brew install bat`
+- `brew install fd`
+- `brew install zoxide`
 - Done
 
 #### Recommended Brews
@@ -87,7 +93,7 @@ Install or upgrade the following with Homebrew:
 
 ### Step Five: Environment Configuration
 
-#### Neovim
+#### Neovim (outdated instructions)
 - Remove (`rm ~/.config/nvim/init.vim`) or create the nvim directory (`mkdir ~/.config; mkdir ~/.config/nvim`)
 - Symlink the xavier-config NeoVim configuration: `ln -s ~/.xavier-config/nvim/init.vim ~/.config/nvim/init.vim`
 - Open the nvim init file `nvim ~/.xavier-config/init.vim` and run `:PlugInstall`

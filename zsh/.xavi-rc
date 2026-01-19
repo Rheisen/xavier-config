@@ -1,0 +1,77 @@
+# ZINIT Package Manager Install
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+# Setup Plugins & Snippets
+
+load=light # use 'load' for reporting / investigating
+
+# Load the pure theme, with zsh-async library that's bundled with it.
+zi ice pick"async.zsh" src"pure.zsh"
+zi $load sindresorhus/pure
+
+# Completions + Autosuggestions
+
+zinit $load zsh-users/zsh-syntax-highlighting
+zinit $load zsh-users/zsh-completions
+zinit $load zsh-users/zsh-autosuggestions
+zinit $load Aloxaf/fzf-tab
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # completion lower case matching
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+zinit snippet OMZP::git
+zinit snippet OMZP::tmux
+
+# History configuration
+
+HISTSIZE=20000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space # adding a space ' ' before a command prevents saving to history file
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# Aliases
+
+alias tmux='tmux -2'
+alias nvimx='NVIM_APPNAME="nvim-xavi" nvim'
+alias ls='ls --color'
+
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
+# nvm (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Keybindings
+
+bindkey -e # Use emacs keymappings
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
+# NVIM configuration directory
+export NVIMXAVI="~/.xavier-config/nvim-xavi"
+
+
+# Load completions
+autoload -U compinit && compinit
+
+zinit cdreplay -q

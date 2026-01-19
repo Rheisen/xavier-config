@@ -1,82 +1,158 @@
-# Neovim Location ENV variables
-export MYNVIM="~/.xavier-config/nvim/init.vim"
-export COLORTERM=truecolor
+# ZINIT Package Manager Install
 
-# FZF and RipGrep Customization
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!*.class" -g "!vendor/*" -g "!.go/*" -g "!.git/*"'
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-# POWERLEVEL9K Theme
-ZSH_THEME="powerlevel9k/powerlevel9k"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 
-# Left Prompt Configuration
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator dir dir_writable_joined custom_git_pair vcs_joined)
-POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='%F{008}\uf460%F{008}'
+source "${ZINIT_HOME}/zinit.zsh"
 
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+# Setup Plugins & Snippets
 
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=" \uf101 "
+load=light # use 'load' for reporting / investigating
 
-# DIR Configuration
-POWERLEVEL9K_DIR_BACKGROUND='237'
-POWERLEVEL9K_DIR_DEFAULT_BACKGROUND="clear"
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="015"
-POWERLEVEL9K_DIR_FOREGROUND='015'
-POWERLEVEL9K_DIR_HOME_BACKGROUND="clear"
-POWERLEVEL9K_DIR_HOME_FOREGROUND="015"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND="clear"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="253"
-POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{033}/%F{253}"
+# Load the pure theme, with zsh-async library that's bundled with it.
+zi ice pick"async.zsh" src"pure.zsh"
+zi $load sindresorhus/pure
 
-POWERLEVEL9K_HOME_ICON="\uf74a"
-POWERLEVEL9K_HOME_SUB_ICON="\uf74a"
-POWERLEVEL9K_FOLDER_ICON="\uf74a"
+# Completions + Autosuggestions
 
-POWERLEVEL9K_SHORTEN_DELIMITER='%F{008} …%F{008}'
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
-POWERLEVEL9K_SHORTEN_STRATEGY="none"
+zinit $load zsh-users/zsh-syntax-highlighting
+zinit $load zsh-users/zsh-completions
+zinit $load zsh-users/zsh-autosuggestions
+zinit $load Aloxaf/fzf-tab
 
-# VCS Configuration
-function sp {
-  git branch > /dev/null 2>&1 || return 1
-  git config user.initials
-}
-POWERLEVEL9K_CUSTOM_GIT_PAIR="echo \$(sp)"
-POWERLEVEL9K_CUSTOM_GIT_PAIR_BACKGROUND="clear"
-POWERLEVEL9K_CUSTOM_GIT_PAIR_FOREGROUND="blue"
-POWERLEVEL9K_CUSTOM_GIT_PAIR_ICON="\uf7af"
-POWERLEVEL9K_VCS_CLEAN_BACKGROUND='clear'
-POWERLEVEL9K_VCS_CLEAN_FOREGROUND='green'
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='clear'
-POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='yellow'
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='clear'
-POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='green'
-POWERLEVEL9K_VCS_BRANCH_ICON="\ue725 "
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # completion lower case matching
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-# Right Prompt Configuration
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status os_icon)
-POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=''
-POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR='%F{008}\uf104%F{008}'
+zinit snippet OMZP::git
+zinit snippet OMZP::tmux
 
-# OS Icon Configuration
-POWERLEVEL9K_OS_ICON_BACKGROUND='clear'
-POWERLEVEL9K_OS_ICON_FOREGROUND='221'
-POWERLEVEL9K_LINUX_MANJARO_ICON="\uf312 "
-POWERLEVEL9K_LINUX_UBUNTU_ICON="\uf31b "
-POWERLEVEL9K_APPLE_ICON="\uf302 "
+# History configuration
 
-# Status Configuration
-POWERLEVEL9K_STATUS_ERROR_BACKGROUND="clear"
-POWERLEVEL9K_STATUS_ERROR_FOREGROUND="001"
-POWERLEVEL9K_STATUS_OK_BACKGROUND="clear"
-POWERLEVEL9K_STATUS_BACKGROUND="clear"
-POWERLEVEL9K_CARRIAGE_RETURN_ICON="\uf071"
-POWERLEVEL9K_OK_ICON="\uf42e"
+HISTSIZE=20000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
 
-export BAT_THEME="One Dark"
-export BAT_CONFIG_PATH="~/.xavier-config/zsh/.config/bat"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space # adding a space ' ' before a command prevents saving to history file
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# Aliases
 
 alias tmux='tmux -2'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias nvimx='NVIM_APPNAME="nvim-xavi" nvim'
+alias ls='ls --color'
+
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
+# nvm (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Keybindings
+
+bindkey -e # Use emacs keymappings
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
+# NVIM configuration directory
+export NVIMXAVI="~/.xavier-config/nvim-xavi"
+
+# Set true color for terminal colors
+export COLORTERM=truecolor
+
+# Load completions
+autoload -U compinit && compinit
+
+zinit cdreplay -q
+
+# # Neovim Location ENV variables
+# export MYNVIM="~/.xavier-config/nvim/init.vim"
+# export NVIMXAVI="~/.xavier-config/nvim-xavi"
+# export COLORTERM=truecolor
+#
+# # FZF and RipGrep Customization
+# export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!*.class" -g "!vendor/*" -g "!.go/*" -g "!.git/*"'
+#
+# # POWERLEVEL9K Theme
+# ZSH_THEME="powerlevel9k/powerlevel9k"
+#
+# # Left Prompt Configuration
+# POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator dir dir_writable_joined custom_git_pair vcs_joined)
+# POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='%F{008}\uf460%F{008}'
+#
+# POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+# POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+#
+# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=" \uf105  "
+#
+# # DIR Configuration
+# POWERLEVEL9K_DIR_BACKGROUND='237'
+# POWERLEVEL9K_DIR_DEFAULT_BACKGROUND="clear"
+# POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="015"
+# POWERLEVEL9K_DIR_FOREGROUND='015'
+# POWERLEVEL9K_DIR_HOME_BACKGROUND="clear"
+# POWERLEVEL9K_DIR_HOME_FOREGROUND="015"
+# POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND="clear"
+# POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="253"
+# POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{033}/%F{253}"
+#
+# POWERLEVEL9K_HOME_ICON="\uf07b"
+# POWERLEVEL9K_HOME_SUB_ICON="\uf07b"
+# POWERLEVEL9K_FOLDER_ICON="\uf07b"
+#
+# POWERLEVEL9K_SHORTEN_DELIMITER='%F{008} …%F{008}'
+# POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+# POWERLEVEL9K_SHORTEN_STRATEGY="none"
+#
+# # VCS Configuration
+# function sp {
+#   git branch > /dev/null 2>&1 || return 1
+#   git config user.initials
+# }
+# POWERLEVEL9K_CUSTOM_GIT_PAIR="echo \$(sp)"
+# POWERLEVEL9K_CUSTOM_GIT_PAIR_BACKGROUND="clear"
+# POWERLEVEL9K_CUSTOM_GIT_PAIR_FOREGROUND="blue"
+# POWERLEVEL9K_CUSTOM_GIT_PAIR_ICON="\uf7af"
+# POWERLEVEL9K_VCS_CLEAN_BACKGROUND='clear'
+# POWERLEVEL9K_VCS_CLEAN_FOREGROUND='green'
+# POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='clear'
+# POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='yellow'
+# POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='clear'
+# POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='green'
+# POWERLEVEL9K_VCS_BRANCH_ICON="\ue725 "
+#
+# # Right Prompt Configuration
+# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status)
+# POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=''
+# POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR='%F{008}\uf104%F{008}'
+#
+# # OS Icon Configuration
+# POWERLEVEL9K_OS_ICON_BACKGROUND='clear'
+# POWERLEVEL9K_OS_ICON_FOREGROUND='green'
+# POWERLEVEL9K_LINUX_MANJARO_ICON="\uf312 "
+# POWERLEVEL9K_LINUX_UBUNTU_ICON="\uf31b "
+# POWERLEVEL9K_APPLE_ICON="\uf302 "
+#
+# # Status Configuration
+# POWERLEVEL9K_STATUS_ERROR_BACKGROUND="clear"
+# POWERLEVEL9K_STATUS_ERROR_FOREGROUND="001"
+# POWERLEVEL9K_STATUS_OK_BACKGROUND="clear"
+# POWERLEVEL9K_STATUS_BACKGROUND="clear"
+# POWERLEVEL9K_CARRIAGE_RETURN_ICON="\uf071"
+# POWERLEVEL9K_OK_ICON="\uf42e"
+#
+# alias tmux='tmux -2'

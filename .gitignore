@@ -2,3 +2,5 @@
 zsh/.zshrc
 private-config/*
 backup_*/*
+lazy-lock.json
+lazyvim.json

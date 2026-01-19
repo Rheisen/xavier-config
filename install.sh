@@ -50,23 +50,49 @@ fi
 echo
 echo "${green}Xavier Config Installer${normal}" 
 echo
-echo "This install script will check for and install Homebrew, in addition to the required brews for Xavier Config:"
-echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat"
-echo "After the required brews are installed, optional brews will be installed with (y/n) user prompts."
+echo "An initial check is made for xcode command line tools, and if it isn't found it starts the install process."
+echo "If xcode command line tools needs to be installed, this script needs to be run again."
 echo
-echo "The install script will then check for and install Oh-My-Zsh, PowerLevel9K, zsh-history-substring-search, VimPlug, and finally Xavier Config"
-echo "After the install is complete, the Xavier Config directory will exist at ~/.xavier-config."
+echo "This install script will then check for and install Homebrew along with the required brews for Xavier Config:"
+echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Fd [9] Zoxide"
+echo
+echo "After the required brews, Rust is installed and an additional dependency is installed via Cargo (Tree-sitter)."
+echo
+echo "Once these required dependencies are installed, optional brews will be installed with (y/n) user prompts."
+echo
+echo "With all required and optional dependencies installed, the install script will clone the Xavier Config repo."
+echo "The Xavier Config directory will exist at ~/.xavier-config."
 echo
 echo "Any prior .zshrc .tmux.conf or init.vim files are backed up during the install process to a timestamped backup"
 echo "folder within ~/.xavier-config."
 echo
-echo "The files ~/.zshrc ~/.tmux.conf and ~/.config/nvim/init.vim will be symlinked to files within ~/.xavier-config"
+echo "The files ~/.zshrc ~/.tmux.conf and the directory ~/.config/nvim will be symlinked to files within"
+echo "$HOME/.xavier-config"
 echo
 echo "After the install process, please follow the manual steps listed on the Xavier Config Github Page."
 echo "https://github.com/rheisen/xavier-config"
+echo "The only manual steps are setting up the ITerm profile with the theme colors."
+echo
+echo "Zinit will automatically install itself and zsh plugins when the terminal next opens."
+echo "Lazy and Mason will automatically install Neovim plugins and language servers when nvim next opens."
 wait_for_user
 
+# XCODE COMMAND LINE TOOLS (C COMPILER)
+
 step=1
+echo
+if command_exists cc; then
+    echo "${blue}$step: C compiler detected.${normal}"
+else
+    echo "${yellow}$step: C compiler not detected. Installing Xcode Command Line Tools...${normal}"
+    xcode-select --install
+    echo "${yellow}$step: Please complete the Xcode Command Line Tools installation prompt, then re-run this script.${normal}"
+    exit 0
+fi
+
+# HOMEBREW
+
+((step++))
 echo
 echo
 if ! command_exists brew; then
@@ -87,40 +113,77 @@ fi
 echo
 echo "${blue}$step: Checking for required brews...${normal}"
 
-requiredBrews=(zsh coreutils neovim git tmux fzf ripgrep bat)
-
-declare -a requiredBrewName=(
-    "ZSH"
-    "Coreutils"
-    "Neovim"
-    "Git"
-    "TMUX"
-    "FZF"
-    "Ripgrep"
-    "Bat"
-)
-
-declare -a requiredBrewFormula=(
-    "zsh"
-    "coreutils"
-    "neovim"
-    "git"
-    "tmux"
-    "fzf"
-    "ripgrep"
-    "bat"
+requiredBrews=(
+    "Zsh:zsh"
+    "Coreutils:coreutils"
+    "Neovim:neovim"
+    "Git:git"
+    "Tmux:tmux"
+    "Fzf:fzf"
+    "Ripgrep:ripgrep"
+    "Fd:fd"
+    "Zoxide:zoxide"
 )
 
 for i in "${!requiredBrews[@]}"; do
     index=$((i+1))
-
-    if brew ls --versions "${requiredBrewFormula[$i]}" > /dev/null; then
-        echo "$step.$index: ${requiredBrewName[$i]} brew detected, skipping install."
+    name="${requiredBrews[$i]%%:*}"
+    formula="${requiredBrews[$i]##*:}"
+    if brew ls --versions "$formula" > /dev/null; then
+        echo "$step.$index: $name brew detected, skipping install."
     else
-        echo "${yellow}$step.$index: ${requiredBrewName[$i]} brew not detected, installing ${requiredBrewFormula[$i]}...${normal}"
-        brew install "${requiredBrewFormula[$i]}"
+        echo "${yellow}$step.$index: $name brew not detected, installing $formula...${normal}"
+        brew install "$formula"
     fi
 done
+
+# RUST/CARGO/RUSTUP INSTALL
+
+((step++))
+echo
+if command_exists rustup; then
+    echo "${blue}$step.1: Rustup detected.${normal}"
+else
+    echo "${yellow}$step.1: Rustup not detected. Running the Rustup install script...${normal}"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
+if ! command_exists rustup; then
+    fmt_error "Rustup not detected. Please check that Rustup installed correctly."
+    exit 1
+fi
+
+# TREE-SITTER-CLI INSTALL
+
+echo
+if command_exists tree-sitter; then
+    echo "${blue}$step.2: tree-sitter-cli detected.${normal}"
+else
+    echo "${yellow}$step.2: tree-sitter-cli not detected. Installing via cargo...${normal}"
+    cargo install --locked tree-sitter-cli
+fi
+
+# NVM AND NODE INSTALL
+
+((step++))
+echo
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    echo "${blue}$step.1: nvm detected.${normal}"
+    # shellcheck source=/dev/null
+    . "$NVM_DIR/nvm.sh"
+else
+    echo "${yellow}$step.1: nvm not detected. Installing nvm...${normal}"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+    # shellcheck source=/dev/null
+    . "$NVM_DIR/nvm.sh"
+fi
+
+if command_exists node; then
+    echo "${blue}$step.2: Node detected.${normal}"
+else
+    echo "${yellow}$step.2: Node not detected. Installing latest LTS via nvm...${normal}"
+    nvm install --lts
+fi
 
 # OPTIONAL BREWS
 
@@ -128,46 +191,34 @@ done
 echo
 echo "${blue}$step: Checking for optional brews...${normal}"
 
-optionalBrews=(shellcheck jq gitflow kubectl helm doctl gradle gnupg gnupg2)
-
-declare -a brewName=(
-    "ShellCheck"
-    "JQ"
-    "Git Flow"
-    "Kubernetes CLI (kubectl)"
-    "Helm"
-    "DigitalOcean CLI (doctl)"
-    "Gradle"
-    "Gnupg"
-    "Gnupg 2"
-)
-
-declare -a brewFormula=(
-    "shellcheck"
-    "jq"
-    "git-flow"
-    "kubectl"
-    "helm"
-    "doctl"
-    "gradle"
-    "gnupg"
-    "gnupg2"
+optionalBrews=(
+    "ShellCheck:shellcheck"
+    "JQ:jq"
+    "Git Flow:git-flow"
+    "Kubernetes CLI (kubectl):kubectl"
+    "Helm:helm"
+    "DigitalOcean CLI (doctl):doctl"
+    "Gradle:gradle"
+    "Gnupg:gnupg"
+    "Gnupg 2:gnupg2"
 )
 
 for i in "${!optionalBrews[@]}"; do
     index=$((i+1))
+    name="${optionalBrews[$i]%%:*}"
+    formula="${optionalBrews[$i]##*:}"
 
-    if brew ls --versions "${brewFormula[$i]}" > /dev/null; then
-        echo "$step.$index: ${brewFormula[$i]} brew detected, skipping install."
+    if brew ls --versions "$formula" > /dev/null; then
+        echo "$step.$index: $name brew detected, skipping install."
     else
         while true; do
-            read -r -p "${yellow}$step.$index: ${brewName[$i]} brew not detected, would you like to install ${brewFormula[$i]}?${normal} (y/n): " opt
+            read -r -p "${yellow}$step.$index: $name brew not detected, would you like to install $formula?${normal} (y/n): " opt
 
             if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
-                brew install "${brewFormula[$i]}"
+                brew install "$formula"
                 break
             elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
-                echo "$step.$index: Skipping ${brewName[$i]}."
+                echo "$step.$index: Skipping $name."
                 break
             else
                 echo "$step.$index: Invalid response: $opt"
@@ -181,33 +232,30 @@ done
 ((step++))
 echo
 echo "${blue}$step: Checking for optional taps...${normal}"
-optionalTaps=(op springboot)
-declare -a tapName=(
-    "1Password CLI (op)"
-    "Spring Boot"
-)
-
-declare -a tapFormula=(
-    "1password/tap/1password-cli"
-    "spring-io/tap/spring-boot"
+optionalTaps=(
+    "1Password CLI (op):1password/tap/1password-cli:op"
+    "Spring Boot:spring-io/tap/spring-boot:spring"
 )
 
 for i in "${!optionalTaps[@]}"; do
     index=$((i+1))
+    entry="${optionalTaps[$i]}"
+    name="${entry%%:*}"
+    remainder="${entry#*:}"
+    formula="${remainder%%:*}"
+    cmd="${remainder##*:}"
 
-    if [ $i -eq 0 ] && [ -x "$(command -v op)" ]; then
-        echo "$step.$index: ${tapName[$i]} detected, skipping install."
-    elif [ $i -eq 1 ] && [ -x "$(command -v spring)" ]; then
-        echo "$step.$index: ${tapName[$i]} detected, skipping install."
+    if [ -x "$(command -v "$cmd")" ]; then
+        echo "$step.$index: $name detected, skipping install."
     else
         while true; do
-            read -r -p "${yellow}$step.$index: ${tapName[$i]} not detected, would you like to install ${tapFormula[$i]}?${normal} (y/n): " opt
+            read -r -p "${yellow}$step.$index: $name not detected, would you like to install $formula?${normal} (y/n): " opt
 
             if [ "$opt" == "y" ] || [ "$opt" == "Y" ]; then
-                brew install "${tapFormula[$i]}"
+                brew install "$formula"
                 break
             elif [ "$opt" == "n" ] || [ "$opt" == "N" ]; then
-                echo "$step.$index: Skipping ${tapName[$i]}."
+                echo "$step.$index: Skipping $name."
                 break
             else
                 echo "$step.$index: Invalid response: $opt"
@@ -216,84 +264,15 @@ for i in "${!optionalTaps[@]}"; do
     fi
 done
 
-# OH-MY-ZSH INSTALL
-
-((step++))
-ohmyzsh_dir=~/.oh-my-zsh
-echo
-if ! dir_exists $ohmyzsh_dir; then
-    echo "${yellow}$step: Oh-My-Zsh not detected. Running the Oh-My-Zsh install script...${normal}"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
-if ! dir_exists $ohmyzsh_dir; then
-    fmt_error "Oh-My-Zsh not detected. Please check that Oh-My-Zsh installed correctly."
-    exit 1
-else
-    echo "${blue}$step: Oh-My-Zsh detected.${normal}"
-fi
-
-# POWERLEVEL9K INSTALL
-
-command_exists git || {
-    fmt_error "Git not detected. Please check that Git installed correctly."
-    exit 1
-}
-
-((step++))
-powerlevel9k_dir="$ohmyzsh_dir/custom/themes/powerlevel9k"
-echo
-if dir_exists $powerlevel9k_dir; then
-    echo "${blue}$step: PowerLevel9K detected, skipping install.${normal}"
-else
-    echo "${yellow}$step: PowerLevel9K not detected, cloning PowerLevel9K...${normal}"
-    git clone https://github.com/bhilburn/powerlevel9k.git $powerlevel9k_dir
-fi
-
-# HISTORY-SEARCH INSTALL
-
-((step++))
-history_search_plugin_dir="$ohmyzsh_dir/custom/plugins/zsh-fzf-history-search"
-if ! dir_exists "$history_search_plugin_dir"; then
-    echo "${yellow}$step: history-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone "https://github.com/joshskidmore/zsh-fzf-history-search" "$history_search_plugin_dir"
-else
-    echo "${blue}$step: history-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
-fi
-
-# HISTORY-SUBSTRING-SEARCH INSTALL
-
-((step++))
-history_substring_search_dir="$ohmyzsh_dir/custom/plugins/zsh-history-substring-search"
-if ! dir_exists "$history_substring_search_dir"; then
-    echo "${yellow}$step: history-substring-search repo not detected in Oh-My-Zsh plugin directory, cloning...${normal}"
-    git clone "https://github.com/zsh-users/zsh-history-substring-search" "$history_substring_search_dir"
-else
-    echo "${blue}$step: history-substring-search repo found in Oh-My-Zsh plugin directory, skipping install.${normal}"
-fi
-
 # TMUX PLUGIN MANAGER INSTALL
 
 ((step++))
-tpm_dir="~/.tmux/plugins/tpm"
+tpm_dir=~/.tmux/plugins/tpm
 if ! dir_exists "$tpm_dir"; then
     echo "${yellow}$step: tmux plugin manager repo not detected, cloning...${normal}"
-    git clone "https://github.com/tmux-plugins/tpm" "$tpm_dir"
+    git clone "https://github.com/tmux-plugins/tpm" "$tpm_dir" || exit 1
 else
     echo "${blue}$step: tmux plugin manager repo found, skipping install.${normal}"
-fi
-
-# VIM PLUG INSTALL
-
-((step++))
-vimplug_file=~/.local/share/nvim/site/autoload/plug.vim
-echo
-if [ -f "$vimplug_file" ]; then
-    echo "${blue}$step: VimPlug for Neovim detected, skipping install.${normal}"
-else
-    echo "${yellow}$step: VimPlug for Neovim not detected, installing VimPlug...${normal}"
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 # ITERM2 INSTALL
@@ -323,41 +302,40 @@ if dir_exists $xconfig_dir; then
     echo "$step.1: Xavier config detected, skipping clone."
 else
     echo "${yellow}$step.1: Xavier config not detected, cloning xavier-config into $xconfig_dir${normal}"
-    git clone https://github.com/Rheisen/xavier-config.git $xconfig_dir
+    git clone https://github.com/Rheisen/xavier-config.git $xconfig_dir || exit 1
 fi
 
-# Nvim init.vim symlink setup
+# Nvim config directory symlink setup
 
 command_exists realpath || {
     fmt_error "realpath not detected. Please check that CoreUtils installed correctly."
     exit 1
 }
 
-nvim_init_file=~/.config/nvim/init.vim
-xconfig_nvim_init_file="$xconfig_dir/nvim/init.vim"
-dir_exists ~/.config/nvim || {
-    mkdir -p ~/.config/nvim
+nvim_config_dir=~/.config/nvim
+xconfig_nvim_dir="$xconfig_dir/nvim-xavi"
+dir_exists ~/.config || {
+    mkdir -p ~/.config
 }
-if [ -L "$nvim_init_file" ]; then
-    if [ "$(realpath $nvim_init_file)" == "$xconfig_nvim_init_file" ]; then
-        echo "$step.2: Neovim symlink to xavier-config init file already in place, skipping symlink."
+if [ -L "$nvim_config_dir" ]; then
+    if [ "$(realpath "$nvim_config_dir")" == "$xconfig_nvim_dir" ]; then
+        echo "$step.2: Neovim config symlink to xavier-config nvim-xavi already in place, skipping."
     else
-        rm $nvim_init_file
-        ln -s $xconfig_nvim_init_file $nvim_init_file
-        echo "${yellow}$step.2: Neovim symlink to init file replaced with symlink to xavier-config init file.${normal}"
+        rm "$nvim_config_dir"
+        ln -s "$xconfig_nvim_dir" "$nvim_config_dir"
+        echo "${yellow}$step.2: Neovim config symlink replaced with symlink to xavier-config nvim-xavi.${normal}"
     fi
-elif [ -f "$nvim_init_file" ]; then
+elif [ -d "$nvim_config_dir" ]; then
     dir_exists "$xbackup_dir" || {
         mkdir "$xbackup_dir"
     }
-    cp $nvim_init_file "$xbackup_dir/init.vim"
-    echo "${yellow}$step.2: Neovim init.vim file found, backup created at $xbackup_dir/init.vim${normal}"
-    rm $nvim_init_file
-    ln -s $xconfig_nvim_init_file $nvim_init_file
-    echo "${yellow}$step.2: Neovim init.vim file replaced with symlink to xavier-config init file.${normal}"
+    mv "$nvim_config_dir" "$xbackup_dir/nvim"
+    echo "${yellow}$step.2: Neovim config directory found, backup created at $xbackup_dir/nvim${normal}"
+    ln -s "$xconfig_nvim_dir" "$nvim_config_dir"
+    echo "${yellow}$step.2: Neovim config symlink to xavier-config nvim-xavi created.${normal}"
 else
-    ln -s $xconfig_nvim_init_file $nvim_init_file
-    echo "${yellow}$step.2: Neovim symlink to xavier-config init file created.${normal}"
+    ln -s "$xconfig_nvim_dir" "$nvim_config_dir"
+    echo "${yellow}$step.2: Neovim config symlink to xavier-config nvim-xavi created.${normal}"
 fi
 
 # Zsh .zshrc symlink setup
@@ -410,7 +388,7 @@ elif [ -f "$tmux_conf_file" ]; then
         mkdir "$xbackup_dir"
     }
     cp $tmux_conf_file "$xbackup_dir/.tmux.conf"
-    echo "${yellow}$step.4: Tmux zshrc file found, backup created at $xbackup_dir/.tmux.conf${normal}"
+    echo "${yellow}$step.4: Tmux conf file found, backup created at $xbackup_dir/.tmux.conf${normal}"
     rm $tmux_conf_file
     ln -s $xconfig_tmux_conf_file $tmux_conf_file
     echo "${yellow}$step.4: Tmux symlink to xavier-config tmux.conf file created.${normal}"
@@ -419,16 +397,47 @@ else
     echo "${yellow}$step.4: Tmux symlink to xavier-config tmux.conf file created.${normal}"
 fi
 
-# Fira Code font installation
+# Fira Code Nerd Font installation
 
 ((step++))
-echo "${blue}$step: Checking for Fira-Code-Font...${normal}"
-if test -f ~/Library/Fonts/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf; then
-    echo "$step.1: Fira Code font detected, skipping install."
+echo "${blue}$step: Checking for Fira Code Nerd Font...${normal}"
+if ls ~/Library/Fonts/FiraCodeNF*.ttf 1> /dev/null 2>&1; then
+    echo "$step.1: Fira Code Nerd Font detected, skipping install."
 else
-    echo "${yellow}$step.2: Fira Code font not detected, installing...${normal}"
-    mv $xconfig_dir/iterm/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
+    echo "${yellow}$step.1: Fira Code Nerd Font not detected, downloading and installing...${normal}"
+    fira_code_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip"
+    fira_code_tmp="/tmp/FiraCode.zip"
+    fira_code_extract="/tmp/FiraCode"
+
+    curl -L -o "$fira_code_tmp" "$fira_code_url"
+    mkdir -p "$fira_code_extract"
+    unzip -o "$fira_code_tmp" -d "$fira_code_extract"
+    cp "$fira_code_extract"/*.ttf ~/Library/Fonts/
+
+    # Cleanup
+    rm -f "$fira_code_tmp"
+    rm -rf "$fira_code_extract"
+    echo "${yellow}$step.1: Fira Code Nerd Font installed.${normal}"
 fi
+
+# iTerm2 Dynamic Profile setup
+
+iterm_dynamic_profiles_dir=~/Library/Application\ Support/iTerm2/DynamicProfiles
+xconfig_iterm_profile="$xconfig_dir/iterm/xavi-config-teide-dark.json"
+xavi_profile_guid="AC1B5929-3782-4BE7-866F-2E4D857BACF4"
+
+((step++))
+mkdir -p "$iterm_dynamic_profiles_dir"
+if [ -L "$iterm_dynamic_profiles_dir/xavi-config-teide-dark.json" ]; then
+    echo "$step: iTerm2 Xavi profile symlink already in place, skipping."
+else
+    ln -sf "$xconfig_iterm_profile" "$iterm_dynamic_profiles_dir/xavi-config-teide-dark.json"
+    echo "${yellow}$step: iTerm2 Xavi profile symlink created.${normal}"
+fi
+
+# Set Xavi profile as default
+defaults write com.googlecode.iterm2 "Default Bookmark Guid" "$xavi_profile_guid"
+echo "${yellow}$step: iTerm2 Xavi profile set as default.${normal}"
 
 xiterm_assets_dir=~/documents/xavier-config/iterm
 dir_exists $xiterm_assets_dir || {
