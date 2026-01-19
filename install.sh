@@ -51,16 +51,17 @@ echo
 echo "${green}Xavier Config Installer${normal}" 
 echo
 echo "This install script will check for and install Homebrew, in addition to the required brews for Xavier Config:"
-echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Bat"
+echo "[1] Zsh [2] Coreutils [3] Neovim [4] Git [5] Tmux [6] Fzf [7] Ripgrep [8] Zoxide"
 echo "After the required brews are installed, optional brews will be installed with (y/n) user prompts."
 echo
-echo "The install script will then check for and install Oh-My-Zsh, PowerLevel9K, zsh-history-substring-search, VimPlug, and finally Xavier Config"
+echo "The install script will then check for and install Zinit, and finally Xavier Config."
 echo "After the install is complete, the Xavier Config directory will exist at ~/.xavier-config."
 echo
 echo "Any prior .zshrc .tmux.conf or init.vim files are backed up during the install process to a timestamped backup"
 echo "folder within ~/.xavier-config."
 echo
-echo "The files ~/.zshrc ~/.tmux.conf and ~/.config/nvim/init.vim will be symlinked to files within ~/.xavier-config"
+echo "The files ~/.zshrc ~/.tmux.conf and the directory ~/.config/nvim will be symlinked to files within"
+echo "~/.xavier-config"
 echo
 echo "After the install process, please follow the manual steps listed on the Xavier Config Github Page."
 echo "https://github.com/rheisen/xavier-config"

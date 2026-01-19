@@ -1,5 +1,5 @@
 
-# Xavi Config
+# Xavier Config
 
 This is an OSX development environment configuration. This README documents the complete process for setting up the
 development environment, and quickly getting up and running on any OSX machine.
@@ -12,11 +12,6 @@ approach with powerful, well-integrated features. ([Teide Theme](https://github.
 
 With the usage of the install script, it can be fully configured in less than 5 minutes!
 
-```
-cargo install --locked tree-sitter-cli
-brew install zoxide
-```
-
 ![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/refs/heads/feature/nvim-xavi/images/teide_dark_color_reference.png)
 
 Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (yellow), `#5CCEFF` (blue),
@@ -24,9 +19,14 @@ Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (y
 
 ## Quick Install
 
+```
+cargo install --locked tree-sitter-cli
+```
+
 1. Run the installer script: `/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/Rheisen/xavier-config/main/install.sh)"`
-    - This will install ITerm2 ([web link](https://iterm2.com/downloads.html)) and Fira Code Retina font
-    - This will install Homebrew + Zinit, and a number of brews and Zinit plugins (some optional with prompts)
+    - This will install ITerm2 ([web link](https://iterm2.com/downloads.html))
+    and Fira Code Nerd Font ([web link](https://www.nerdfonts.com/font-downloads))
+    - This will install Homebrew + Zinit, and a number of brews and plugins (some optional with prompts)
 2. Setup ITerm2 colors and fonts:
     - Open the ITerm2 Preferences Menu (ITerm2 > Preferences)
     - Select Appearance, Select Theme, change to "Minimal"
