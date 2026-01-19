@@ -12,7 +12,7 @@ approach with powerful, well-integrated features. ([Teide Theme](https://github.
 
 With the usage of the install script, it can be fully configured in less than 5 minutes!
 
-![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/refs/heads/main/images/color_reference.png)
+![Color Reference](https://raw.githubusercontent.com/Rheisen/xavier-config/refs/heads/main/images/teide_dark_color_reference.png)
 
 Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (yellow), `#5CCEFF` (blue),
 `#A592FF` (purple), `#0AE7FF` (cyan), `#E7EAEE` (foreground)
