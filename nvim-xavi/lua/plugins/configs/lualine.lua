@@ -29,12 +29,41 @@ local xavi_theme = {
 
 local git_slug_cache = ""
 local git_slug_cwd = ""
+local git_cache_timer = nil
 
--- Filetypes to set minimal lualine info
-local minimal_layout_filetypes = { "neo-tree", "snacks_terminal" }
+-- Invalidate git caches to force refresh on next call
+local function invalidate_git_cache()
+	git_slug_cwd = ""
+end
+
+local dap_filetypes = {
+	"dapui_scopes",
+	"dapui_breakpoints",
+	"dapui_stacks",
+	"dapui_watches",
+	"dapui_console",
+	"dap-repl",
+}
+
+local tree_filetypes = {
+	"neo-tree",
+}
+
+local terminal_filetypes = {
+	"snacks_terminal",
+	"terminal",
+}
 
 local function git_slug()
-	if vim.tbl_contains(minimal_layout_filetypes, vim.bo.filetype) then
+	if vim.tbl_contains(dap_filetypes, vim.bo.filetype) then
+		return ""
+	end
+
+	if vim.tbl_contains(tree_filetypes, vim.bo.filetype) then
+		return ""
+	end
+
+	if vim.tbl_contains(terminal_filetypes, vim.bo.filetype) or vim.bo.buftype == "terminal" then
 		return ""
 	end
 
@@ -55,7 +84,7 @@ local function git_slug()
 end
 
 local function conditional_filename()
-	if vim.tbl_contains(minimal_layout_filetypes, vim.bo.filetype) then
+	if vim.tbl_contains(tree_filetypes, vim.bo.filetype) then
 		return ""
 	end
 
@@ -63,7 +92,7 @@ local function conditional_filename()
 end
 
 local function conditional_mode()
-	if vim.tbl_contains(minimal_layout_filetypes, vim.bo.filetype) then
+	if vim.tbl_contains(tree_filetypes, vim.bo.filetype) then
 		return ""
 	end
 
@@ -71,16 +100,92 @@ local function conditional_mode()
 end
 
 local function conditional_filetype()
-	if vim.tbl_contains(minimal_layout_filetypes, vim.bo.filetype) then
+	if vim.tbl_contains(dap_filetypes, vim.bo.filetype) then
+		return ""
+	end
+
+	if vim.tbl_contains(tree_filetypes, vim.bo.filetype) then
+		return ""
+	end
+
+	if vim.tbl_contains(terminal_filetypes, vim.bo.filetype) or vim.bo.buftype == "terminal" then
 		return ""
 	end
 
 	return vim.bo.filetype
 end
 
+local function setup_git_cache_refresh()
+	local group = vim.api.nvim_create_augroup("LualineGitCache", { clear = true })
+
+	-- Invalidate cache when returning to neovim (after using git in terminal)
+	vim.api.nvim_create_autocmd("FocusGained", {
+		group = group,
+		callback = invalidate_git_cache,
+	})
+
+	-- Invalidate cache when leaving terminal mode
+	vim.api.nvim_create_autocmd("TermLeave", {
+		group = group,
+		callback = invalidate_git_cache,
+	})
+
+	-- Invalidate cache when directory changes
+	vim.api.nvim_create_autocmd("DirChanged", {
+		group = group,
+		callback = invalidate_git_cache,
+	})
+
+	-- Invalidate cache on gitsigns updates
+	vim.api.nvim_create_autocmd("User", {
+		group = group,
+		pattern = "GitSignsChanged",
+		callback = invalidate_git_cache,
+	})
+
+	-- Invalidate cache on neogit events (commit, push, pull, branch changes, etc.)
+	vim.api.nvim_create_autocmd("User", {
+		group = group,
+		pattern = {
+			"NeogitCommitComplete",
+			"NeogitPushComplete",
+			"NeogitPullComplete",
+			"NeogitBranchCheckout",
+			"NeogitBranchCreate",
+			"NeogitBranchDelete",
+			"NeogitBranchReset",
+			"NeogitRebase",
+			"NeogitReset",
+			"NeogitMerge",
+			"NeogitCherryPick",
+			"NeogitRevert",
+			"NeogitStash",
+		},
+		callback = invalidate_git_cache,
+	})
+
+	-- Timer-based refresh every 30 seconds
+	if git_cache_timer then
+		git_cache_timer:stop()
+		git_cache_timer:close()
+	end
+	git_cache_timer = vim.uv.new_timer()
+	git_cache_timer:start(
+		30000,
+		30000,
+		vim.schedule_wrap(function()
+			invalidate_git_cache()
+		end)
+	)
+end
+
 local M = {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
+	config = function(_, opts)
+		require("lualine").setup(opts)
+		setup_git_cache_refresh()
+	end,
 	opts = {
 		options = {
 			theme = xavi_theme,
@@ -91,7 +196,16 @@ local M = {
 		sections = {
 			-- lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
 			lualine_a = { { conditional_mode, separator = { left = "" }, right_padding = 2 } },
-			lualine_b = { { conditional_filename }, { "branch" }, { git_slug } }, -- path = 3
+			lualine_b = {
+				{ conditional_filename },
+				{
+					"branch",
+					cond = function()
+						return not vim.tbl_contains(dap_filetypes, vim.bo.filetype)
+					end,
+				},
+				{ git_slug },
+			}, -- path = 3
 			lualine_c = {
 				"%=", --[[ add your center components here in place of this comment ]]
 			},
