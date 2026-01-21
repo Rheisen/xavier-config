@@ -8,13 +8,17 @@ local M = {
 		delay = 1000,
 		-- Document key chains
 		spec = {
+			{ "gr", group = "lsp actions" },
+			{ "<leader>g", group = "[g]oto" },
+			{ "<leader>d", group = "[d]ap (debugging)" },
+			{ "<leader>x", group = "diagnostics (debugging)" },
 			{ "<leader>f", group = "[f]ind" },
 			{ "<leader>v", group = "[v]ersion control (git)" },
 			{ "<leader>vl", group = "[v]ersion [l]og (git)" },
 			{ "<leader>s", group = "[s]taging (git)" },
 			{ "<leader>u", group = "[u]nstaging (git)" },
 			{ "<leader>r", group = "[r]esetting (git)" },
-			{ "<leader>a", group = "[a]i (Artificial Intelligence)" },
+			{ "<leader>a", group = "[a]i (artificial intelligence)" },
 			{ "gp", group = "[g]oto [p]review" },
 		},
 	},
@@ -25,7 +29,7 @@ local M = {
 			function()
 				require("which-key").show({ global = false })
 			end,
-			desc = "Buffer Local Keymaps (which-key)",
+			desc = "buffer local keymaps (which-key)",
 		},
 	},
 }

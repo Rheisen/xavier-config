@@ -34,7 +34,119 @@ Colors: `#1D2228` (background), `#F97791` (red), `#38FFA5` (green), `#FFE77A` (y
 
 ## Usage
 
-TBD
+### Leader Keys
+
+| Context  | Leader Key      |
+|----------|-----------------|
+| Tmux     | `Ctrl+Space`    |
+| Neovim   | `Space`         |
+
+### Terminal (ZSH + FZF)
+
+The terminal uses ZSH with fzf integration for fuzzy finding and zoxide for smart directory navigation.
+
+| Keybinding   | Action                              |
+|--------------|-------------------------------------|
+| `Ctrl+r`     | Fuzzy search command history        |
+| `Ctrl+t`     | Fuzzy find files                    |
+| `Alt+c`      | Fuzzy find and cd into directory    |
+| `Ctrl+p`     | History search backward             |
+| `Ctrl+n`     | History search forward              |
+| `Tab`        | Trigger fzf-tab completion          |
+
+**Aliases:**
+- `cd` - Aliased to zoxide for smart directory jumping (tracks frequently used directories)
+
+### Tmux
+
+All tmux commands are prefixed with the leader key `Ctrl+Space`.
+
+| Keybinding         | Action                        |
+|--------------------|-------------------------------|
+| `<leader> v`       | Split pane vertically         |
+| `<leader> s`       | Split pane horizontally       |
+| `<leader> h/j/k/l` | Navigate panes (vim-style)    |
+| `<leader> z`       | Toggle zen mode (hide status) |
+| `<leader> r`       | Reload tmux configuration     |
+
+### Neovim
+
+Press `<leader>?` to open which-key and view all available keybindings.
+
+#### Fuzzy Finding (Snacks Picker)
+
+| Keybinding    | Action                         |
+|---------------|--------------------------------|
+| `<leader>ff`  | Find files                     |
+| `<leader>ft`  | Find text (grep)               |
+| `<leader>/`   | Find text (grep)               |
+| `<leader>fb`  | Find buffers                   |
+| `<leader>,`   | Find buffers                   |
+| `<leader>fr`  | Find recent files              |
+| `<leader>fc`  | Find config files              |
+| `<leader>.`   | Find files in current directory|
+| `<leader>fg`  | Find git files                 |
+| `<leader>fp`  | Find projects                  |
+
+#### Autocompletion (blink.cmp)
+
+| Keybinding   | Action                              |
+|--------------|-------------------------------------|
+| `Ctrl+n`     | Select next completion item         |
+| `Ctrl+p`     | Select previous completion item     |
+| `Ctrl+e`     | Accept completion                   |
+| `Ctrl+y`     | Hide completion menu                |
+| `Ctrl+k`     | Toggle documentation                |
+
+Completion sources: LSP, file paths, snippets, buffer words.
+
+#### Navigation & LSP
+
+| Keybinding   | Action                         |
+|--------------|--------------------------------|
+| `K`          | Hover documentation            |
+| `gd`         | Go to definition               |
+| `gD`         | Go to declaration              |
+| `gI`         | Go to implementation           |
+| `gy`         | Go to type definition          |
+| `gpd`        | Preview definition (popup)     |
+| `gpD`        | Preview declaration (popup)    |
+| `gpt`        | Preview type definition        |
+| `gpi`        | Preview implementation         |
+| `gP`         | Close all preview windows      |
+
+#### Git (Version Control)
+
+| Keybinding     | Action                  |
+|----------------|-------------------------|
+| `<leader>vs`   | Git status (Neogit)     |
+| `<leader>vc`   | Git commit              |
+| `<leader>vp`   | Git pull                |
+| `<leader>vP`   | Git push                |
+| `<leader>vb`   | Git branches            |
+| `<leader>vd`   | Git diff (hunks)        |
+| `<leader>vlr`  | Git log (repo)          |
+| `<leader>vlf`  | Git log (file)          |
+| `<leader>vll`  | Git log (line)          |
+| `<leader>sh`   | Stage hunk              |
+| `<leader>sb`   | Stage buffer            |
+| `<leader>rh`   | Reset hunk              |
+| `<leader>rb`   | Reset buffer            |
+| `<leader>gh`   | Go to next hunk         |
+| `<leader>gH`   | Go to previous hunk     |
+
+#### General
+
+| Keybinding    | Action                         |
+|---------------|--------------------------------|
+| `<leader>t`   | Toggle file tree (Neotree)     |
+| `<leader>z`   | Toggle zen mode                |
+| `<leader>y`   | Yank to system clipboard       |
+| `<leader>p`   | Paste from system clipboard    |
+| `<leader>n`   | Clear search highlighting      |
+| `<leader>j`   | Open scratch buffer            |
+| `<leader>J`   | Select scratch buffer          |
+| `Ctrl+h/j/k/l`| Navigate between windows       |
 
 #### Additional Recommended Downloads:
 

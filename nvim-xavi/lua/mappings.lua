@@ -8,28 +8,29 @@ function M.register(mappings)
 	end
 end
 
+local function get_args(config)
+	local args = vim.fn.input({
+		prompt = "Arguments: ",
+		default = config.args and table.concat(config.args, " ") or "",
+		completion = "file",
+	})
+	if args and args ~= "" then
+		config.args = vim.split(args, " ", { trimempty = true })
+	end
+	return config
+end
+
 function M.setup()
 	local keymap = vim.keymap
 	local cmd = vim.cmd
-
-	-- local function map(modes, key, action, opts)
-	--     keymap.set(modes, key, action, opts)
-	-- end
 
 	local mapping
 
 	local function map(...)
 		mapping = { ... }
-
-		-- for _, item in ipairs(mapping) do
-		-- 	local mode = item.mode or "n"
-		-- 	local opts = { desc = item.desc, silent = item.silent }
-		--
-		-- 	require("snacks").keymap.set(mode, item[1], item[2], opts)
-		-- end
 	end
 
-	-- Defer snacks-dependent mappings until VimEnter
+	-- Defer until VimEnter
 	vim.api.nvim_create_autocmd("User", {
 		pattern = "VeryLazy", -- or use "VimEnter" if not using lazy.nvim
 		once = true,
@@ -47,23 +48,20 @@ function M.setup()
 			end
 		end,
 	})
-	-- Leader
 
+	-- Leader
 	vim.g.mapleader = " "
 	vim.g.maplocalleader = " "
 
 	-- Disable native keybindings
-
 	keymap.set("n", "q", "<Nop>")
 
 	-- Basic remaps
-
 	keymap.set("n", "0", "^")
 	keymap.set("n", "^", "0")
 	keymap.set("n", "zo", "zO")
 
 	-- Respect wrapping with jk navigation & utilize jump list
-
 	cmd("nnoremap <expr> j v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'j' : 'gj'")
 	cmd("nnoremap <expr> k v:count ? (v:count > 5 ? \"m'\" . v:count : '') . 'k' : 'gk'")
 
@@ -138,7 +136,7 @@ function M.setup()
 			require("gitsigns").prev_hunk()
 		end)
 		return "<Ignore>"
-	end, { desc = "[g]oto [h]unk (previous)", expr = true })
+	end, { desc = "[g]oto [H]unk (previous)", expr = true })
 	-- Preview windows
 
 	keymap.set(
@@ -173,17 +171,16 @@ function M.setup()
 	)
 
 	-- Top Pickers
-	keymap.set("n", "<leader><space>", function()
-		require("snacks").picker.smart()
-	end, { desc = "smart find files" })
-
+	-- keymap.set("n", "<leader><space>", function()
+	-- 	require("snacks").picker.smart()
+	-- end, { desc = "smart find files" })
 	keymap.set("n", "<leader>,", function()
 		require("snacks").picker.buffers()
-	end, { desc = "buffers" })
+	end, { desc = "find buffers" })
 
 	keymap.set("n", "<leader>/", function()
 		require("snacks").picker.grep()
-	end, { desc = "grep" })
+	end, { desc = "find text" })
 
 	keymap.set("n", "<leader>N", function()
 		require("snacks").picker.notifications()
@@ -198,21 +195,8 @@ function M.setup()
 	keymap.set("n", "<leader>fc", function()
 		require("snacks").picker.files({ cwd = vim.fn.stdpath("config"), hidden = true })
 	end, {
-		desc = "[f]ind [c]onfig File",
+		desc = "[f]ind [c]onfig file",
 	})
-
-	keymap.set("n", "<leader>.", function()
-		require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
-	end, {
-		desc = "[f]ind files in current([.]) dir",
-	})
-
-	keymap.set("n", "<leader>.", function()
-		require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
-	end, {
-		desc = "[f]ind files in current([.]) dir",
-	})
-
 	keymap.set("n", "<leader>.", function()
 		require("snacks").picker.files({ cwd = vim.fn.expand("%:p:h"), hidden = true })
 	end, {
@@ -228,18 +212,18 @@ function M.setup()
 			desc = "[f]ind [f]iles",
 		},
 		{
-			"<leader>ff",
+			"<leader>ft",
 			function()
-				require("snacks").picker.files({ hidden = true, ignored = true })
+				require("snacks").picker.grep()
 			end,
-			desc = "[f]ind [f]iles",
+			desc = "[f]ind [t]ext",
 		},
 		{
 			"<leader>fg",
 			function()
 				require("snacks").picker.git_files()
 			end,
-			desc = "[f]ind [g]it Files",
+			desc = "[f]ind [g]it files",
 		},
 		{
 			"<leader>fp",
@@ -324,7 +308,7 @@ function M.setup()
 			function()
 				vim.lsp.buf.definition()
 			end,
-			desc = "Goto Definition",
+			desc = "[g]oto [d]efinition",
 			has = "definition",
 		},
 		-- {
@@ -340,21 +324,21 @@ function M.setup()
 			function()
 				vim.lsp.buf.implementation()
 			end,
-			desc = "Goto Implementation",
+			desc = "[g]oto [I]mplementation",
 		},
 		{
 			"gy",
 			function()
 				vim.lsp.buf.type_definition()
 			end,
-			desc = "Goto T[y]pe Definition",
+			desc = "[g]oto t[y]pe definition",
 		},
 		{
 			"gD",
 			function()
 				vim.lsp.buf.declaration()
 			end,
-			desc = "Goto Declaration",
+			desc = "[g]oto [D]eclaration",
 		},
 		-- DAP
 		{
@@ -362,133 +346,133 @@ function M.setup()
 			function()
 				require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 			end,
-			desc = "Breakpoint Condition",
+			desc = "[d]ap [B]reakpoint condition",
 		},
 		{
 			"<leader>db",
 			function()
 				require("dap").toggle_breakpoint()
 			end,
-			desc = "Toggle Breakpoint",
+			desc = "[d]ap [b]reakpoint toggle",
 		},
 		{
 			"<leader>dc",
 			function()
 				require("dap").continue()
 			end,
-			desc = "Run/Continue",
+			desc = "[d]ap [c]ontinue",
 		},
 		{
 			"<leader>da",
 			function()
 				require("dap").continue({ before = get_args })
 			end,
-			desc = "Run with Args",
+			desc = "[d]ap run with [a]rgs",
 		},
 		{
 			"<leader>dC",
 			function()
 				require("dap").run_to_cursor()
 			end,
-			desc = "Run to Cursor",
+			desc = "[d]ap run to [C]ursor",
 		},
 		{
 			"<leader>dg",
 			function()
 				require("dap").goto_()
 			end,
-			desc = "Go to Line (No Execute)",
+			desc = "[d]ap [g]o to line (no execute)",
 		},
 		{
 			"<leader>di",
 			function()
 				require("dap").step_into()
 			end,
-			desc = "Step Into",
+			desc = "[d]ap step [i]nto",
 		},
 		{
 			"<leader>dj",
 			function()
 				require("dap").down()
 			end,
-			desc = "Down",
+			desc = "[d]ap down ([j])",
 		},
 		{
 			"<leader>dk",
 			function()
 				require("dap").up()
 			end,
-			desc = "Up",
+			desc = "[d]ap up ([k])",
 		},
 		{
 			"<leader>dl",
 			function()
 				require("dap").run_last()
 			end,
-			desc = "Run Last",
+			desc = "[d]ap run [l]ast",
 		},
 		{
 			"<leader>do",
 			function()
 				require("dap").step_out()
 			end,
-			desc = "Step Out",
+			desc = "[d]ap step [o]ut",
 		},
 		{
 			"<leader>dO",
 			function()
 				require("dap").step_over()
 			end,
-			desc = "Step Over",
+			desc = "[d]ap step [O]ver",
 		},
 		{
 			"<leader>dP",
 			function()
 				require("dap").pause()
 			end,
-			desc = "Pause",
+			desc = "[d]ap [P]ause",
 		},
 		{
 			"<leader>dr",
 			function()
 				require("dap").repl.toggle()
 			end,
-			desc = "Toggle REPL",
+			desc = "[d]ap toggle [r]epl",
 		},
 		{
 			"<leader>ds",
 			function()
 				require("dap").session()
 			end,
-			desc = "Session",
+			desc = "[d]ap [s]ession",
 		},
 		{
 			"<leader>dt",
 			function()
 				require("dap").terminate()
 			end,
-			desc = "Terminate",
+			desc = "[d]ap [t]erminate",
 		},
 		{
 			"<leader>dw",
 			function()
 				require("dap.ui.widgets").hover()
 			end,
-			desc = "Widgets",
+			desc = "[d]ap [w]idgets",
 		},
 		{
 			"<leader>du",
 			function()
 				require("dapui").toggle({})
 			end,
-			desc = "Dap UI",
+			desc = "[d]ap [u]i",
 		},
 		{
 			"<leader>de",
 			function()
 				require("dapui").eval()
 			end,
-			desc = "Eval",
+			desc = "[d]ap [e]val",
 			mode = { "n", "x" },
 		}
 		-- Noice

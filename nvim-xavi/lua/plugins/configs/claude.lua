@@ -29,7 +29,7 @@ local M = {
 	config = true,
 	opts = {
 		terminal = {
-			provider = "snacks",
+			provider = "native",
 		},
 		snacks_win_opts = {
 			start_insert = false,

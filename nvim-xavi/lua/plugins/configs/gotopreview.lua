@@ -3,7 +3,7 @@ local M = {
 	dependencies = { "rmagatti/logger.nvim" },
 	event = "BufEnter",
 	config = true,
-	opt = {
+	opts = {
 		width = 120, -- Width of the floating window
 		height = 15, -- Height of the floating window
 		border = { "↖", "─", "┐", "│", "┘", "─", "└", "│" }, -- Border characters of the floating window
@@ -14,7 +14,7 @@ local M = {
 		post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
 		post_close_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
 		references = { -- Configure the telescope UI for slowing the references cycling window.
-			provider = "fzf_lua", -- telescope|fzf_lua|snacks|mini_pick|default
+			provider = "snacks", -- telescope|fzf_lua|snacks|mini_pick|default
 		},
 		-- These two configs can also be passed down to the goto-preview definition and implementation calls for one off "peak" functionality.
 		focus_on_open = true, -- Focus the floating window when opening it.
